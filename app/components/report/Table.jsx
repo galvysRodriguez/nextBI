@@ -79,8 +79,8 @@ const Example = () => {
   });
 
   return (
-    <div className="p-4 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold text-gray-700 mb-4">Enhanced Material React Table</h1>
+    <div className="p-12 bg-gray-100 min-h-screen">
+      <h1 className="text-2xl text-center font-bold text-gray-700 w-full mb-4">Compras</h1>
       <MaterialReactTable
         table={table}
         muiTableHeadCellProps={{

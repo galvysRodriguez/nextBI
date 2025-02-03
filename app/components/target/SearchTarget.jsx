@@ -1,3 +1,4 @@
+"use client"
 import { useSearchTarget } from "../context/IsGrid"
 
 

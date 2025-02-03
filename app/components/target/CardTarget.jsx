@@ -5,8 +5,10 @@ import {
     AccessTime,
   } from "@mui/icons-material"
 import { ProgressBar } from "./Progressbar"
+import Link from "next/link"
+import { useRouter } from 'next/navigation';
   
-  export function CardTarget({ current = 40, target = 100, title, start, end, value, indicator}) {
+  export function CardTarget({ current = 40, target = 100, title, start, end, value, indicator, id}) {
     return (
       <div className="rounded-2xl bg-[#ffffff] p-6">
         {/* Header */}
@@ -42,33 +44,35 @@ import { ProgressBar } from "./Progressbar"
         </div>
   
         {/* Button */}
-        <ContainerButton />
+        <ContainerButton id={id}/>
       </div>
     )
   }
   
-  export function ContainerButton() {
+  export function ContainerButton({id}) {
     
   
     return (
       <div className="h-16 w-full flex justify-center pt-4">
-        <ButtonSecondary text={"Ver detalles"} />
+        <ButtonSecondary text={"Ver detalles"} id={id}/>
       </div>
     )
   }
+
+  export function ButtonSecondary({ text, id }) {
+    const router = useRouter();
   
-  export function ButtonSecondary({ text, handle }) {
     return (
       <button
-        onClick={handle}
+        onClick={() => router.push(`/dashboard/target/${id}`)}
         className="bg-[#ffffff] border-2 border-[#085494] text-[#085494] w-full h-full rounded-lg text-lg px-4 py-2 
-                 hover:bg-[#e4e6e8]  transition-all duration-300"
+                   hover:bg-[#e4e6e8] transition-all duration-300"
       >
         {text}
       </button>
-    )
+    );
   }
-  
+
   export function TitleCard({ text = "Aumentar las ventas un 15%" }) {
     return <strong className="font-semibold text-lg leading-none text-center">{text}</strong>
   }
