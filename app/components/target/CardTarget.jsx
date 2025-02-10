@@ -7,40 +7,64 @@ import {
 import { ProgressBar } from "./Progressbar"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
-  
-  export function CardTarget({ current = 40, target = 100, title, start, end, value, indicator, id}) {
+
+function formatDate(date) {
+  const newDate = new Date(date);
+
+  if (isNaN(newDate)) {
+    throw new Error("Fecha inválida");
+  }
+
+  const opciones = { year: "numeric", month: "long", day: "numeric" };
+  return newDate.toLocaleDateString("es-ES", opciones);
+}
+
+function formatDecimal(num) {
+  return num.toFixed(2); // Retorna un string con dos decimales
+}
+
+  export function CardTarget({ optimal = 40, 
+                              indicator_value = 100, 
+                              title, 
+                              start_date, 
+                              end_date, 
+                              value, 
+                              indicator, 
+                              aggregation,
+                              perspective,
+                              id}) {
     return (
       <div className="rounded-2xl bg-[#ffffff] p-6">
         {/* Header */}
         <div className="flex items-center justify-between gap-3 h-20 w-full">
-          <LogoCard value={value}  />
+          <LogoCard value={perspective}  />
           <TitleCard text={title} />
           <StatusCard />
         </div>
   
         {/* Date */}
-        <DateCard start={start} end={end}/>
+        <DateCard start_date={formatDate(start_date)} end_date={formatDate(end_date)}/>
   
         {/* Total Sales */}
         <div className="pt-8 text-center">
-          <strong className="font-medium text-lg">{indicator}</strong>
+          <strong className="font-medium text-lg">{aggregation} de {indicator}</strong>
           <div className="flex flex-col gap-4 py-6">
             <div className="flex justify-between w-full">
               <AccountBalanceWallet sx={{ color: "#4C4F68" }}/>
               <p className="font-normal text-sm">Resultado obtenido</p>
-              <span className="font-medium text-base">{current}</span>
+              <span className="font-medium text-base">{formatDecimal(indicator_value)}</span>
             </div>
             <div className="flex justify-between w-full">
               <TaskAlt sx={{ color: "#4C4F68" }}/>
               <p className="font-normal text-sm">Resultado esperado</p>
-              <span className="font-medium text-base">{target}</span>
+              <span className="font-medium text-base">{formatDecimal(optimal)}</span>
             </div>
           </div>
         </div>
   
         {/* Progress Bar */}
         <div>
-          <ProgressBar current={current} target={target} />
+          <ProgressBar current={indicator_value} target={optimal} />
         </div>
   
         {/* Button */}
@@ -77,16 +101,16 @@ import { useRouter } from 'next/navigation';
     return <strong className="font-semibold text-lg leading-none text-center">{text}</strong>
   }
   
-  export function DateCard({ start = "23/10/2024", end = "28/12/2024" }) {
+  export function DateCard({ start_date = "23/10/2024", end_date = "28/12/2024" }) {
     return (
       <div className="flex justify-between h-9 w-full pt-8">
         <div className="flex items-center gap-1">
           <AccessTime className="h-4" sx={{ color: "#4C4F68" }}/>
-          <p className="text-xs font-light">Inicio: {start}</p>
+          <p className="text-xs font-light">Inicio: {start_date}</p>
         </div>
         <div className="flex items-center gap-1">
           <AccessTime className="h-4" sx={{ color: "#4C4F68" }}/>
-          <p className="text-xs font-light">Final: {end}</p>
+          <p className="text-xs font-light">Final: {end_date}</p>
         </div>
       </div>
     )
@@ -105,7 +129,7 @@ import { useRouter } from 'next/navigation';
       <div
         className={`bg-[#085494] text-white rounded-lg min-w-[4rem] min-h-[4rem] flex justify-center items-center`}
       >
-        <strong className="font-semibold text-2xl">{value}</strong>
+        <strong className="font-semibold text-2xl">{value[0]}</strong>
       </div>
     )
   }

@@ -24,6 +24,9 @@ const TrafficChart = ({ colors = [COLORS.chartPrincipal, COLORS.chartSecondary],
       align: "center",
       style: {
         color: COLORS.black, // Color del título en modo claro
+        fontFamily: 'Arial, sans-serif', // Cambia la fuente del título
+        fontSize: '24px', // Cambia el tamaño de la fuente
+        fontWeight: '500', // Cambia el grosor de la fuente
       },
     },
     dataLabels: {

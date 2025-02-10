@@ -4,7 +4,9 @@ import Image from "next/image";
 export default function Home() {
   return (
     <>
-        <SectionTarget></SectionTarget>
+        <SectionTarget content={"/targets/finance/"}
+          title={"Perspectiva de finanzas"}
+        ></SectionTarget>
     </>
   );
 }
