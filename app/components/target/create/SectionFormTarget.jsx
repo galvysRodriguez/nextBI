@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useSaveForm } from "../../hooks/useSaveForm";
+import { OptionAggregation } from "./OptionAggregation";
+import { OptionIndicator } from "./OptionIndicator";
 
 export default function StepForm() {
   const [step, setStep] = useState(1);
@@ -80,10 +82,7 @@ export default function StepForm() {
                 className="w-full p-2 border rounded-lg mb-4"
                 required
               >
-                <option value="">Seleccionar Indicador</option>
-                <option value="1">Ventas</option>
-                <option value="2">Clientes</option>
-                <option value="3">Productividad</option>
+                <OptionIndicator></OptionIndicator>
               </select>
 
               <label className="block mb-2">Agregación</label>
@@ -94,10 +93,7 @@ export default function StepForm() {
                 className="w-full p-2 border rounded-lg mb-4"
                 required
               >
-                <option value="">Seleccionar Agregación</option>
-                <option value="1">Total</option>
-                <option value="2">Promedio</option>
-                <option value="3">Cantidad</option>
+                <OptionAggregation></OptionAggregation>
               </select>
 
               <div className="flex justify-end">
