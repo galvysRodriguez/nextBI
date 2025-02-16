@@ -7,7 +7,7 @@ export default function MainContainer({ children }) {
 
   return (
     <main
-      className={`min-h-screen bg-gray-100 text-[#000] px-8 transition-all duration-300 flex-1 ${
+      className={`min-h-screen bg-gray-100 text-[#000] pt-16 md:pt-0 px-8 transition-all duration-300 flex-1 ${
         expanded ? "md:ml-64 md:w-[calc(100%-16rem)]" : "md:ml-16 md:w-[calc(100%-4rem)]"
       }`}
     >

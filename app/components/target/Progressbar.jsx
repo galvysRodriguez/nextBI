@@ -26,16 +26,16 @@ export const ProgressBar = ({ current, target }) => {
           title={
             <Box>
               <Typography variant="body2">
-                Progreso: {percentage.toFixed(2)}%
+                Progreso: {percentage?.toFixed(2)}%
               </Typography>
               <Typography variant="body2">
-                Monto actual: ${current.toLocaleString()}
+                Monto actual: ${current?.toLocaleString()}
               </Typography>
               <Typography variant="body2">
-                Meta: ${validTarget.toLocaleString()}
+                Meta: ${validTarget?.toLocaleString()}
               </Typography>
               <Typography variant="body2">
-                Falta: ${remaining > 0 ? remaining.toLocaleString() : 0}
+                Falta: ${remaining > 0 ? remaining?.toLocaleString() : 0}
               </Typography>
             </Box>
           }

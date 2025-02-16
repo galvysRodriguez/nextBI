@@ -5,9 +5,13 @@ import { Menu, X } from "lucide-react"
 import { NAV_MENU } from "./NavMenu"
 import Sidebar, { IconUser } from "./Sidebar"
 import { SidebarItem } from "./SidebarItem"
+import { Logo } from "./Logo"
+import { useMenuMobile } from "../context/IsGrid"
+import SidebarMobile from "./SidebarMobile"
+import { SidebarItemMobile } from "./SidebarItemMobile"
 
 export default function AppSidebar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const{menuMobile, changeMenuMobile} = useMenuMobile()
 
   return (
     <>
@@ -15,22 +19,26 @@ export default function AppSidebar() {
       <div className="md:hidden w-full bg-white shadow-md p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
         
         <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => changeMenuMobile()}
           className="p-2 bg-gray-200 rounded"
         >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {menuMobile ? <X size={24} /> : <Menu size={24} />}
         </button>
-        <h1 className="text-lg font-bold">AFTIM</h1>
+        <div className="flex place-items-center gap-2">
+          <Logo></Logo>
+          <strong className="text-xl font-semibold text-[#253664]" >AFTIM</strong>
+        </div>
+        
         <IconUser></IconUser>
       </div>
 
-      {isMenuOpen && (
+      {menuMobile && (
         <div className="fixed h-full bg-white shadow-lg z-50 transform transition-transform duration-300">
-          <Sidebar>
+          <SidebarMobile>
             {NAV_MENU.map((nav) => (
-              <SidebarItem {...nav} key={nav.text} />
+              <SidebarItemMobile {...nav} key={nav.text} />
             ))}
-          </Sidebar>
+          </SidebarMobile>
         </div>
       )}
 
@@ -41,8 +49,8 @@ export default function AppSidebar() {
             ))}
           </Sidebar>
       </div>
-      {isMenuOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={() => setIsMenuOpen(false)} />
+      {menuMobile && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={() => changeMenuMobile()} />
       )}
     </>
   )

@@ -15,12 +15,12 @@ function formatDate(date) {
     throw new Error("Fecha inválida");
   }
 
-  const opciones = { year: "numeric", month: "long", day: "numeric" };
+  const opciones = { year: "numeric", month: "numeric", day: "numeric" };
   return newDate.toLocaleDateString("es-ES", opciones);
 }
 
 function formatDecimal(num) {
-  return num.toFixed(2); // Retorna un string con dos decimales
+  return num?.toFixed(2); // Retorna un string con dos decimales
 }
 
   export function CardTarget({ optimal = 40, 
@@ -34,7 +34,7 @@ function formatDecimal(num) {
                               perspective,
                               id}) {
     return (
-      <div className="rounded-2xl bg-[#ffffff] p-6">
+      <div className="max-w-[500px] rounded-2xl bg-[#ffffff] p-6">
         {/* Header */}
         <div className="flex items-center justify-between gap-3 h-20 w-full">
           <LogoCard value={perspective}  />

@@ -21,7 +21,16 @@ export default function Sidebar({ children }) {
           >
             {expanded ? <ChevronFirst /> : <Menu />}
           </button>
-          <Logo />
+          <div className="flex place-items-center gap-2">
+            <Logo></Logo>
+            <strong
+              className={`text-xl font-semibold text-[#253664] transition-opacity duration-300 ${
+                !expanded ? "hidden opacity-0 invisible" : "opacity-100 visible"
+              }`}
+            >
+              AFTIM
+            </strong>
+          </div>
         </div>
 
         <ul className="flex flex-col md:flex-1 px-3 ">{children}</ul>

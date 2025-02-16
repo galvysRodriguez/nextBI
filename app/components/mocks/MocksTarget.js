@@ -140,3 +140,57 @@ export const mockObjectives = [
     priority: "Media",
   }
 ];
+
+
+export const mocksTarget = {
+  "message": "Targets retrieved",
+  "status": true,
+  "data": [
+    {
+      "id": 3,
+      "title": "Aumento de las compras",
+      "optimal": 50000,
+      "tolerable": 0,
+      "deficient": 0,
+      "indicator_id": 1,
+      "aggregation_id": 1,
+      "start_date": "2024-02-10T02:11:01.552000",
+      "end_date": "2025-02-10T02:11:01.550000",
+      "indicator": "Compras",
+      "aggregation": "Total",
+      "perspective": "Procesos internos",
+      "indicator_value": 41447.51
+    },
+    {
+      "id": 4,
+      "title": "dsfsdfdfs",
+      "optimal": 250,
+      "tolerable": 120,
+      "deficient": 80,
+      "indicator_id": 1,
+      "aggregation_id": 1,
+      "start_date": "2023-02-10T00:00:00",
+      "end_date": "2025-02-27T00:00:00",
+      "indicator": "Compras",
+      "aggregation": "Total",
+      "perspective": "Procesos internos",
+      "indicator_value": 41447.51
+    },
+    {
+      "id": 5,
+      "title": "hdfdfh",
+      "optimal": 2222,
+      "tolerable": 22,
+      "deficient": 12,
+      "indicator_id": 2,
+      "aggregation_id": 1,
+      "start_date": "2025-02-12T00:00:00",
+      "end_date": "2025-02-27T00:00:00",
+      "indicator": "Ventas",
+      "aggregation": "Total",
+      "perspective": "Procesos internos",
+      "indicator_value": 0.00
+    }
+  ],
+  "error": ""
+}

@@ -20,3 +20,11 @@ export const useSearchTarget = create((set) => ({
   search: "",
   changeSearch: (search) => set({ search }),
 }))
+
+export const useMenuMobile = create((set, get) => ({
+  menuMobile: false,
+  changeMenuMobile: () => {
+    set((state) => ({ menuMobile: !state.menuMobile }));
+    useIsExpanded.getState().changeExpanded();
+  }
+}));
