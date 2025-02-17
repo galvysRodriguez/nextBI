@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useSaveForm } from "../../hooks/useSaveForm";
 import { OptionAggregation } from "./OptionAggregation";
 import { OptionIndicator } from "./OptionIndicator";
+import { OptionFormula } from "./OptionFormula";
 
 export default function StepForm() {
   const [step, setStep] = useState(1);
@@ -11,8 +12,8 @@ export default function StepForm() {
 
   const [formData, setFormData] = useState({
     title: "",
-    indicator_id: "",
-    aggregation_id: "",
+    formula_id: "",
+    perspective_id: 1,
     start_date: today,
     end_date: "",
     optimal: "",
@@ -74,26 +75,15 @@ export default function StepForm() {
                 required
               />
 
-              <label className="block mb-2">Indicadores</label>
+              <label className="block mb-2">Formulas</label>
               <select
-                name="indicator_id"
-                value={formData.indicator_id}
+                name="formula_id"
+                value={formData.formula_id}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg mb-4"
                 required
               >
-                <OptionIndicator></OptionIndicator>
-              </select>
-
-              <label className="block mb-2">Agregación</label>
-              <select
-                name="aggregation_id"
-                value={formData.aggregation_id}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-lg mb-4"
-                required
-              >
-                <OptionAggregation></OptionAggregation>
+                <OptionFormula></OptionFormula>
               </select>
 
               <div className="flex justify-end">

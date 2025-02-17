@@ -1,5 +1,6 @@
 "use client";
 
+import { useSaveFormula } from "app/app/components/hooks/useFormula";
 import { ButtonCreate } from "app/app/components/target/ButtonCreate";
 import { useState } from "react";
 import { addStyles, EditableMathField } from "react-mathquill";
@@ -7,9 +8,13 @@ import { addStyles, EditableMathField } from "react-mathquill";
 addStyles();
 
 export default function FormulaEditor() {
-  const [formula, setFormula] = useState("");
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    formula: "",
+  });
+  const [errorText, setErrorText] = useState("");
   const [seccionesAbiertas, setSeccionesAbiertas] = useState({});
+  const { mutate, isLoading, isError, error, isSuccess } = useSaveFormula();
 
   // Funciones disponibles en inglés
   const funciones = [
@@ -19,6 +24,14 @@ export default function FormulaEditor() {
     { nombre: "Máximo", valor: "MAX" },
     { nombre: "Mínimo", valor: "MIN" },
   ];
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFormulaChange = (mathField) => {
+    setFormData({ ...formData, formula: mathField.latex() });
+  };
 
   // Variables agrupadas por perspectiva
   const variablesPorPerspectiva = {
@@ -41,30 +54,37 @@ export default function FormulaEditor() {
 
   // Agregar elementos a la fórmula
   const agregarElemento = (elemento) => {
-    setFormula((prev) => prev + elemento);
+    setFormData((prev) => ({
+      ...prev,
+      formula: prev.formula + elemento,
+    }));
   };
 
   // Validar la fórmula
-  const validarFormula = () => {
+  const validarFormula = (e) => {
     try {
-      if (!formula.trim()) {
+      e.preventDefault();
+      if (!formData.formula.trim()) {
         throw new Error("La fórmula está vacía.");
       }
 
-      const abrirParentesis = (formula.match(/\(/g) || []).length;
-      const cerrarParentesis = (formula.match(/\)/g) || []).length;
+      const abrirParentesis = (formData.formula.match(/\(/g) || []).length;
+      const cerrarParentesis = (formData.formula.match(/\)/g) || []).length;
       if (abrirParentesis !== cerrarParentesis) {
         throw new Error("Los paréntesis no están balanceados.");
       }
 
-      if (/[\+\-\*\/]$/.test(formula)) {
+      if (/[\+\-\*\/]$/.test(formData.formula)) {
         throw new Error("No puede haber operadores al final de la fórmula.");
       }
 
-      alert(`Fórmula creada con éxito: ${formula}`);
-      setError("");
+      
+      alert(`Fórmula creada con éxito: ${formData.formula} y ${formData.title}`);
+      mutate(formData);
+      alert('enviado')
+      setErrorText("");
     } catch (err) {
-      setError(err.message);
+      setErrorText(err.message);
     }
   };
 
@@ -76,15 +96,29 @@ export default function FormulaEditor() {
         </h3>
 
         {/* Editor visual */}
-        <div className="border rounded-md p-2 bg-gray-100">
-          <EditableMathField
-            latex={formula}
-            onChange={(mathField) => setFormula(mathField.latex())}
-            className="w-full min-h-[60px] text-lg"
-          />
-        </div>
+        <form onSubmit={validarFormula}>
+          <label className="block mb-2">Titulo</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  placeholder="Título de la formula"
+                  className="w-full p-2 border rounded-lg mb-4"
+                  required
+            />
+          
+          <div className="border rounded-md p-2 bg-gray-100">
+            <EditableMathField
+              latex={formData.formula}
+              onChange={handleFormulaChange}
+              className="w-full min-h-[60px] text-lg"
+            />
+          </div>
+        </form>
+        
 
-        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {errorText && <p className="text-red-500 mt-2">{errorText}</p>}
 
         {/* Secciones con acordeón */}
         {Object.entries(variablesPorPerspectiva).map(([perspectiva, vars]) => (

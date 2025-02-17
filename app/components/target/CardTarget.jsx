@@ -47,7 +47,7 @@ function formatDecimal(num) {
   
         {/* Total Sales */}
         <div className="pt-8 text-center">
-          <strong className="font-medium text-lg">{aggregation} de {indicator}</strong>
+          <strong className="font-medium text-lg">{indicator}</strong>
           <div className="flex flex-col gap-4 py-6">
             <div className="flex justify-between w-full">
               <AccountBalanceWallet sx={{ color: "#4C4F68" }}/>

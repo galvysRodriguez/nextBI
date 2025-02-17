@@ -4,16 +4,38 @@ import { MaterialReactTable } from "material-react-table";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 
 import { ExportButtons } from "./ExportButtons";
+import { Chart } from "./Chart";
 
 const Table = ({ rows, initialColumns }) => {
   const [data, setData] = useState([]);
+
+  const top10Rows = () => {
+    return rows
+      .sort((a, b) => b.amount - a.amount) // Ordenar por monto descendente
+      .slice(0, 10) // Tomar las primeras 10 filas
+      .map((row) => ({
+        ...row,
+        amount: parseFloat(row.amount.toFixed(2)), // Redondear valores del gráfico
+      }));
+  };
+  
+  // Llamar a la función para obtener los datos
+  const top10Data = top10Rows();
+  
+  // Preparar los datos para el gráfico
+  const chartData = top10Data.map((row) => row.amount);
+  const chartCategories = top10Data.map((row) => row.invoice);
+  const values = [{
+    name: 'valor', 
+    data: chartData
+  }];
+  
 
   useEffect(() => {
     setData(
       rows.map((item) => ({
         ...item,
         amount: item.quantity * item.price || 0, // Calcular el monto total
-        date: item.date ? new Date(item.date) : new Date(),
       }))
     );
   }, []);
@@ -51,7 +73,8 @@ const Table = ({ rows, initialColumns }) => {
   });
 
   return (
-    <MaterialReactTable
+    <>
+      <MaterialReactTable
       columns={columnsWithAggregation}
       data={data.length ? data : []}
       enableRowSelection
@@ -74,6 +97,9 @@ const Table = ({ rows, initialColumns }) => {
         <ExportButtons table={table} initialColumns={initialColumns} />
       )}
     />
+     
+    </>
+    
   );
 };
 
