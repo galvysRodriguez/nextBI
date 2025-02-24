@@ -8,6 +8,19 @@ import { handleExport } from "./export";
 export const ExportButtons = ({ table, initialColumns }) => {
   const [exportFormat, setExportFormat] = useState("");
 
+  const groupedRows = table.getGroupedRowModel().rows; 
+  const selectedRows = table.getSelectedRowModel().rows;
+  const prePaginatedRows = table.getPrePaginationRowModel().rows;
+
+
+  const selectedGroupedRows = groupedRows.filter(row => 
+    selectedRows.some(selected => selected.id === row.id)
+  );
+
+  const prePaginatedGroupedRows = prePaginatedRows.filter(row => 
+    groupedRows.some(group => group.id === row.id)
+  );
+
   return (
     <Box sx={{ display: "flex", gap: "16px", padding: "8px", flexWrap: "wrap" }}>
       {/* Selector de formato de exportación */}
@@ -27,7 +40,7 @@ export const ExportButtons = ({ table, initialColumns }) => {
       <Button
         disabled={!table || table.getPrePaginationRowModel().rows.length === 0 || !exportFormat}
         onClick={() => handleExport({
-          rows: table.getPrePaginationRowModel().rows,
+          rows: prePaginatedGroupedRows,
           format: exportFormat,
           initialColumns,
         })}
@@ -40,7 +53,7 @@ export const ExportButtons = ({ table, initialColumns }) => {
       <Button
         disabled={!table || table.getRowModel().rows.length === 0 || !exportFormat}
         onClick={() => handleExport({
-          rows: table.getRowModel().rows,
+          rows: groupedRows,
           format: exportFormat,
           initialColumns,
         })}
@@ -53,7 +66,7 @@ export const ExportButtons = ({ table, initialColumns }) => {
       <Button
         disabled={!table || (!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()) || !exportFormat}
         onClick={() => handleExport({
-          rows: table.getSelectedRowModel().rows,
+          rows: selectedGroupedRows,
           format: exportFormat,
           initialColumns,
         })}

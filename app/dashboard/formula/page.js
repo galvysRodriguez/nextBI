@@ -1,5 +1,7 @@
 "use client";
 
+import { useDataForm, useSectionOpen } from "app/app/components/context/IsGrid";
+import { ProcessPerspective } from "app/app/components/formula/ProcessPerspective";
 import { useSaveFormula } from "app/app/components/hooks/useFormula";
 import { ButtonCreate } from "app/app/components/target/ButtonCreate";
 import { useState } from "react";
@@ -8,12 +10,9 @@ import { addStyles, EditableMathField } from "react-mathquill";
 addStyles();
 
 export default function FormulaEditor() {
-  const [formData, setFormData] = useState({
-    title: "",
-    formula: "",
-  });
+  const {formData, handleChange, handleFormulaChange, addElement} = useDataForm()
+  const{sectionOpen, toggleSection} = useSectionOpen()
   const [errorText, setErrorText] = useState("");
-  const [seccionesAbiertas, setSeccionesAbiertas] = useState({});
   const { mutate, isLoading, isError, error, isSuccess } = useSaveFormula();
 
   // Funciones disponibles en inglés
@@ -25,40 +24,7 @@ export default function FormulaEditor() {
     { nombre: "Mínimo", valor: "MIN" },
   ];
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleFormulaChange = (mathField) => {
-    setFormData({ ...formData, formula: mathField.latex() });
-  };
-
-  // Variables agrupadas por perspectiva
-  const variablesPorPerspectiva = {
-    "Procesos Internos": ["Eficiencia", "Tiempo de producción"],
-    Innovación: ["Nuevos productos", "Investigación y desarrollo"],
-    Finanzas: ["Ingresos", "Costos", "Utilidad"],
-    Clientes: ["Satisfacción", "Retención", "Quejas"],
-  };
-
-  // Operadores permitidos
   const operadores = ["+", "-", "*", "/"];
-
-  // Función para alternar la visibilidad de una sección
-  const toggleSeccion = (seccion) => {
-    setSeccionesAbiertas((prev) => ({
-      ...prev,
-      [seccion]: !prev[seccion],
-    }));
-  };
-
-  // Agregar elementos a la fórmula
-  const agregarElemento = (elemento) => {
-    setFormData((prev) => ({
-      ...prev,
-      formula: prev.formula + elemento,
-    }));
-  };
 
   // Validar la fórmula
   const validarFormula = (e) => {
@@ -120,44 +86,20 @@ export default function FormulaEditor() {
 
         {errorText && <p className="text-red-500 mt-2">{errorText}</p>}
 
-        {/* Secciones con acordeón */}
-        {Object.entries(variablesPorPerspectiva).map(([perspectiva, vars]) => (
-          <div key={perspectiva} className="mt-4">
-            <h4
-              className="text-md font-semibold mb-2 cursor-pointer bg-gray-200 p-2 rounded-md"
-              onClick={() => toggleSeccion(perspectiva)}
-            >
-              {perspectiva} {seccionesAbiertas[perspectiva] ? "▲" : "▼"}
-            </h4>
-            {seccionesAbiertas[perspectiva] && (
-              <div className="flex flex-wrap gap-2 p-2">
-                {vars.map((variable) => (
-                  <button
-                    key={variable}
-                    onClick={() => agregarElemento(variable)}
-                    className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                  >
-                    {variable}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-
+        <ProcessPerspective></ProcessPerspective>
         <div className="mt-4">
           <h4
             className="text-md font-semibold mb-2 cursor-pointer bg-gray-200 p-2 rounded-md"
-            onClick={() => toggleSeccion("Funciones")}
+            onClick={() => toggleSection("Funciones")}
           >
-            Funciones {seccionesAbiertas["Funciones"] ? "▲" : "▼"}
+            Funciones {sectionOpen["Funciones"] ? "▲" : "▼"}
           </h4>
-          {seccionesAbiertas["Funciones"] && (
+          {sectionOpen["Funciones"] && (
             <div className="flex flex-wrap gap-2 p-2">
               {funciones.map((funcion) => (
                 <button
                   key={funcion.nombre}
-                  onClick={() => agregarElemento(`${funcion.valor}(`)}
+                  onClick={() => addElement(`${funcion.valor}(`)}
                   className="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                 >
                   {funcion.nombre}()
@@ -170,16 +112,16 @@ export default function FormulaEditor() {
         <div className="mt-4">
           <h4
             className="text-md font-semibold mb-2 cursor-pointer bg-gray-200 p-2 rounded-md"
-            onClick={() => toggleSeccion("Operadores")}
+            onClick={() => toggleSection("Operadores")}
           >
-            Operadores {seccionesAbiertas["Operadores"] ? "▲" : "▼"}
+            Operadores {sectionOpen["Operadores"] ? "▲" : "▼"}
           </h4>
-          {seccionesAbiertas["Operadores"] && (
+          {sectionOpen["Operadores"] && (
             <div className="flex flex-wrap gap-2 p-2">
               {operadores.map((op) => (
                 <button
                   key={op}
-                  onClick={() => agregarElemento(` ${op} `)}
+                  onClick={() => addElement(` ${op} `)}
                   className="px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
                 >
                   {op}
@@ -192,16 +134,16 @@ export default function FormulaEditor() {
         <div className="mt-4">
           <h4
             className="text-md font-semibold mb-2 cursor-pointer bg-gray-200 p-2 rounded-md"
-            onClick={() => toggleSeccion("Números")}
+            onClick={() => toggleSection("Números")}
           >
-            Números {seccionesAbiertas["Números"] ? "▲" : "▼"}
+            Números {sectionOpen["Números"] ? "▲" : "▼"}
           </h4>
-          {seccionesAbiertas["Números"] && (
+          {sectionOpen["Números"] && (
             <div className="grid grid-cols-3 gap-2 p-2">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
                 <button
                   key={num}
-                  onClick={() => agregarElemento(num.toString())}
+                  onClick={() => addElement(num.toString())}
                   className="px-3 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
                 >
                   {num}

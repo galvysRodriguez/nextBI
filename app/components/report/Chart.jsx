@@ -54,7 +54,7 @@ export function Chart({series, categories}) {
       </div>
       <div>
         {/* Mostrar el gráfico seleccionado */}
-      <div style={{height:'800px'}}>
+      <div style={{height:'700px'}}>
         {React.cloneElement(chartComponents[selectedChart], {
           series: series,
           categories:categories,

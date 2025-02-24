@@ -10,12 +10,16 @@ import { Chart } from "../Chart";
 export default function TableContainer() {
   // Obtén las filas y columnas desde donde sea necesario
   const rows = MocksDataShopping; // Puedes reemplazar esto con datos dinámicos
-const columns = initialColumnsShopping;
+  const columns = initialColumnsShopping;
+  const{getGroupedColumnValues, groupRowsWithAmount} = useTableContext()
+
+  const finalRow = Object.values(groupRowsWithAmount(rows))
+  console.log(groupRowsWithAmount(rows))
 
 // Función para obtener las 10 filas con mayor monto
 const top10Rows = () => {
-  return rows
-    .sort((a, b) => b.amount - a.amount) // Ordenar por monto descendente
+  return finalRow
+    .sort((a, b) => b.totalAmount - a.totalAmount) // Ordenar por monto descendente
     .slice(0, 10) // Tomar las primeras 10 filas
     .map((row) => ({
       ...row,
@@ -27,8 +31,9 @@ const top10Rows = () => {
 const top10Data = top10Rows();
 
 // Preparar los datos para el gráfico
-const chartData = top10Data.map((row) => row.amount);
-const chartCategories = top10Data.map((row) => row.invoice);
+const chartData = top10Data.map((row) => row.totalAmount);
+console.log(getGroupedColumnValues(top10Data))
+const chartCategories = getGroupedColumnValues(top10Data)
 const values = [{
   name: 'valor', 
   data: chartData

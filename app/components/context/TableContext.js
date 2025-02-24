@@ -3,42 +3,71 @@
 import { create } from "zustand";
 
 export const useTableContext = create((set, get) => ({
-  columns: [],
-  rows: [],
+ 
   groupedColumns: [],
-
-  setColumns: (columns) => set({ columns }),
-  setRows: (rows) => set({ rows }),
-
-  // Función para obtener filas filtradas o todas las filas
-  getFilteredRows: (filterFn) => {
-    const rows = get().rows;
-    return filterFn ? rows.filter(filterFn) : rows;
-  },
-
-  // Función para obtener solo las filas seleccionadas
-  getSelectedRows: (selectedRowIds) => {
-    return get().rows.filter((row) => selectedRowIds.includes(row.id));
-  },
-
-  // Función para actualizar un dato específico en la tabla
-  updateRow: (id, newrows) => {
-    set((state) => ({
-      rows: state.rows.map((row) =>
-        row.id === id ? { ...row, ...newrows } : row
-      ),
-    }));
-  },
-
-  // Función para actualizar múltiples filas
-  updateMultipleRows: (updates) => {
-    set((state) => ({
-      rows: state.rows.map((row) =>
-        updates[row.id] ? { ...row, ...updates[row.id] } : row
-      ),
-    }));
-  },
-
-  // Manejo de agrupaciones dinámicas
+  table:[],
+  setTable: (table) => set({table}),
   setGroupedColumns: (columns) => set({ groupedColumns: columns }),
+
+  groupRows: (rows) => {
+    const { groupedColumns } = get();
+    if (!groupedColumns.length) return rows;
+
+    return rows.reduce((acc, row) => {
+      const key = groupedColumns.map((col) => row[col]).join(" - ");
+      if (!acc[key]) {
+        acc[key] = { ...row, groupedBy: key, count: 1 };
+      } else {
+        acc[key].count += 1;
+        acc[key].amount += row.amount; // Sumar montos si se agrupa
+      }
+      return acc;
+    }, {});
+  },
+
+  // Método para transformar columnas según la agrupación
+  groupColumns: (columns) => {
+    const { groupedColumns } = get();
+    return columns.map((col) => ({
+      ...col,
+      isGrouped: groupedColumns.includes(col.accessorKey),
+    }));
+  },
+
+  getGroupedColumnValues: (rows) => {
+    const { groupedColumns } = get();
+    
+    if (!groupedColumns.length) return rows.map((row) => row.invoice); 
+    return rows.map((row) => groupedColumns.map((col) => row[col]).join(" - "))
+  },
+
+  groupRowsWithAmount: (rows) => {
+    const { groupedColumns } = get();
+  
+    // Si no hay columnas agrupadas, devolver las filas con un formato consistente
+    if (!groupedColumns.length) {
+      return rows.map((row) => ({
+        ...row,
+        totalAmount: row.amount, 
+      }));
+    }
+    return rows.reduce((acc, row) => {
+      const groupKey = groupedColumns.map((col) => row[col]).join(" - ");
+  
+      if (!acc[groupKey]) {
+        acc[groupKey] = {
+          ...row,
+          groupedBy: groupKey,
+          count: row.quantity,
+          totalAmount: row.amount,
+        };
+      } else {
+        acc[groupKey].count += row.quantity;
+        acc[groupKey].totalAmount += row.amount;
+      }
+  
+      return acc;
+    }, {});
+  },
+
 }));

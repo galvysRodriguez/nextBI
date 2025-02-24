@@ -28,3 +28,71 @@ export const useMenuMobile = create((set, get) => ({
     useIsExpanded.getState().changeExpanded();
   }
 }));
+
+export const useSectionOpen = create((set) =>({
+  sectionOpen: {},
+  toggleSection: (section) => {
+    set((state) => ({
+      sectionOpen: {
+        ...state.sectionOpen, 
+        [section]: !state.sectionOpen[section],
+      },
+    }));
+  },
+}))
+
+export const useDataForm = create((set) => ({
+  formData: {
+    title: "",
+    formula: "",
+  },
+  handleChange: (e) => {
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        [e.target.name]: e.target.value,
+      },
+    }));
+  },
+  handleFormulaChange: (mathField) => {
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        formula: mathField.latex(),
+      },
+    }));
+  },
+  addElement: (element) => {
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        formula: state.formData.formula + element,
+      },
+    }));
+  },
+}));
+
+export const useCardStore = create((set, get) => ({
+  selectedCard: null, 
+
+  handleSelect: (cardId) => {
+    set((state) => {
+      if (state.selectedCard === cardId) {
+        return { selectedCard: null }
+      }
+      return { selectedCard: cardId }
+    })
+  },
+
+  clearSelection: () => {
+    set({ selectedCard: null });
+  },
+
+  isSelected: (cardId) => {
+    return get().selectedCard === cardId
+  },
+
+  isNullSelected: () => {
+    return get().selectedCard == null
+  },
+}))

@@ -1,12 +1,9 @@
+import StepForm from "app/app/components/target/create/SectionFormTarget";
 
-const ProductReviews = async ({ params }) => {
-  const id = (await params).id;
-
+export default function Home() {
   return (
     <>
-      <p>{ id }</p>
+        <StepForm isCreate={false} initialStep={1}></StepForm>
     </>
   );
-};
-
-export default ProductReviews;
+}

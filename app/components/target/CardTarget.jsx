@@ -1,3 +1,4 @@
+"use client"
 import {
     AccountBalanceWallet,
     DoneAll,
@@ -7,6 +8,8 @@ import {
 import { ProgressBar } from "./Progressbar"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
+import { useCardStore } from "../context/IsGrid";
+import { useEffect } from "react";
 
 function formatDate(date) {
   const newDate = new Date(date);
@@ -33,45 +36,72 @@ function formatDecimal(num) {
                               aggregation,
                               perspective,
                               id}) {
-    return (
-      <div className="max-w-[500px] rounded-2xl bg-[#ffffff] p-6">
-        {/* Header */}
-        <div className="flex items-center justify-between gap-3 h-20 w-full">
-          <LogoCard value={perspective}  />
-          <TitleCard text={title} />
-          <StatusCard />
-        </div>
-  
-        {/* Date */}
-        <DateCard start_date={formatDate(start_date)} end_date={formatDate(end_date)}/>
-  
-        {/* Total Sales */}
-        <div className="pt-8 text-center">
-          <strong className="font-medium text-lg">{indicator}</strong>
-          <div className="flex flex-col gap-4 py-6">
-            <div className="flex justify-between w-full">
-              <AccountBalanceWallet sx={{ color: "#4C4F68" }}/>
-              <p className="font-normal text-sm">Resultado obtenido</p>
-              <span className="font-medium text-base">{formatDecimal(indicator_value)}</span>
-            </div>
-            <div className="flex justify-between w-full">
-              <TaskAlt sx={{ color: "#4C4F68" }}/>
-              <p className="font-normal text-sm">Resultado esperado</p>
-              <span className="font-medium text-base">{formatDecimal(optimal)}</span>
-            </div>
+    // Obtener el estado y el método handleSelect del store
+  const { selectedCard, handleSelect } = useCardStore();
+
+  // Verificar si esta tarjeta está seleccionada
+  const isSelected = selectedCard === id;
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Verificar si el clic ocurrió fuera de cualquier tarjeta
+      if (!event.target.closest('.card-target')) {
+        useCardStore.getState().clearSelection(); // Deseleccionar la tarjeta
+      }
+    };
+
+    // Agregar el event listener al montar el componente
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Limpiar el event listener al desmontar el componente
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  return (
+    <div
+      className={`max-w-[500px] rounded-2xl p-6 cursor-pointer ${
+        isSelected ? 'bg-blue-50 border-2 border-blue-500' : 'bg-white border border-gray-200'
+      }`}
+      onClick={() => handleSelect(id)} // Manejar la selección al hacer clic
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between gap-3 h-20 w-full">
+        <LogoCard value={perspective} />
+        <TitleCard text={title} />
+        <StatusCard />
+      </div>
+
+      {/* Date */}
+      <DateCard start_date={formatDate(start_date)} end_date={formatDate(end_date)} />
+
+      {/* Total Sales */}
+      <div className="pt-8 text-center">
+        <strong className="font-medium text-lg">{indicator}</strong>
+        <div className="flex flex-col gap-4 py-6">
+          <div className="flex justify-between w-full">
+            <AccountBalanceWallet sx={{ color: '#4C4F68' }} />
+            <p className="font-normal text-sm">Resultado obtenido</p>
+            <span className="font-medium text-base">{formatDecimal(indicator_value)}</span>
+          </div>
+          <div className="flex justify-between w-full">
+            <TaskAlt sx={{ color: '#4C4F68' }} />
+            <p className="font-normal text-sm">Resultado esperado</p>
+            <span className="font-medium text-base">{formatDecimal(optimal)}</span>
           </div>
         </div>
-  
-        {/* Progress Bar */}
-        <div>
-          <ProgressBar current={indicator_value} target={optimal} />
-        </div>
-  
-        {/* Button */}
-        <ContainerButton id={id}/>
       </div>
-    )
-  }
+
+      {/* Progress Bar */}
+      <div>
+        <ProgressBar current={indicator_value} target={optimal} />
+      </div>
+
+      {/* Button */}
+      <ContainerButton id={id} />
+    </div>
+  );
+}
   
   export function ContainerButton({id}) {
     

@@ -1,21 +1,24 @@
 import { create } from "zustand";
-import { FormInfoTarget } from "../target/create/FormInfoTarget";
-import { FormDateTarget } from "../target/create/FormDateTarget";
-import { FormResultTarget } from "../target/create/FormResultTarget";
+
 
 export const steps = ["Información general", "Periodo de tiempo", "Resultados"];
+
+const today = new Date().toISOString().split("T")[0];
 
 export const useTargetForm = create((set, get) => ({
   activeStep: 0,
   formData: {
     title: "",
-    indicator: "",
-    agregation: "",
-    period: "",
-    target: "",
-    optimalValue: "",
-    tolerableValue: "",
-    poorValue: "",
+    formula_id: "",
+    perspective_id: 1,
+    start_date: today,
+    end_date: "",
+    optimal: "",
+    tolerable: "",
+    deficient: "",
+    optimal_percentage: "",
+    tolerable_percentage: "",
+    deficient_percentage: "",
   },
   extraData: {
     optimalPercentage: "",
@@ -31,25 +34,23 @@ export const useTargetForm = create((set, get) => ({
     set((state) => ({
       extraData: { ...state.extraData, [field]: value },
     })),
-  handleNext: () =>
+  nextStep: () =>
     set((state) => ({
       activeStep: Math.min(state.activeStep + 1, steps.length - 1),
     })),
-  handleBack: () =>
+  setStep: (step) =>
+      set((state) => ({
+        activeStep: step,
+      })),
+  prevStep: () =>
     set((state) => ({
       activeStep: Math.max(state.activeStep - 1, 0),
     })),
-  renderView: () => {
-    const { activeStep } = get();
-    switch (activeStep) {
-      case 0:
-        return <FormInfoTarget />;
-      case 1:
-        return <FormDateTarget />;
-      case 2:
-        return <FormResultTarget />;
-      default:
-        return <div>Vista no encontrada</div>;
-    }
-  },
+  handleChange: (e) => {
+      const { name, value } = e.target;
+      set((state) => ({
+        formData: { ...state.formData, [name]: value }, // Actualizar el campo específico
+      }));
+    },
+ 
 }));

@@ -1,41 +1,25 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSaveForm } from "../../hooks/useSaveForm";
 import { OptionAggregation } from "./OptionAggregation";
 import { OptionIndicator } from "./OptionIndicator";
 import { OptionFormula } from "./OptionFormula";
+import { useTargetForm } from "../../context/FormTarget";
 
-export default function StepForm() {
-  const [step, setStep] = useState(1);
-  const today = new Date().toISOString().split("T")[0];
+export default function StepForm({isCreate, initialStep}) {
   const { mutate, isLoading, isError, error, isSuccess } = useSaveForm();
-
-  const [formData, setFormData] = useState({
-    title: "",
-    formula_id: "",
-    perspective_id: 1,
-    start_date: today,
-    end_date: "",
-    optimal: "",
-    tolerable: "",
-    deficient: "",
-    optimal_percentage: "",
-    tolerable_percentage: "",
-    deficient_percentage: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
+  const {activeStep, formData, setStep} = useTargetForm()
+  
+  useEffect(() => {
+    setStep(initialStep)
+  }, [initialStep]);
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(formData);
     alert("Formulario enviado con éxito 🎉");
     console.log(formData);
-  };
+  }
 
   return (
     <>
@@ -44,14 +28,14 @@ export default function StepForm() {
       </h1>
       <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl h-[460px] overflow-y-auto">
         <div className="flex items-center justify-between mb-6 relative">
-          {[1, 2, 3].map((s, index) => (
+          {[1,2,3].map((s, index) => (
             <div key={index} className="relative flex items-center">
               {index > 0 && (
                 <div className="absolute w-full h-1 bg-gray-300 top-1/2 -translate-y-1/2 left-0 right-0 z-0"></div>
               )}
               <div
                 className={`relative z-10 w-8 h-8 flex items-center justify-center rounded-full text-white font-bold ${
-                  step === index + 1 ? "bg-blue-500" : "bg-gray-300"
+                  activeStep === index ? "bg-blue-500" : "bg-gray-300"
                 }`}
               >
                 {s}
@@ -61,8 +45,20 @@ export default function StepForm() {
         </div>
 
         <form onSubmit={handleSubmit}>
-          {step === 1 && (
-            <div>
+          {activeStep === 0 && (<SectionFormInfoTarget></SectionFormInfoTarget>)}
+          {activeStep === 1 && (<SectionFormDateTarget isCreate={isCreate}></SectionFormDateTarget>)}
+          {activeStep === 2 && (<SectionFormOptimalTarget></SectionFormOptimalTarget>)}
+        </form>
+      </div>
+    </>
+  );
+}
+
+
+export function SectionFormInfoTarget(){
+  const {nextStep, setFormData, formData, handleChange} = useTargetForm()
+  return(
+    <div>
               <h2 className="text-xl text-center font-semibold mb-4">Definir Objetivo</h2>
               <label className="block mb-2">Título</label>
               <input
@@ -92,10 +88,13 @@ export default function StepForm() {
                 </button>
               </div>
             </div>
-          )}
+  )
+}
 
-          {step === 2 && (
-            <div>
+export function SectionFormDateTarget({isCreate}){
+  const {prevStep, nextStep, setFormData, formData, handleChange} = useTargetForm()
+  return (
+    <div>
               <h2 className="text-xl text-center font-semibold mb-4">Seleccionar Fechas</h2>
               <label className="block mb-2">Fecha de Inicio (Automática)</label>
               <input
@@ -117,18 +116,24 @@ export default function StepForm() {
               />
 
               <div className="flex justify-between pt-16">
-                <button type="button" onClick={prevStep} className="bg-gray-400 text-white px-4 py-2 rounded-lg">
-                  Anterior
-                </button>
+                {isCreate && (
+                    <button type="button" onClick={prevStep} className="bg-gray-400 text-white px-4 py-2 rounded-lg">
+                    Anterior
+                  </button>
+                )}
+                
                 <button type="button" onClick={nextStep} className="bg-[#085494] text-white px-4 py-2 rounded-lg">
                   Siguiente
                 </button>
               </div>
             </div>
-          )}
+  )
+}
 
-          {step === 3 && (
-            <div>
+export function SectionFormOptimalTarget(){
+  const {prevStep, setFormData, formData, handleChange} = useTargetForm()
+  return (
+    <div>
               <h2 className="text-xl text-center font-semibold mb-4">Asignación de Valores</h2>
               <table className="w-full border-collapse border border-gray-300">
                 <tbody>
@@ -169,9 +174,5 @@ export default function StepForm() {
                 </button>
               </div>
             </div>
-          )}
-        </form>
-      </div>
-    </>
-  );
+  )
 }
