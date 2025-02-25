@@ -4,14 +4,13 @@ import { useEffect, useState, Suspense, lazy } from "react";
 import { Box } from "@mui/material";
 import { KeyboardDoubleArrowRight } from "@mui/icons-material";
 import { LogoCard } from "../CardTarget";
+import { useTargetId } from "../../hooks/useTargetId";
 
-// Importaciones diferidas con React.lazy
 const GaugeChart = lazy(() => import("../../chart/echart/Gauge"));
 const TrafficChart = lazy(() => import("../../chart/echart/TrafficChart"));
 
-// Función para obtener los datos del objetivo por ID (simulación de API)
+
 async function fetchTargetById(id) {
-    // Simulación de datos obtenidos de una API o base de datos
     const data = [
         { id: "1", title: "Aumentar ventas 15%", perspective: "Finanzas", description: "Total de ventas", amount: 300, expected: 800, estimated: 700, gauge: 40, start: "23/10/2024", end: "28/12/2024", remaining: 5, duration: 5 },
         { id: "2", title: "Reducir costos 10%", perspective: "Operaciones", description: "Costos operativos", amount: 500, expected: 900, estimated: 750, gauge: 60, start: "10/09/2024", end: "20/11/2024", remaining: 15, duration: 10 }
@@ -20,9 +19,11 @@ async function fetchTargetById(id) {
     return data.find(target => target.id === id) || null;
 }
 
-// Página principal que renderiza los datos del objetivo
 export default function TargetDetailPage({ id }) {
     const [targetData, setTargetData] = useState(null);
+    const {data:target} = useTargetId(id)
+    console.log(id)
+    console.log(target)
 
     useEffect(() => {
         if (id) {

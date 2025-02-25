@@ -49,8 +49,8 @@ export const useTargetForm = create((set, get) => ({
   handleChange: (e) => {
       const { name, value } = e.target;
       set((state) => ({
-        formData: { ...state.formData, [name]: value }, // Actualizar el campo específico
+        formData: { ...state.formData, [name]: value }, 
       }));
     },
- 
+  setFullFormData: (newData) => set({ formData: newData }),
 }));

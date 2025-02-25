@@ -6,8 +6,10 @@ export const useTableContext = create((set, get) => ({
  
   groupedColumns: [],
   table:[],
+  sorting:[],
   setTable: (table) => set({table}),
   setGroupedColumns: (columns) => set({ groupedColumns: columns }),
+  setSorting: (sorting) => set({ sorting }),
 
   groupRows: (rows) => {
     const { groupedColumns } = get();

@@ -11,19 +11,32 @@ export const ExportButtons = ({ table, initialColumns }) => {
   const groupedRows = table.getGroupedRowModel().rows; 
   const selectedRows = table.getSelectedRowModel().rows;
   const prePaginatedRows = table.getPrePaginationRowModel().rows;
+  const sortingState = table.getState().sorting;
 
-
-  const selectedGroupedRows = groupedRows.filter(row => 
+  const selectedGroupedRows = groupedRows.filter(row =>
     selectedRows.some(selected => selected.id === row.id)
   );
-
-  const prePaginatedGroupedRows = prePaginatedRows.filter(row => 
+  
+  const prePaginatedGroupedRows = prePaginatedRows.filter(row =>
     groupedRows.some(group => group.id === row.id)
   );
+  
+  const sortedGroupedRows = table.getSortedRowModel().rows.filter(row =>
+    groupedRows.some(group => group.id === row.id)
+  );
+  
+  const sortedSelectedGroupedRows = table.getSortedRowModel().rows.filter(row =>
+    selectedRows.some(selected => selected.id === row.id)
+  );
+  
+  const sortedPrePaginatedGroupedRows = table.getSortedRowModel().rows.filter(row =>
+    prePaginatedRows.some(prePaginated => prePaginated.id === row.id)
+  );
+
+
 
   return (
     <Box sx={{ display: "flex", gap: "16px", padding: "8px", flexWrap: "wrap" }}>
-      {/* Selector de formato de exportación */}
       <Select
         value={exportFormat}
         onChange={(e) => setExportFormat(e.target.value)}
@@ -36,39 +49,37 @@ export const ExportButtons = ({ table, initialColumns }) => {
         <MenuItem value="pdf">PDF</MenuItem>
       </Select>
 
-      {/* Botón para exportar todas las filas */}
       <Button
         disabled={!table || table.getPrePaginationRowModel().rows.length === 0 || !exportFormat}
         onClick={() => handleExport({
-          rows: prePaginatedGroupedRows,
+          rows: sortedPrePaginatedGroupedRows,
           format: exportFormat,
           initialColumns,
+          groupByColumn: table.getState().grouping
         })}
         startIcon={<FileDownloadIcon />}
       >
         Exportar Todas
       </Button>
-
-      {/* Botón para exportar la página actual */}
       <Button
         disabled={!table || table.getRowModel().rows.length === 0 || !exportFormat}
         onClick={() => handleExport({
-          rows: groupedRows,
+          rows: sortedGroupedRows,
           format: exportFormat,
           initialColumns,
+          groupByColumn: table.getState().grouping
         })}
         startIcon={<FileDownloadIcon />}
       >
         Exportar Página
       </Button>
-
-      {/* Botón para exportar las filas seleccionadas */}
       <Button
         disabled={!table || (!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()) || !exportFormat}
         onClick={() => handleExport({
-          rows: selectedGroupedRows,
+          rows: sortedSelectedGroupedRows,
           format: exportFormat,
           initialColumns,
+          groupByColumn: table.getState().grouping
         })}
         startIcon={<FileDownloadIcon />}
       >

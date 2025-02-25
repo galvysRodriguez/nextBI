@@ -4,29 +4,29 @@ import { useDataForm, useSectionOpen } from "app/app/components/context/IsGrid";
 import { ProcessPerspective } from "app/app/components/formula/ProcessPerspective";
 import { useSaveFormula } from "app/app/components/hooks/useFormula";
 import { ButtonCreate } from "app/app/components/target/ButtonCreate";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { addStyles, EditableMathField } from "react-mathquill";
 
 addStyles();
 
 export default function FormulaEditor() {
-  const {formData, handleChange, handleFormulaChange, addElement} = useDataForm()
-  const{sectionOpen, toggleSection} = useSectionOpen()
+  const { formData, handleChange, handleFormulaChange, handleKeyDown } = useDataForm();
+  const { sectionOpen, toggleSection } = useSectionOpen();
   const [errorText, setErrorText] = useState("");
   const { mutate, isLoading, isError, error, isSuccess } = useSaveFormula();
+  const mathFieldRef = useRef(null);
 
-  // Funciones disponibles en inglés
   const funciones = [
     { nombre: "Suma", valor: "SUM" },
     { nombre: "Contar", valor: "COUNT" },
-    { nombre: "Promedio", valor: "AVERAGE" },
+    { nombre: "Promedio", valor: "AVG" },
     { nombre: "Máximo", valor: "MAX" },
     { nombre: "Mínimo", valor: "MIN" },
   ];
 
   const operadores = ["+", "-", "*", "/"];
 
-  // Validar la fórmula
+  
   const validarFormula = (e) => {
     try {
       e.preventDefault();
@@ -44,13 +44,18 @@ export default function FormulaEditor() {
         throw new Error("No puede haber operadores al final de la fórmula.");
       }
 
-      
       alert(`Fórmula creada con éxito: ${formData.formula} y ${formData.title}`);
       mutate(formData);
-      alert('enviado')
       setErrorText("");
     } catch (err) {
       setErrorText(err.message);
+    }
+  };
+
+  // Inserta elementos en la posición actual del cursor
+  const addElement = (element) => {
+    if (mathFieldRef.current) {
+      mathFieldRef.current.write(element);
     }
   };
 
@@ -61,32 +66,33 @@ export default function FormulaEditor() {
           Editor de Fórmulas
         </h3>
 
-        {/* Editor visual */}
         <form onSubmit={validarFormula}>
-          <label className="block mb-2">Titulo</label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  placeholder="Título de la formula"
-                  className="w-full p-2 border rounded-lg mb-4"
-                  required
-            />
-          
+          <label className="block mb-2">Título</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            placeholder="Título de la fórmula"
+            className="w-full p-2 border rounded-lg mb-4"
+            required
+          />
+
           <div className="border rounded-md p-2 bg-gray-100">
             <EditableMathField
               latex={formData.formula}
               onChange={handleFormulaChange}
+              onKeyDown={(e) => handleKeyDown(e, mathFieldRef.current)}
               className="w-full min-h-[60px] text-lg"
+              mathquillDidMount={(mathField) => (mathFieldRef.current = mathField)}
             />
           </div>
         </form>
-        
 
         {errorText && <p className="text-red-500 mt-2">{errorText}</p>}
 
-        <ProcessPerspective></ProcessPerspective>
+        <ProcessPerspective />
+
         <div className="mt-4">
           <h4
             className="text-md font-semibold mb-2 cursor-pointer bg-gray-200 p-2 rounded-md"

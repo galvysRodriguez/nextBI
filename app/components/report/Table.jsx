@@ -9,7 +9,7 @@ import { useTableContext } from "../context/TableContext";
 
 const Table = ({ rows, initialColumns }) => {
   const [data, setData] = useState([]);
-  const { groupedColumns, setGroupedColumns } = useTableContext();
+  const { groupedColumns, setGroupedColumns, setSorting, sorting } = useTableContext();
 
   const top10Rows = () => {
     return rows
@@ -98,8 +98,13 @@ const Table = ({ rows, initialColumns }) => {
       renderTopToolbarCustomActions={({ table }) => {
         const groupedRows = table.getGroupedRowModel().rows;
         const groupedColumns = table.getState().grouping;
+        const columnVisibility = table.getState().columnVisibility;
+
+        const visibleHeaders = initialColumns
+          .filter((col) => columnVisibility[col.accessorKey] !== false) 
         
-        return <ExportButtons table={table} initialColumns={initialColumns} />;
+        
+        return <ExportButtons table={table} initialColumns={visibleHeaders} />;
       }}
     
        onGroupingChange={(updater) => {
@@ -109,9 +114,15 @@ const Table = ({ rows, initialColumns }) => {
         
         setGroupedColumns(newGroupedColumns);
       }}
+
+      onSortingChange={(updater) => {
+        const newSorting = typeof updater === "function" ? updater(sorting) : updater;
+        setSorting(newSorting);
+      }}
       
       state={{
         grouping: groupedColumns,
+        sorting: sorting,
       }}
     />
      

@@ -62,6 +62,24 @@ export const useDataForm = create((set) => ({
       },
     }));
   },
+  handleKeyDown: (event, mathField) => {
+    if (event.key === "Backspace") {
+      set((state) => {
+        let formula = mathField.latex();
+        const terms = formula.trim().split(/(?=[+\-*/()^])/);
+        terms.pop();
+        formula = terms.join(""); 
+        mathField.latex(formula); 
+  
+        return {
+          formData: {
+            ...state.formData,
+            formula: formula,
+          },
+        };
+      });
+    }
+  },
   addElement: (element) => {
     set((state) => ({
       formData: {
