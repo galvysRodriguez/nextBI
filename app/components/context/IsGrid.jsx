@@ -95,7 +95,7 @@ export const useCardStore = create((set, get) => ({
 
   handleSelect: (cardId) => {
     set((state) => {
-      if (state.selectedCard === cardId) {
+      if (get().selectedCard === cardId) {
         return { selectedCard: null }
       }
       return { selectedCard: cardId }
@@ -109,7 +109,6 @@ export const useCardStore = create((set, get) => ({
   isSelected: (cardId) => {
     return get().selectedCard === cardId
   },
-
   isNullSelected: () => {
     return get().selectedCard == null
   },

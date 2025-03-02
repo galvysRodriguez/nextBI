@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/targets`;
 
 const deleteTarget = async (target_id) => {
+  console.log(target_id)
   const response = await fetch(`${url}/${target_id}`, {
     method: "DELETE",
     headers: {

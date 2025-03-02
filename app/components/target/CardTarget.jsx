@@ -37,27 +37,13 @@ function formatDecimal(num) {
                               perspective,
                               id}) {
     // Obtener el estado y el método handleSelect del store
-  const { selectedCard, handleSelect } = useCardStore();
+  const { selectedCard, handleSelect, clearSelection } = useCardStore();
 
   // Verificar si esta tarjeta está seleccionada
   const isSelected = selectedCard === id;
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Verificar si el clic ocurrió fuera de cualquier tarjeta
-      if (!event.target.closest('.card-target')) {
-        useCardStore.getState().clearSelection(); // Deseleccionar la tarjeta
-      }
-    };
-
-    // Agregar el event listener al montar el componente
-    document.addEventListener('mousedown', handleClickOutside);
-
-    // Limpiar el event listener al desmontar el componente
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  
+  
   return (
     <div
       className={`max-w-[500px] rounded-2xl p-6 cursor-pointer ${

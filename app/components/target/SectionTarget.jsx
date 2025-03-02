@@ -1,5 +1,7 @@
+import Progress from "../utils/Progress"
 import { HeaderTarget } from "./HeaderTarget"
 import { MainTarget } from "./MainTarget"
+
 
 export function SectionTarget({content, title}) {
     return (

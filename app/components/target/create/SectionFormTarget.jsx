@@ -5,10 +5,13 @@ import { OptionAggregation } from "./OptionAggregation";
 import { OptionIndicator } from "./OptionIndicator";
 import { OptionFormula } from "./OptionFormula";
 import { useTargetForm } from "../../context/FormTarget";
+import { useRouter } from "next/navigation";
+
 
 export default function StepForm({ isCreate, initialStep }) {
   const { mutate, isLoading, isError, error, isSuccess } = useSaveForm();
   const { activeStep, formData, setStep } = useTargetForm();
+  const router = useRouter()
 
   useEffect(() => {
     setStep(initialStep);
@@ -19,6 +22,7 @@ export default function StepForm({ isCreate, initialStep }) {
     mutate(formData);
     alert("Formulario enviado con éxito 🎉");
     console.log(formData);
+    router.push("/dashboard/finance")
   };
 
   return (
