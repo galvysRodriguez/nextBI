@@ -50,9 +50,6 @@ function LoadingSkeleton() {
                     <div className="w-24 h-6 bg-gray-300 rounded"></div>
                 </div>
             </div>
-            <div className="flex justify-center">
-                <div className="w-64 h-8 bg-gray-300 rounded"></div>
-            </div>
             <div className="flex justify-center items-center gap-6 pt-2">
                 <div className="flex flex-col gap-4">
                     <div className="w-64 h-24 bg-gray-300 rounded-xl"></div>
@@ -90,9 +87,6 @@ function SectionDetailTarget({ data }) {
             </div>
             <div className="flex justify-center">
                 <TitleTarget title={data.title} />
-            </div>
-            <div className="w-full flex justify-center">
-                <ButtonSecondary text={"Editar"} id={data.id}/>
             </div>
             <div className="flex justify-center items-center gap-6 pt-2">
                 <div className="flex flex-col gap-4">

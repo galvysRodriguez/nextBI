@@ -112,4 +112,8 @@ export const useCardStore = create((set, get) => ({
   isNullSelected: () => {
     return get().selectedCard == null
   },
+
+  getSelected: () => {
+    return get().selectedCard
+  },
 }))

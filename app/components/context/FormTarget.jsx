@@ -3,23 +3,22 @@ import { create } from "zustand";
 
 export const steps = ["Información general", "Periodo de tiempo", "Resultados"];
 
-const today = new Date().toISOString().split("T")[0];
+const today = new Date().toISOString().split("T")[0]
+
+const initialData= {
+  title: "",
+  formula_id: "",
+  perspective_id: 1,
+  start_date: today,
+  end_date: "",
+  optimal: "",
+  tolerable: "",
+  deficient: "",
+}
 
 export const useTargetForm = create((set, get) => ({
   activeStep: 0,
-  formData: {
-    title: "",
-    formula_id: "",
-    perspective_id: 1,
-    start_date: today,
-    end_date: "",
-    optimal: "",
-    tolerable: "",
-    deficient: "",
-    optimal_percentage: "",
-    tolerable_percentage: "",
-    deficient_percentage: "",
-  },
+  formData: initialData,
   extraData: {
     optimalPercentage: "",
     tolerablePercentage: "",
@@ -53,4 +52,22 @@ export const useTargetForm = create((set, get) => ({
       }));
     },
   setFullFormData: (newData) => set({ formData: newData }),
+  clearSelection: () => ({formData:initialData}),
+  adjustStartDate: () => {
+    const currentStartDate = get().formData.start_date;
+    const formattedDate = new Date(currentStartDate).toISOString().split("T")[0];
+    set((state) => ({
+      formData: { ...state.formData, start_date: formattedDate },
+    }));
+  },
+
+  adjustEndDate: () => {
+    const currentEndDate = get().formData.end_date;
+    if (currentEndDate) {
+      const formattedDate = new Date(currentEndDate).toISOString().split("T")[0];
+      set((state) => ({
+        formData: { ...state.formData, end_date: formattedDate },
+      }));
+    }
+  },
 }));

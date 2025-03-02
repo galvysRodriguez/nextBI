@@ -41,8 +41,6 @@ function formatDecimal(num) {
 
   // Verificar si esta tarjeta está seleccionada
   const isSelected = selectedCard === id;
-
-  
   
   return (
     <div

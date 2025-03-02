@@ -1,29 +1,62 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSaveForm } from "../../hooks/useSaveForm";
+import { useSaveForm, useUpdateForm } from "../../hooks/useSaveForm";
 import { OptionAggregation } from "./OptionAggregation";
 import { OptionIndicator } from "./OptionIndicator";
 import { OptionFormula } from "./OptionFormula";
 import { useTargetForm } from "../../context/FormTarget";
 import { useRouter } from "next/navigation";
+import { getConvertDate } from "../../utils/convert";
 
 
-export default function StepForm({ isCreate, initialStep }) {
-  const { mutate, isLoading, isError, error, isSuccess } = useSaveForm();
-  const { activeStep, formData, setStep } = useTargetForm();
+export default function StepForm({ isCreate, initialStep, initialData }) {
+  const{mutate:create} = useSaveForm()
+  const{mutate:update} = useUpdateForm()
+  const { activeStep, formData, setStep, clearSelection, setFullFormData, adjustStartDate, adjustEndDate } = useTargetForm();
   const router = useRouter()
 
   useEffect(() => {
     setStep(initialStep);
   }, [initialStep]);
 
+  useEffect(()=>{
+      if(!isCreate){
+        setFullFormData(initialData)
+        adjustStartDate()
+        adjustEndDate()
+        console.log(initialData)
+      }
+    }
+  ,[])
+
   const handleSubmit = (e) => {
-    e.preventDefault();
-    mutate(formData);
-    alert("Formulario enviado con éxito 🎉");
-    console.log(formData);
-    router.push("/dashboard/finance")
+    e.preventDefault()
+    if(isCreate){
+      create(formData, {
+        onSuccess: () => {
+          clearSelection();
+          router.push('/dashboard/finance');
+        },
+        onError: (error) => {
+          console.error('Error al guardar el formulario:', error);
+        },
+      });
+      console.log('Datos del formulario enviados:', formData);
+    }
+    else{
+      update(formData, {
+        onSuccess: () => {
+          clearSelection();
+          router.push('/dashboard/finance');
+        },
+        onError: (error) => {
+          console.error('Error al guardar el formulario:', error);
+        },
+      });
+      console.log('Datos del formulario enviados:', formData);
+    }
   };
+  
 
   return (
     <>
@@ -88,7 +121,7 @@ export function SectionFormInfoTarget() {
         className="w-full p-2 border rounded-lg mb-4"
         required
       >
-        <OptionFormula></OptionFormula>
+        <OptionFormula initialData={formData}></OptionFormula>
       </select>
 
       <div className="flex justify-end">
@@ -132,7 +165,7 @@ export function SectionFormDateTarget({ isCreate }) {
       />
 
       <div className="flex justify-between pt-16">
-        {isCreate && (
+        
           <button
             type="button"
             onClick={prevStep}
@@ -140,7 +173,7 @@ export function SectionFormDateTarget({ isCreate }) {
           >
             Anterior
           </button>
-        )}
+      
 
         <button
           type="button"
@@ -178,16 +211,7 @@ export function SectionFormOptimalTarget() {
                   required
                 />
               </td>
-              <td className="border p-2">
-                <input
-                  type="number"
-                  name={`${type}_percentage`}
-                  value={formData[`${type}_percentage`]}
-                  onChange={handleChange}
-                  className="w-full p-1 border rounded"
-                  required
-                />
-              </td>
+              
             </tr>
           ))}
         </tbody>
@@ -211,3 +235,14 @@ export function SectionFormOptimalTarget() {
     </div>
   );
 }
+
+/*<td className="border p-2">
+                <input
+                  type="number"
+                  name={`${type}_percentage`}
+                  value={formData[`${type}_percentage`]}
+                  onChange={handleChange}
+                  className="w-full p-1 border rounded"
+                  required
+                />
+              </td>*/ 

@@ -36,6 +36,6 @@ export const initialColumnsShopping = [
     filterVariant: "range", 
     filterFn: "between", 
     filterType: "date",
-    defaultValue: "" // Asegura que no sea undefined
+    defaultValue: "2025" // Asegura que no sea undefined
   },
 ];

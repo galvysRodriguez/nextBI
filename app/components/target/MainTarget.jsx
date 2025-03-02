@@ -31,7 +31,7 @@ export function MainTarget({ content }) {
     }
   }, [])
 
-  if (isLoading) return <LoadingSkeletonTarget></LoadingSkeletonTarget>
+  if (isLoading) return <Progress></Progress>
   if (isError) return <p>Error al cargar los objetivos.</p>;
 
   

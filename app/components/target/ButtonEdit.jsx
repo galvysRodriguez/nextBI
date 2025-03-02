@@ -6,12 +6,12 @@ import { useDeleteTarget } from "../hooks/useDeleteTargets";
 import { Pencil } from "lucide-react";
 
 export function ButtonEdit() {
-  const { selectedCar, isNullSelected} = useCardStore();
+  const { getSelected, isNullSelected} = useCardStore();
 
-  const router = useRouter(); 
+  const router = useRouter()
 
   const handleClick = () => {
-    router.push(`localhost/dashboard/finance/update/2`);
+    router.push(`/dashboard/finance/update/${getSelected()}`)
   };
   
   return (
