@@ -7,6 +7,7 @@ import { OptionFormula } from "./OptionFormula";
 import { useTargetForm } from "../../context/FormTarget";
 import { useRouter } from "next/navigation";
 import { getConvertDate } from "../../utils/convert";
+import CustomBackButton from "../detail/BackButton";
 
 
 export default function StepForm({ isCreate, initialStep, initialData }) {
@@ -60,9 +61,15 @@ export default function StepForm({ isCreate, initialStep, initialData }) {
 
   return (
     <>
-      <h1 className="text-4xl font-bold text-center text-[#1e377c] pt-4 mt-8 mb-6">
-        Formulario de objetivos
-      </h1>
+      <div className="flex w-[90vw] mx-auto mt-4">
+        <CustomBackButton></CustomBackButton>
+        <div className="flex items-center justify-center w-full">
+          <h1 className="text-4xl font-bold text-center text-[#1e377c] pt-4 mt-8 mb-6">
+          Formulario de objetivos
+        </h1>
+        </div>
+      </div>
+      
       <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl h-[460px] overflow-y-auto">
         <div className="flex items-center justify-between mb-6 relative">
           {[1, 2, 3].map((s, index) => (

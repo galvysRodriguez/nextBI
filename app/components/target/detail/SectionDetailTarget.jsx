@@ -6,6 +6,7 @@ import { KeyboardDoubleArrowRight } from "@mui/icons-material";
 import { LogoCard } from "../CardTarget";
 import { useTargetId } from "../../hooks/useTargetId";
 import { convertDate } from "../../utils/convert";
+import CustomBackButton from "./BackButton";
 
 const GaugeChart = lazy(() => import("../../chart/echart/Gauge"));
 const TrafficChart = lazy(() => import("../../chart/echart/TrafficChart"));
@@ -69,7 +70,8 @@ function SectionDetailTarget({perspective, indicator, title, optimal, tolerable,
     
     return (
         <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-6 pt-12">
-            <div className="flex gap-8">
+            <div className="flex items-center gap-8">
+                <CustomBackButton></CustomBackButton>
                 <TitleDetailTarget perspective={perspective} description={indicator} />
             </div>
             <div className="flex justify-center">

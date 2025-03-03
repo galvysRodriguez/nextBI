@@ -3,13 +3,16 @@ import { Trash } from "lucide-react";
 import { useCardStore } from "../context/IsGrid";
 import { useDeleteTarget } from "../hooks/useDeleteTargets";
 import Progress from "../utils/Progress";
+import { useTargetStore } from "../hooks/useSearch";
 
 export function ButtonDelete() {
   const { selectedCard, isNullSelected} = useCardStore();
   const { mutate, isLoading } = useDeleteTarget(); 
+  const { deleteById } = useTargetStore();
 
   const handleDelete = () => {
       mutate(selectedCard)
+      deleteById(selectedCard)
   };
 
   if(isLoading){

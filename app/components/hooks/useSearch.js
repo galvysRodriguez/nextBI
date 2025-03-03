@@ -1,5 +1,4 @@
-import { useSearchTarget } from "../context/IsGrid"
-
+import { create } from 'zustand';
 
 const keys = [
   "id",
@@ -13,21 +12,36 @@ const keys = [
   "end",
   "status",
   "responsible",
-  "priority"
-]
+  "priority",
+];
 
-export function useSearch(data) {
-    const search = useSearchTarget((state) => state.search);
 
-  const goSearch = () => {
-    if (!search) return data
+export const useTargetStore = create((set, get) => ({
+  search: '', 
+  data: [],   
+
+
+  changeSearch: (search) => set({ search }),
+
+
+  deleteById: (id) => set((state) => ({
+    data: state.data.filter((item) => item.id !== id),
+  })),
+
+  changeData: (data) => set({ data }),
+
+  searchResults: () => {
+    const { search, data } = get(); 
+    if (!search) return get().data;
 
     return data.filter((row) =>
       keys.some((key) =>
         row[key]?.toString().toLowerCase().includes(search.toLowerCase())
       )
     );
-  };
+  },
 
-  return goSearch()
-}
+  clearSearch: () => set({ search: '' }),
+  getData: () => { return get().data },
+}));
+

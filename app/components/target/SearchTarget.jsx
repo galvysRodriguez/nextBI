@@ -1,10 +1,10 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { useSearchTarget } from "../context/IsGrid";
 import { Search, X } from "lucide-react";
+import { useTargetStore } from "../hooks/useSearch";
 
 export function SearchTarget() {
-  const { changeSearch } = useSearchTarget();
+  const { changeSearch } = useTargetStore();
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
 

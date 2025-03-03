@@ -3,7 +3,7 @@
 import { useCardStore, useIsGrid } from "../context/IsGrid";
 import { CardTarget } from "./CardTarget";
 import { useTargets } from "../hooks/useTargets";
-import { useSearch } from "../hooks/useSearch";
+import { useTargetStore } from "../hooks/useSearch";
 import { mocksTarget } from "../mocks/MocksTarget";
 import { useRef, useEffect } from "react";
 import Progress from "../utils/Progress";
@@ -12,7 +12,7 @@ import { LoadingSkeletonTarget } from "./LoadingSkeletonTarget";
 export function MainTarget({ content }) {
   //const { grid } = useIsGrid();
   const { data, isLoading, isError } = useTargets(content);
-  const goSearch = useSearch(data?.data || [mocksTarget.data]);
+  const { searchResults, changeData, getData } = useTargetStore();
   const containerRef = useRef(null); 
   const { clearSelection } = useCardStore();
 
@@ -31,6 +31,12 @@ export function MainTarget({ content }) {
     }
   }, [])
 
+  useEffect(() => {
+    if(data){
+      changeData(data.data)
+    }
+  }, [data])
+
   if (isLoading) return <Progress></Progress>
   if (isError) return <p>Error al cargar los objetivos.</p>;
 
@@ -41,8 +47,8 @@ export function MainTarget({ content }) {
 
   return (
     <div ref={containerRef} className="w-full max-w-[1200px] px-4 md:px-6 lg:px-8 grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
-      {goSearch.length > 0 ? (
-        goSearch.map((objective) => <CardTarget key={objective.id} {...objective} />)
+      {searchResults().length > 0 ? (
+        searchResults().map((objective) => <CardTarget key={objective.id} {...objective} />)
       ) : (
         <p>No hay objetivos disponibles.</p>
       )}
