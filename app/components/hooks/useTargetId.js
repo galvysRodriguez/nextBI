@@ -16,3 +16,20 @@ export function useTargetId(id) {
     enabled: !!id, 
   });
 }
+
+const fetchTargetDetailId = async (id) => {
+  if (!id) return null; 
+  const response = await fetch(`http://localhost:8000/targets/detail/${id}`);
+  if (!response.ok) {
+    throw new Error("Error fetching data");
+  }
+  return response.json();
+};
+
+export function useTargetDetailId(id) {
+  return useQuery({
+    queryKey: ["targetDetailId", id],
+    queryFn: () => fetchTargetDetailId(id),
+    enabled: !!id, 
+  });
+}

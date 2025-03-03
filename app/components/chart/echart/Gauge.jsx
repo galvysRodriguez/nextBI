@@ -1,29 +1,26 @@
 // components/GaugeChart.js
-
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { useTheme } from "@mui/material/styles";
 import { COLORS } from "../../utils/const";
 
-
-
-const GaugeChart = ({ value = 70, title = "Cumplimiento" }) => {
+const GaugeChart = ({ result = 60, optimal = 100, title = "Cumplimiento" }) => {
   const chartRef = useRef(null);
+  const value = (result / optimal) * 100; // Nivel de la aguja
 
   useEffect(() => {
-    // Inicializa el gráfico solo después de que el componente haya sido montado
     const myChart = echarts.init(chartRef.current);
 
     const option = {
-      backgroundColor: COLORS.white, // Fondo dinámico basado en el tema
+      backgroundColor: COLORS.white,
       title: {
-        text: title, // Título dinámico
-        left: "center", // Alineación del título
-        top: "5%", // Posición del título
+        text: title,
+        left: "center",
+        top: "5%",
         textStyle: {
-          color: '#000', // Color del texto basado en el tema
-          fontSize: 20, // Tamaño de la fuente del título
-          fontWeight: "bold", // Estilo de fuente
+          color: "#000",
+          fontSize: 20,
+          fontWeight: "bold",
         },
       },
       series: [
@@ -50,8 +47,8 @@ const GaugeChart = ({ value = 70, title = "Cumplimiento" }) => {
           },
           axisLabel: {
             distance: 25,
-            color: COLORS.constrant, // Color dinámico para el texto
-            fontSize: 20,
+            color: COLORS.constrant,
+            fontSize: 14, // Reducimos el tamaño de los labels del eje
           },
           anchor: {
             show: true,
@@ -59,18 +56,26 @@ const GaugeChart = ({ value = 70, title = "Cumplimiento" }) => {
             size: 25,
             itemStyle: {
               borderWidth: 10,
-              borderColor: COLORS.constrant, // Color del ancla basado en el tema
+              borderColor: COLORS.constrant,
             },
           },
           detail: {
             valueAnimation: true,
-            fontSize: 60,
+            fontSize: 40, // Tamaño más pequeño del texto principal
             offsetCenter: [0, "90%"],
-            color: COLORS.title, // Color dinámico para el detalle
+            color: COLORS.title,
+            formatter: `{small|${result}}`, // Muestra el % y el result
+            rich: {
+              small: {
+                fontSize: 40, // Hace más pequeño el texto de `result`
+                color: COLORS.title,
+                lineHeight: 30,
+              },
+            },
           },
           data: [
             {
-              value: value, // Valor dinámico pasado como prop
+              value: value, // Nivel de la aguja
             },
           ],
         },
@@ -79,13 +84,12 @@ const GaugeChart = ({ value = 70, title = "Cumplimiento" }) => {
 
     myChart.setOption(option);
 
-    // Actualizar el valor dinámicamente si cambia
     return () => {
       myChart.dispose();
     };
-  }, [value, title]); // Dependencias del valor, título y tema
+  }, [value, title]);
 
-  return <div ref={chartRef} style={{ width: "600px", height: "400px", borderRadius:"1rem", overflow:'hidden'}} />;
+  return <div ref={chartRef} style={{ width: "600px", height: "400px", borderRadius: "1rem", overflow: "hidden" }} />;
 };
 
 export default GaugeChart;

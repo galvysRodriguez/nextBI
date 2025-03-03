@@ -5,41 +5,20 @@ import { Box } from "@mui/material";
 import { KeyboardDoubleArrowRight } from "@mui/icons-material";
 import { LogoCard } from "../CardTarget";
 import { useTargetId } from "../../hooks/useTargetId";
+import { convertDate } from "../../utils/convert";
 
 const GaugeChart = lazy(() => import("../../chart/echart/Gauge"));
 const TrafficChart = lazy(() => import("../../chart/echart/TrafficChart"));
 
 
-async function fetchTargetById(id) {
-    const data = [
-        { id: "1", title: "Aumentar ventas 15%", perspective: "Finanzas", description: "Total de ventas", amount: 300, expected: 800, estimated: 700, gauge: 40, start: "23/10/2024", end: "28/12/2024", remaining: 5, duration: 5 },
-        { id: "2", title: "Reducir costos 10%", perspective: "Operaciones", description: "Costos operativos", amount: 500, expected: 900, estimated: 750, gauge: 60, start: "10/09/2024", end: "20/11/2024", remaining: 15, duration: 10 }
-    ];
-
-    return data.find(target => target.id === id) || null;
-}
-
-export default function TargetDetailPage({ id }) {
-    const [targetData, setTargetData] = useState(null);
-    const {data:target} = useTargetId(id)
-    console.log(id)
-    console.log(target)
-
-    useEffect(() => {
-        if (id) {
-            fetchTargetById(id).then(data => setTargetData(data));
-        }
-    }, [id]);
-
+export default function TargetDetailPage({ targetData }) {
     return (
-        <Suspense fallback={<LoadingSkeleton />}>
-            {targetData ? <SectionDetailTarget data={targetData} /> : <LoadingSkeleton />}
-        </Suspense>
+            <SectionDetailTarget {...targetData} /> 
     );
 }
 
 // Componente de esqueleto de carga
-function LoadingSkeleton() {
+export function LoadingSkeletonDetail() {
     return (
         <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-6 pt-12 animate-pulse">
             <div className="flex gap-8">
@@ -79,29 +58,43 @@ export function ButtonSecondary({ text, id }) {
   }
 
 // Sección principal de detalle de objetivo
-function SectionDetailTarget({ data }) {
+function SectionDetailTarget({perspective, indicator, title, optimal, tolerable, deficient, indicator_value,
+                                start_date, end_date, elapsed, restant, detail, min_daily
+}) {
+    const label = detail.map((item) => convertDate(item.date));
+    const current = detail.map((item) => item.value);
+    const average = detail.map((item) => item.optimal);
+    const cumulative = detail.map((item) => item.cumulative)
+    
+    
     return (
         <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-6 pt-12">
             <div className="flex gap-8">
-                <TitleDetailTarget perspective={data.perspective} description={data.description} />
+                <TitleDetailTarget perspective={perspective} description={indicator} />
             </div>
             <div className="flex justify-center">
-                <TitleTarget title={data.title} />
+                <TitleTarget title={title} />
             </div>
             <div className="flex justify-center items-center gap-6 pt-2">
                 <div className="flex flex-col gap-4">
-                    <CardDetailTarget label="Valor obtenido" amount={`${data.amount}$`} />
-                    <CardDetailTarget label="Valor esperado" amount={`${data.expected}$`} />
-                    <CardDetailTarget label="Valor estimado" amount={`${data.estimated}$`} />
+                    <CardDetailTarget label="Valor optimo" amount={optimal} />
+                    <CardDetailTarget label="Valor tolerable" amount={tolerable} />
+                    <CardDetailTarget label="Valor deficiente" amount={deficient} />
                 </div>
                 <Suspense fallback={<div className="w-64 h-64 bg-gray-300 rounded-full"></div>}>
-                    <GaugeChart value={data.gauge} />
+                    <GaugeChart result={indicator_value} optimal={optimal}/>
                 </Suspense>
-                <DateInfoTarget start={data.start} end={data.end} remaining={data.remaining} duration={data.duration} />
+                <DateInfoTarget start={convertDate(start_date)} 
+                                end={convertDate(end_date)} 
+                                remaining={restant} 
+                                duration={elapsed} />
             </div>
             <div className="w-full h-156 pb-12">
                 <Suspense fallback={<div className="w-full h-156 bg-gray-300 rounded-xl"></div>}>
-                    <TrafficChart />
+                    <TrafficChart label={label} current={current} average={average} 
+                    cumulative={cumulative} min_daily={min_daily}
+                    title={title}
+                    />
                 </Suspense>
             </div>
         </div>
