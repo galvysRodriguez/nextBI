@@ -9,33 +9,28 @@ export const initialColumnsShopping = [
     accessorKey: "quantity", 
     header: "Quantity", 
     type: "number", 
-    filterVariant: "range", 
-    filterFn: "between", 
-    defaultValue: 0 // Asegura que siempre haya un valor numérico
+    filterVariant: 'range',
+    defaultValue: [0, 1000]
   },
   { 
     accessorKey: "price", 
     header: "Price", 
     type: "number", 
-    filterVariant: "range", 
-    filterFn: "between", 
-    defaultValue: 0
+    filterVariant: 'range',
+    defaultValue: [0, 1000]
   },
   { 
     accessorKey: "amount", 
     header: "Amount", 
-    type: "number", 
-    filterVariant: "range", 
-    filterFn: "between", 
-    defaultValue: 0
+    type: "number",
+    filterVariant: 'range',
+    defaultValue: [0, 1000]
   },
   { accessorKey: "invoice", header: "Invoice" },
   { 
     accessorKey: "date", 
     header: "Date", 
-    filterVariant: "range", 
-    filterFn: "between", 
-    filterType: "date",
-    defaultValue: "2025" // Asegura que no sea undefined
+    filterVariant: 'date-range',
+    defaultValue: new Date().toISOString().split("T")[0]
   },
 ];

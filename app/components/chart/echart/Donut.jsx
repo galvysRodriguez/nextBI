@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 import { HEIGHT } from '../apexchart/config';

@@ -206,6 +206,22 @@ export const MocksDataShopping = [
       "invoice": "INV-013",
       "date": "2024-02-24",
       "amount": 560
+    },
+    {
+      "id": 14,
+      "client": "Antonio Rojas",
+      "product": "Zapato deportivo",
+      "presentation": "Blíster",
+      "category": "Ropa",
+      "subCategory": "Zapatos",
+      "employee": "Alejandra Peña",
+      "deposit": "Warehouse 3",
+      "unit": "1",
+      "quantity": 4,
+      "price": 140,
+      "invoice": "INV-014",
+      "date": "2024-02-24",
+      "amount": 560
     }
   ];
   

@@ -1,4 +1,5 @@
 // components/BasicAreaChart.js
+"use client"
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 import { HEIGHT } from "./config";

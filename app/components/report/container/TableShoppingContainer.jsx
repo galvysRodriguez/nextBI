@@ -9,7 +9,7 @@ import { Chart } from "../Chart";
 
 export default function TableContainer() {
   // Obtén las filas y columnas desde donde sea necesario
-  const rows = MocksDataShopping; // Puedes reemplazar esto con datos dinámicos
+  const rows = MocksDataShopping;
   const columns = initialColumnsShopping;
   const{getGroupedColumnValues, groupRowsWithAmount, sorting} = useTableContext()
 
@@ -19,12 +19,12 @@ export default function TableContainer() {
 // Función para obtener las 10 filas con mayor monto
   const top10Rows = () => {
     if (!sorting || sorting.length === 0) {
-      return finalRow.slice(0, 10); // Si no hay orden, devolver las primeras 10 filas tal cual
+      return finalRow.slice(0, 10);
     }
 
     const sortedRows = [...finalRow].sort((a, b) => {
       for (const { id, desc } of sorting) {
-        const aValue = a[id] ?? ""; // Obtener el valor del campo
+        const aValue = a[id] ?? ""; 
         const bValue = b[id] ?? "";
 
         if (aValue < bValue) return desc ? 1 : -1;
@@ -35,7 +35,7 @@ export default function TableContainer() {
 
     return sortedRows.slice(0, 10).map((row) => ({
       ...row,
-      amount: parseFloat(row.amount.toFixed(2)), // Redondear valores del gráfico
+      amount: parseFloat(row.amount.toFixed(2)), 
     }));
 };
 

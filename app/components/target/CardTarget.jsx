@@ -99,10 +99,16 @@ function formatDecimal(num) {
 
   export function ButtonSecondary({ text, id }) {
     const router = useRouter();
+
+    const handleClick = (event) => {
+      event.stopPropagation()
+      router.push(`/dashboard/target/${id}`)
+      
+    }
   
     return (
       <button
-        onClick={() => router.push(`/dashboard/target/${id}`)}
+        onClick={handleClick}
         className="bg-[#ffffff] border-2 border-[#085494] text-[#085494] w-full h-full rounded-lg text-lg px-4 py-2 
                    hover:bg-[#e4e6e8] transition-all duration-300"
       >

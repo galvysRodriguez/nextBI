@@ -9,39 +9,20 @@ import { useTableContext } from "../context/TableContext";
 
 const Table = ({ rows, initialColumns }) => {
   const [data, setData] = useState([]);
-  const { groupedColumns, setGroupedColumns, setSorting, sorting } = useTableContext();
-
-  const top10Rows = () => {
-    return rows
-      .sort((a, b) => b.amount - a.amount) // Ordenar por monto descendente
-      .slice(0, 10) // Tomar las primeras 10 filas
-      .map((row) => ({
-        ...row,
-        amount: parseFloat(row.amount.toFixed(2)), // Redondear valores del gráfico
-      }));
-  };
-  
-  // Llamar a la función para obtener los datos
-  const top10Data = top10Rows();
-  
-  // Preparar los datos para el gráfico
-  const chartData = top10Data.map((row) => row.amount);
-  const chartCategories = top10Data.map((row) => row.invoice);
-  const values = [{
-    name: 'valor', 
-    data: chartData
-  }];
-  
+  const { groupedColumns, setGroupedColumns, setSorting, sorting, setFilter, filter } = useTableContext();
 
   useEffect(() => {
     setData(
       rows.map((item) => ({
         ...item,
-        amount: item.quantity * item.price || 0, // Calcular el monto total
+        date: item.date ?? new Date().toISOString().split("T")[0],
+        quantity: item.quantity ?? 0, 
+        price: item.price ?? 0,       
+        amount: (item.quantity ?? 0) * (item.price ?? 0), 
       }))
     );
-  }, []);
-
+  }, [rows]); // Asegurar que se ejecuta cuando `rows` cambia
+  
   // Agregar funciones de agregación a las columnas relevantes
   const columnsWithAggregation = initialColumns.map((col) => {
     if (col.accessorKey === "amount") {
@@ -119,6 +100,19 @@ const Table = ({ rows, initialColumns }) => {
         const newSorting = typeof updater === "function" ? updater(sorting) : updater;
         setSorting(newSorting);
       }}
+
+      onColumnFiltersChange={(updater) => {
+        const newFilter = typeof updater === "function" ? updater(filter) : updater;
+        console.log(newFilter); 
+        setFilter(newFilter)
+      }} 
+
+    
+
+      onColumnFilterFnsChange={(updater) => {
+        const newFilter = typeof updater === "function" ? updater(filter) : updater;
+        console.log(newFilter); 
+      }} 
       
       state={{
         grouping: groupedColumns,
