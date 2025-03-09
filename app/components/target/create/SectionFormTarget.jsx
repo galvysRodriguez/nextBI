@@ -8,6 +8,7 @@ import { useTargetForm } from "../../context/FormTarget";
 import { useRouter } from "next/navigation";
 import { getConvertDate } from "../../utils/convert";
 import CustomBackButton from "../detail/BackButton";
+import { SectionFormDateTarget } from "./SectionFormDate";
 
 
 export default function StepForm({ isCreate, initialStep, initialData }) {
@@ -144,55 +145,6 @@ export function SectionFormInfoTarget() {
   );
 }
 
-export function SectionFormDateTarget({ isCreate }) {
-  const { prevStep, nextStep, setFormData, formData, handleChange } =
-    useTargetForm();
-  return (
-    <div>
-      <h2 className="text-xl text-center font-semibold mb-4">
-        Seleccionar Fechas
-      </h2>
-      <label className="block mb-2">Fecha de Inicio (Automática)</label>
-      <input
-        type="date"
-        name="start_date"
-        value={formData.start_date}
-        disabled
-        className="w-full p-2 border rounded-lg mb-4 bg-gray-200"
-      />
-
-      <label className="block mb-2">Fecha Fin</label>
-      <input
-        type="date"
-        name="end_date"
-        value={formData.end_date}
-        onChange={handleChange}
-        className="w-full p-2 border rounded-lg mb-4"
-        required
-      />
-
-      <div className="flex justify-between pt-16">
-        
-          <button
-            type="button"
-            onClick={prevStep}
-            className="bg-gray-400 text-white px-4 py-2 rounded-lg"
-          >
-            Anterior
-          </button>
-      
-
-        <button
-          type="button"
-          onClick={nextStep}
-          className="bg-[#085494] text-white px-4 py-2 rounded-lg"
-        >
-          Siguiente
-        </button>
-      </div>
-    </div>
-  );
-}
 
 export function SectionFormOptimalTarget() {
   const { prevStep, setFormData, formData, handleChange } = useTargetForm();

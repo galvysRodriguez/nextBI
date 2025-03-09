@@ -89,7 +89,6 @@ const Table = ({ rows, initialColumns }) => {
       }}
     
        onGroupingChange={(updater) => {
-        
         const newGroupedColumns =
           typeof updater === "function" ? updater(groupedColumns) : updater;
         
@@ -107,11 +106,9 @@ const Table = ({ rows, initialColumns }) => {
         setFilter(newFilter)
       }} 
 
-    
-
       onColumnFilterFnsChange={(updater) => {
         const newFilter = typeof updater === "function" ? updater(filter) : updater;
-        console.log(newFilter); 
+        console.log("fns",newFilter); 
       }} 
       
       state={{

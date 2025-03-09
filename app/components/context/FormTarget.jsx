@@ -1,5 +1,5 @@
 import { create } from "zustand";
-
+import dayjs from 'dayjs';
 
 export const steps = ["Información general", "Periodo de tiempo", "Resultados"];
 
@@ -49,6 +49,16 @@ export const useTargetForm = create((set, get) => ({
       const { name, value } = e.target;
       set((state) => ({
         formData: { ...state.formData, [name]: value }, 
+      }));
+    },
+  handleEndDateChange: (newValue) => {
+      set((state) => ({
+        formData: { ...state.formData, end_date: newValue }, 
+      }));
+    },
+  handleStartDateChange: (newValue) => {
+      set((state) => ({
+        formData: { ...state.formData, start_date: newValue }, 
       }));
     },
   setFullFormData: (newData) => set({ formData: newData }),

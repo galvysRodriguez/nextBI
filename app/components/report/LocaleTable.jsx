@@ -4,6 +4,10 @@ import { esES } from '@mui/material/locale';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Table from './Table';
+import dayjs from 'dayjs'
+import 'dayjs/locale/es'
+
+dayjs.locale('es');
 
 const TableWithThemeProvider = ({rows, columns}) => {
   const theme = useTheme();
