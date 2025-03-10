@@ -1,10 +1,35 @@
+const filterSelectOptions= [
+  { value: "fuzzy", label: "Busqueda" },
+  { value: "contains", label: "Contiene" },
+  { value: "startsWith", label: "Empieza con" },
+  { value: "endsWith", label: "Termina con" },
+  { value: "equals", label: "Iguales" },
+  { value: "notEquals", label: "No iguales" },
+]
+
 export const initialColumnsShopping = [
   { accessorKey: "id", header: "ID" },
-  { accessorKey: "client", header: "Client" },
-  { accessorKey: "product", header: "Product" },
-  { accessorKey: "category", header: "Category" },
-  { accessorKey: "subCategory", header: "Subcategory" },
-  { accessorKey: "deposit", header: "Deposit" },
+  { accessorKey: "client", 
+    header: "Client",
+    filterVariant: 'text',
+    filterSelectOptions: filterSelectOptions,
+  },
+  { accessorKey: "product", 
+    header: "Product",
+    filterSelectOptions: filterSelectOptions,
+  },
+  { accessorKey: "category", 
+    header: "Category",
+    filterSelectOptions: filterSelectOptions,
+  },
+  { accessorKey: "subCategory", 
+    header: "Subcategory",
+    filterSelectOptions: filterSelectOptions,
+  },
+  { accessorKey: "deposit", 
+    header: "Deposit",
+    filterSelectOptions: filterSelectOptions,
+  },
   { 
     accessorKey: "quantity", 
     header: "Quantity", 
@@ -26,7 +51,11 @@ export const initialColumnsShopping = [
     filterVariant: 'range',
     defaultValue: [0, 1000]
   },
-  { accessorKey: "invoice", header: "Invoice" },
+  { 
+    accessorKey: "invoice", 
+    header: "Invoice",
+    filterSelectOptions: filterSelectOptions,
+  },
   { 
     accessorKey: "date", 
     header: "Date", 
@@ -34,3 +63,5 @@ export const initialColumnsShopping = [
     defaultValue: new Date().toISOString().split("T")[0]
   },
 ];
+
+

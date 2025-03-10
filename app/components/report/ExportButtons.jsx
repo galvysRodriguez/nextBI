@@ -4,13 +4,15 @@ import { Box, Select, MenuItem, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { useState } from "react";
 import { handleExport } from "./export";
+import { useTableContext } from "../context/TableContext";
 
 export const ExportButtons = ({ table, initialColumns }) => {
   const [exportFormat, setExportFormat] = useState("");
+  const {getFilteredRows} = useTableContext();
 
-  const groupedRows = table.getGroupedRowModel().rows; 
-  const selectedRows = table.getSelectedRowModel().rows;
-  const prePaginatedRows = table.getPrePaginationRowModel().rows;
+  const groupedRows = getFilteredRows(table.getGroupedRowModel().rows) 
+  const selectedRows = getFilteredRows(table.getSelectedRowModel().rows)
+  const prePaginatedRows = getFilteredRows(table.getPrePaginationRowModel().rows)
   const sortingState = table.getState().sorting;
 
   const selectedGroupedRows = groupedRows.filter(row =>
@@ -52,7 +54,7 @@ export const ExportButtons = ({ table, initialColumns }) => {
       <Button
         disabled={!table || table.getPrePaginationRowModel().rows.length === 0 || !exportFormat}
         onClick={() => handleExport({
-          rows: sortedPrePaginatedGroupedRows,
+          rows: sortedGroupedRows,
           format: exportFormat,
           initialColumns,
           groupByColumn: table.getState().grouping
@@ -64,7 +66,7 @@ export const ExportButtons = ({ table, initialColumns }) => {
       <Button
         disabled={!table || table.getRowModel().rows.length === 0 || !exportFormat}
         onClick={() => handleExport({
-          rows: sortedGroupedRows,
+          rows: sortedPrePaginatedGroupedRows,
           format: exportFormat,
           initialColumns,
           groupByColumn: table.getState().grouping

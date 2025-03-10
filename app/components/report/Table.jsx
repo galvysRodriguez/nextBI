@@ -6,10 +6,16 @@ import { MRT_Localization_ES } from "material-react-table/locales/es";
 import { ExportButtons } from "./ExportButtons";
 import { Chart } from "./Chart";
 import { useTableContext } from "../context/TableContext";
+import dayjs from 'dayjs';
+
+
+function isDayjsObject(obj) {
+  return obj instanceof dayjs().constructor && obj.constructor.name === 'Dayjs';
+}
 
 const Table = ({ rows, initialColumns }) => {
   const [data, setData] = useState([]);
-  const { groupedColumns, setGroupedColumns, setSorting, sorting, setFilter, filter } = useTableContext();
+  const { groupedColumns, setGroupedColumns, setSorting, sorting, setFilter, filter, filterFns, setFilterFns } = useTableContext();
 
   useEffect(() => {
     setData(
@@ -21,6 +27,7 @@ const Table = ({ rows, initialColumns }) => {
         amount: (item.quantity ?? 0) * (item.price ?? 0), 
       }))
     );
+    
   }, [rows]); // Asegurar que se ejecuta cuando `rows` cambia
   
   // Agregar funciones de agregación a las columnas relevantes
@@ -55,6 +62,8 @@ const Table = ({ rows, initialColumns }) => {
     return col;
   });
 
+  //enableFacetedValues
+  //enableColumnFilterModes
   return (
     <>
       <MaterialReactTable
@@ -68,9 +77,9 @@ const Table = ({ rows, initialColumns }) => {
       enableGlobalFilter
       enableStickyHeader
       enableColumnOrdering
-      enableColumnFilterModes
+      
       enableColumnPinning
-      enableFacetedValues
+      
       localization={MRT_Localization_ES}
       initialState={{
         grouping: ["category", "subCategory"], // Agrupar por categoría y subcategoría
@@ -102,18 +111,93 @@ const Table = ({ rows, initialColumns }) => {
 
       onColumnFiltersChange={(updater) => {
         const newFilter = typeof updater === "function" ? updater(filter) : updater;
-        console.log(newFilter); 
-        setFilter(newFilter)
-      }} 
+        console.log("New Filter (before):", newFilter);
+      
+        // Verificar si newFilter[0] existe y tiene la estructura esperada
+        if (newFilter[0]?.id === "date") {
+          // Verificar y convertir newFilter[0].value[0] (fecha inicial)
+          console.log(newFilter)
+          if (
+            newFilter[0]?.value[0] &&
+            newFilter[0].value[0] !== undefined &&
+            newFilter[0].value[0] !== "" &&
+            typeof newFilter[0].value[0] !== "string" &&
+            newFilter[0].value[0] instanceof dayjs
+            
+             
+            
+          ) {
+            
+            const dateValue = dayjs.isDayjs(newFilter[0].value[0]) ? 
+            newFilter[0].value[0] : dayjs(newFilter[0].value[0]);
+
+            if(dateValue.isValid() && typeof newFilter[0]?.value[0]?.toDate === "function") {
+              newFilter[0].value[0] = newFilter[0].value[0].toDate().toISOString().split("T")[0]
+            }
+            
+            /*
+            if (isDayjsObject(newFilter[0].value[0])) {
+           
+              newFilter[0].value[0] = newFilter[0].value[0].toDate().toISOString().split("T")[0];
+            } else if (typeof newFilter[0].value[0] === "string") {
+             
+              newFilter[0].value[0] = new Date(newFilter[0].value[0]).toISOString().split("T")[0];
+            } else if (newFilter[0].value[0] instanceof Date) {
+              
+              newFilter[0].value[0] = newFilter[0].value[0].toISOString().split("T")[0];
+            }*/
+              
+            
+          }
+      
+          // Verificar y convertir newFilter[0].value[1] (fecha final)
+          if (
+            newFilter[0]?.value[1] &&
+            newFilter[0].value[1] !== undefined &&
+            newFilter[0].value[1] !== "" &&
+            typeof newFilter[0].value[1] !== "string" &&
+            newFilter[0].value[1] instanceof dayjs
+            
+          ) {
+            const dateValue = dayjs.isDayjs(newFilter[0].value[1]) ? 
+            newFilter[0].value[1] : dayjs(newFilter[0].value[1]);
+
+            if(dateValue.isValid() && typeof newFilter[0]?.value[1]?.toDate === "function") {
+              newFilter[0].value[1] = newFilter[0].value[1].toDate().toISOString().split("T")[0]
+            }
+
+            
+            
+            /*
+            if (isDayjsObject(newFilter[0].value[1])) {
+              
+              newFilter[0].value[1] = newFilter[0].value[1].toDate().toISOString().split("T")[0];
+            } else if (typeof newFilter[0].value[1] === "string") {
+              
+              newFilter[0].value[1] = new Date(newFilter[0].value[1]).toISOString().split("T")[0];
+            } else if (newFilter[0].value[1] instanceof Date) {
+           
+              newFilter[0].value[1] = newFilter[0].value[1].toISOString().split("T")[0];
+            }
+          */
+            
+        }}
+      
+        console.log("New Filter (after):", newFilter);
+        setFilter(newFilter);
+      }}
 
       onColumnFilterFnsChange={(updater) => {
-        const newFilter = typeof updater === "function" ? updater(filter) : updater;
+        const newFilter = typeof updater === "function" ? updater(filterFns) : updater;
         console.log("fns",newFilter); 
+        setFilterFns(newFilter)
       }} 
       
       state={{
         grouping: groupedColumns,
         sorting: sorting,
+        columnFilters: filter,
+        columnFilterFns: filterFns
       }}
     />
      
@@ -124,3 +208,21 @@ const Table = ({ rows, initialColumns }) => {
 
 export default Table;
 
+/*{
+          quantity: (rows, filterValue) => {
+            const [min, max] = filterValue;
+            return rows.filter((row) => row.quantity >= min && row.quantity <= max);
+          },
+          price: (rows, filterValue) => {
+            const [min, max] = filterValue;
+            return rows.filter((row) => row.price >= min && row.price <= max);
+          },
+          amount: (rows, filterValue) => {
+            const [min, max] = filterValue;
+            return rows.filter((row) => row.amount >= min && row.amount <= max);
+          },
+          date: (rows, filterValue) => {
+            const [min, max] = filterValue;
+            return rows.filter((row) => row.date >= min && row.date <= max);
+          },
+        },*/
