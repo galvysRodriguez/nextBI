@@ -10,9 +10,9 @@ export const ExportButtons = ({ table, initialColumns }) => {
   const [exportFormat, setExportFormat] = useState("");
   const {getFilteredRows} = useTableContext();
 
-  const groupedRows = getFilteredRows(table.getGroupedRowModel().rows) 
-  const selectedRows = getFilteredRows(table.getSelectedRowModel().rows)
-  const prePaginatedRows = getFilteredRows(table.getPrePaginationRowModel().rows)
+  const groupedRows = table.getGroupedRowModel().rows 
+  const selectedRows = table.getSelectedRowModel().rows
+  const prePaginatedRows = table.getPrePaginationRowModel().rows
   const sortingState = table.getState().sorting;
 
   const selectedGroupedRows = groupedRows.filter(row =>

@@ -11,10 +11,13 @@ export default function TableContainer() {
   // Obtén las filas y columnas desde donde sea necesario
   const rows = MocksDataShopping;
   const columns = initialColumnsShopping;
-  const{getGroupedColumnValues, groupRowsWithAmount, sorting} = useTableContext()
+  const{getGroupedColumnValues, groupRowsWithAmount, sorting, getFilteredRows, filter} = useTableContext()
 
-  const finalRow = Object.values(groupRowsWithAmount(rows))
-  console.log(groupRowsWithAmount(rows))
+  console.log("filtrado", filter)
+  const rowsFiltered = getFilteredRows(rows)
+  console.log("filter", rowsFiltered, filter)
+  const finalRow = Object.values(groupRowsWithAmount(getFilteredRows(rows)));
+  console.log("a", finalRow)
 
 // Función para obtener las 10 filas con mayor monto
   const top10Rows = () => {

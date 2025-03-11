@@ -59,8 +59,33 @@ export const initialColumnsShopping = [
   { 
     accessorKey: "date", 
     header: "Date", 
-    filterVariant: 'date-range',
+    filterVariant: 'range',
     defaultValue: new Date().toISOString().split("T")[0]
+  },
+  { 
+    accessorKey: "day", 
+    header: "Day",
+    filterSelectOptions: filterSelectOptions,
+  },
+  { 
+    accessorKey: "week", 
+    header: "Week",
+    filterSelectOptions: filterSelectOptions,
+  },
+  { 
+    accessorKey: "fortnight", 
+    header: "Fornight",
+    filterSelectOptions: filterSelectOptions,
+  },
+  { 
+    accessorKey: "month", 
+    header: "Month",
+    filterSelectOptions: filterSelectOptions,
+  },
+  { 
+    accessorKey: "year", 
+    header: "Year",
+    filterSelectOptions: filterSelectOptions,
   },
 ];
 

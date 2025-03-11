@@ -10,11 +10,11 @@ export const useTableContext = create((set, get) => ({
   filter:[],
   filterFns: {
     id: "contains", 
-    client: "fuzzy",
-    product: "fuzzy",
-    category: "fuzzy",
-    subCategory: "fuzzy",
-    deposit: "fuzzy",
+    client: "contains",
+    product: "contains",
+    category: "contains",
+    subCategory: "contains",
+    deposit: "contains",
     quantity: "between",
     price: "between",
     amount: "between",
@@ -27,35 +27,46 @@ export const useTableContext = create((set, get) => ({
   setFilterFns: (filterFns) => set({ filterFns }),
 
   getFilteredRows: (rows) => {
-    const { filter } = get();
+    const { filter } = get(); 
   
     return rows.filter((row) => {
-      // Validar filtros de texto (id, client, product)
-      const textFiltersPassed =
-        (!filter.id || filter.id === '' || (row.id && row.id.includes(filter.id))) &&
-        (!filter.client || filter.client === '' || (row.client && row.client.includes(filter.client))) &&
-        (!filter.product || filter.product === '' || (row.product && row.product.includes(filter.product))) &&
-        (!filter.category || filter.category === '' || (row.category && row.category.includes(filter.category))) &&
-        (!filter.subCategory || filter.subCategory === '' || (row.subCategory && row.subCategory.includes(filter.subCategory))) &&
-        (!filter.deposit || filter.deposit === '' || (row.deposit && row.deposit.includes(filter.deposit)));
+      return filter.every((f) => {
+        const { id, value } = f; 
+        switch (id) {
+          
+          case 'id':
+          case 'client':
+          case 'product':
+          case 'category':
+          case 'subCategory':
+          case 'deposit':
+            return (
+              !value || 
+              value === '' || 
+              (row[id] && row[id].toString().toLowerCase().includes(value.toLowerCase())) 
+            );
   
-      // Validar filtros de rango (quantity, price, amount)
-      const rangeFiltersPassed =
-        (!filter.quantity?.min || row.quantity >= filter.quantity.min) &&
-        (!filter.quantity?.max || row.quantity <= filter.quantity.max) &&
-        (!filter.price?.min || row.price >= filter.price.min) &&
-        (!filter.price?.max || row.price <= filter.price.max) &&
-        (!filter.amount?.min || row.amount >= filter.amount.min) &&
-        (!filter.amount?.max || row.amount <= filter.amount.max);
+          
+          case 'quantity':
+          case 'price':
+          case 'amount':
+            return (
+              (!f.min || row[id] >= f.min) && 
+              (!f.max || row[id] <= f.max) 
+            );
   
-      // Validar filtros de fecha (date.start y date.end)
-      console.log(row.date, "a", filter.date);
-      const dateFiltersPassed =
-        (!filter.date?.value[0].toDate() || new Date(row.date) >= filter.date.value[0].toDate()) &&
-        (!filter.date?.value[1].toDate() || new Date(row.date) <= filter.date.value[1].toDate());
+          
+          case 'date':
+            return (
+              (!f.value?.[0] || new Date(row.date) >= new Date(f.value[0])) && 
+              (!f.value?.[1] || new Date(row.date) <= new Date(f.value[1])) 
+            );
   
-      // Si todos los filtros pasan, incluir la fila
-      return textFiltersPassed && rangeFiltersPassed && dateFiltersPassed;
+          
+          default:
+            return true;
+        }
+      });
     });
   },
 
@@ -96,6 +107,8 @@ export const useTableContext = create((set, get) => ({
     const { groupedColumns } = get();
   
     // Si no hay columnas agrupadas, devolver las filas con un formato consistente
+    
+
     if (!groupedColumns.length) {
       return rows.map((row) => ({
         ...row,
