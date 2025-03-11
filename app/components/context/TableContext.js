@@ -15,10 +15,10 @@ export const useTableContext = create((set, get) => ({
     category: "contains",
     subCategory: "contains",
     deposit: "contains",
-    quantity: "between",
-    price: "between",
-    amount: "between",
-    date: "between",
+    quantity: "betweenInclusive",
+    price: "betweenInclusive",
+    amount: "betweenInclusive",
+    date: "betweenInclusive",
   },
   setTable: (table) => set({table}),
   setGroupedColumns: (columns) => set({ groupedColumns: columns }),
@@ -51,8 +51,8 @@ export const useTableContext = create((set, get) => ({
           case 'price':
           case 'amount':
             return (
-              (!f.min || row[id] >= f.min) && 
-              (!f.max || row[id] <= f.max) 
+              (!f.value?.[0] || row[id] >= f.value[0]) && 
+              (!f.value?.[1] || row[id] <= f.value[1]) 
             );
   
           

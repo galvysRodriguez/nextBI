@@ -35,6 +35,7 @@ export const initialColumnsShopping = [
     header: "Quantity", 
     type: "number", 
     filterVariant: 'range',
+    filterFn: 'betweenInclusive',
     defaultValue: [0, 1000]
   },
   { 
@@ -42,6 +43,7 @@ export const initialColumnsShopping = [
     header: "Price", 
     type: "number", 
     filterVariant: 'range',
+    filterFn: 'betweenInclusive',
     defaultValue: [0, 1000]
   },
   { 
@@ -49,6 +51,7 @@ export const initialColumnsShopping = [
     header: "Amount", 
     type: "number",
     filterVariant: 'range',
+    filterFn: 'betweenInclusive',
     defaultValue: [0, 1000]
   },
   { 
@@ -60,6 +63,7 @@ export const initialColumnsShopping = [
     accessorKey: "date", 
     header: "Date", 
     filterVariant: 'range',
+    filterFn: 'betweenInclusive',
     defaultValue: new Date().toISOString().split("T")[0]
   },
   { 
