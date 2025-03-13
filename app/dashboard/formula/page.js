@@ -4,15 +4,16 @@ import { useDataForm, useSectionOpen } from "app/app/components/context/IsGrid";
 import { ProcessPerspective } from "app/app/components/formula/ProcessPerspective";
 import { useSaveFormula } from "app/app/components/hooks/useFormula";
 import { ButtonCreate } from "app/app/components/target/ButtonCreate";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { addStyles, EditableMathField } from "react-mathquill";
 
 addStyles();
 
 export default function FormulaEditor() {
-  const { formData, handleChange, handleFormulaChange, handleKeyDown } = useDataForm();
+  const { formData, handleChange, handleFormulaChange, handleKeyDown, errorText, setErrorText,
+    validate
+   } = useDataForm();
   const { sectionOpen, toggleSection } = useSectionOpen();
-  const [errorText, setErrorText] = useState("");
   const { mutate, isLoading, isError, error, isSuccess } = useSaveFormula();
   const mathFieldRef = useRef(null);
 
@@ -27,38 +28,25 @@ export default function FormulaEditor() {
   const operadores = ["+", "-", "*", "/"];
 
   
-  const validarFormula = (e) => {
-    try {
-      e.preventDefault();
-      if (!formData.formula.trim()) {
-        throw new Error("La fórmula está vacía.");
-      }
-
-      const abrirParentesis = (formData.formula.match(/\(/g) || []).length;
-      const cerrarParentesis = (formData.formula.match(/\)/g) || []).length;
-      if (abrirParentesis !== cerrarParentesis) {
-        throw new Error("Los paréntesis no están balanceados.");
-      }
-
-      if (/[\+\-\*\/]$/.test(formData.formula)) {
-        throw new Error("No puede haber operadores al final de la fórmula.");
-      }
-
+  const saveFormula = (e) => {
+    e.preventDefault();
+    if(validate()){
       alert(`Fórmula creada con éxito: ${formData.formula} y ${formData.title}`);
       mutate(formData);
-      setErrorText("");
-    } catch (err) {
-      setErrorText(err.message);
     }
-  };
+  }
+
+  useEffect(() => {
+    validate()
+  }, [formData.formula, validate]); 
 
   // Inserta elementos en la posición actual del cursor
   const addElement = (element) => {
     if (mathFieldRef.current) {
-      mathFieldRef.current.write(element);
+      mathFieldRef.current.cmd(element);
     }
   };
-
+  console.log({formula: formData.formula});
   return (
     <div className="flex flex-col items-center justify-center p-6">
       <div className="w-full max-w-md p-4 shadow-lg">
@@ -66,7 +54,7 @@ export default function FormulaEditor() {
           Editor de Fórmulas
         </h3>
 
-        <form onSubmit={validarFormula}>
+        <form onSubmit={saveFormula}>
           <label className="block mb-2">Título</label>
           <input
             type="text"
@@ -77,16 +65,15 @@ export default function FormulaEditor() {
             className="w-full p-2 border rounded-lg mb-4"
             required
           />
-
-          <div className="border rounded-md p-2 bg-gray-100">
-            <EditableMathField
-              latex={formData.formula}
-              onChange={handleFormulaChange}
-              onKeyDown={(e) => handleKeyDown(e, mathFieldRef.current)}
-              className="w-full min-h-[60px] text-lg"
-              mathquillDidMount={(mathField) => (mathFieldRef.current = mathField)}
-            />
-          </div>
+        
+        <div className="bg-gray-100 border-red-500 rounded-md p-2 w-full h-20">
+          <EditableMathField
+            latex={formData.formula}
+            onChange={handleFormulaChange}
+            className="w-full min-h-[60px] text-lg"
+            mathquillDidMount={(mathField) => (mathFieldRef.current = mathField)}
+          />
+        </div>
         </form>
 
         {errorText && <p className="text-red-500 mt-2">{errorText}</p>}
@@ -160,7 +147,8 @@ export default function FormulaEditor() {
         </div>
 
         <button
-          onClick={validarFormula}
+          type="submit"
+          onClick={saveFormula}
           className="mt-6 w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700"
         >
           Crear Fórmula
