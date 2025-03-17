@@ -1,18 +1,24 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useDataForm, useSectionOpen } from "app/app/components/context/IsGrid";
 import { ProcessPerspective } from "app/app/components/formula/ProcessPerspective";
 import { useSaveFormula } from "app/app/components/hooks/useFormula";
 import { ButtonCreate } from "app/app/components/target/ButtonCreate";
 import { useState, useRef, useEffect } from "react";
-import { addStyles, EditableMathField } from "react-mathquill";
 
-addStyles();
+const EditableMathField = dynamic(
+  () =>
+    import("react-mathquill").then((mod) => {
+      mod.addStyles();
+      return mod.EditableMathField;
+    }),
+  { ssr: false }
+);
 
 export default function FormulaEditor() {
-  const { formData, handleChange, handleFormulaChange, handleKeyDown, errorText, setErrorText,
-    validate
-   } = useDataForm();
+  const { formData, handleChange, handleFormulaChange, errorText, validate } =
+    useDataForm();
   const { sectionOpen, toggleSection } = useSectionOpen();
   const { mutate, isLoading, isError, error, isSuccess } = useSaveFormula();
   const mathFieldRef = useRef(null);
@@ -27,18 +33,19 @@ export default function FormulaEditor() {
 
   const operadores = ["+", "-", "*", "/"];
 
-  
   const saveFormula = (e) => {
     e.preventDefault();
-    if(validate()){
-      alert(`Fórmula creada con éxito: ${formData.formula} y ${formData.title}`);
+    if (validate()) {
+      alert(
+        `Fórmula creada con éxito: ${formData.formula} y ${formData.title}`
+      );
       mutate(formData);
     }
-  }
+  };
 
   useEffect(() => {
-    validate()
-  }, [formData.formula, validate]); 
+    validate();
+  }, [formData.formula, validate]);
 
   // Inserta elementos en la posición actual del cursor
   const addElement = (element) => {
@@ -46,7 +53,9 @@ export default function FormulaEditor() {
       mathFieldRef.current.cmd(element);
     }
   };
-  console.log({formula: formData.formula});
+
+  console.log({ formula: formData.formula });
+
   return (
     <div className="flex flex-col items-center justify-center p-6">
       <div className="w-full max-w-md p-4 shadow-lg">
@@ -65,15 +74,17 @@ export default function FormulaEditor() {
             className="w-full p-2 border rounded-lg mb-4"
             required
           />
-        
-        <div className="bg-gray-100 border-red-500 rounded-md p-2 w-full h-20">
-          <EditableMathField
-            latex={formData.formula}
-            onChange={handleFormulaChange}
-            className="w-full min-h-[60px] text-lg"
-            mathquillDidMount={(mathField) => (mathFieldRef.current = mathField)}
-          />
-        </div>
+
+          <div className="bg-gray-100 border-red-500 rounded-md p-2 w-full h-20">
+            <EditableMathField
+              latex={formData.formula}
+              onChange={handleFormulaChange}
+              className="w-full min-h-[60px] text-lg"
+              mathquillDidMount={(mathField) =>
+                (mathFieldRef.current = mathField)
+              }
+            />
+          </div>
         </form>
 
         {errorText && <p className="text-red-500 mt-2">{errorText}</p>}
