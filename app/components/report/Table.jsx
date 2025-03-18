@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { MaterialReactTable } from "material-react-table";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 
@@ -15,7 +15,8 @@ function isDayjsObject(obj) {
 
 const Table = ({ rows, initialColumns }) => {
   const [data, setData] = useState([]);
-  const { groupedColumns, setGroupedColumns, setSorting, sorting, setFilter, filter, filterFns, setFilterFns } = useTableContext();
+  const { groupedColumns, setGroupedColumns, setSorting, sorting, setFilter, filters, filterFns, setFilterFns } = useTableContext();
+  
 
   useEffect(() => {
     const rowsWithFormattedDates = rows.map((item) => {
@@ -75,6 +76,48 @@ const Table = ({ rows, initialColumns }) => {
     return col;
   });
 
+  const handleGroupingChange = useCallback((updater) => {
+    const newGroupedColumns =
+      typeof updater === "function" ? updater(groupedColumns) : updater;
+    setGroupedColumns(newGroupedColumns);
+  }, [groupedColumns]);
+
+  const handleSortingChange = useCallback((updater) => {
+    const newSortingColumns =
+      typeof updater === "function" ? updater(sorting) : updater;
+    setSorting(newSortingColumns);
+  }, [sorting]);
+
+  const handleFilterChange = useCallback((updater) => {
+    const newFilter =
+      typeof updater === "function" ? updater(filters) : updater;
+    console.log("newfilter", newFilter)
+    setFilter(newFilter);
+  }, [filters]);
+
+  const handleFilterFnsChange = useCallback((updater) => {
+    const newFilterFns =
+      typeof updater === "function" ? updater(filterFns) : updater;
+    setFilterFns(newFilterFns);
+  }, [filterFns]);
+
+  const renderTopToolbarCustomActions = useCallback(({ table }) => {
+    // Obtén los valores necesarios de la tabla
+    const groupedRows = table.getGroupedRowModel().rows;
+    const groupedColumns = table.getState().grouping;
+    const columnVisibility = table.getState().columnVisibility;
+
+    // Filtra las columnas visibles
+    const visibleHeaders = initialColumns.filter(
+      (col) => columnVisibility[col.accessorKey] !== false
+    );
+
+    // Retorna el componente ExportButtons con los valores necesarios
+    return <ExportButtons table={table} initialColumns={visibleHeaders} />;
+  }, [initialColumns]);
+
+
+
   //enableFacetedValues
   //enableColumnFilterModes
   return (
@@ -85,63 +128,28 @@ const Table = ({ rows, initialColumns }) => {
       enableRowSelection
       enableGrouping
       enableColumnResizing
-      enablePagination
       enableSorting
       enableGlobalFilter
       enableStickyHeader
       enableColumnOrdering
-      
+      enablePagination={false}
       enableColumnPinning
-      
+      enableColumnVirtualization
+      enableRowVirtualization
       localization={MRT_Localization_ES}
       initialState={{
         grouping: ["category", "subCategory"], // Agrupar por categoría y subcategoría
         expanded: true,
       }}
-      renderTopToolbarCustomActions={({ table }) => {
-        const groupedRows = table.getGroupedRowModel().rows;
-        const groupedColumns = table.getState().grouping;
-        const columnVisibility = table.getState().columnVisibility;
-
-        const visibleHeaders = initialColumns
-          .filter((col) => columnVisibility[col.accessorKey] !== false) 
-        
-        
-        return <ExportButtons table={table} initialColumns={visibleHeaders} />;
-      }}
-    
-       onGroupingChange={(updater) => {
-        const newGroupedColumns =
-          typeof updater === "function" ? updater(groupedColumns) : updater;
-        
-        setGroupedColumns(newGroupedColumns);
-      }}
-
-      onSortingChange={(updater) => {
-        const newSorting = typeof updater === "function" ? updater(sorting) : updater;
-        setSorting(newSorting);
-      }}
-
-      onColumnFiltersChange={(updater) => {
-        const newFilter = typeof updater === "function" ? updater(filter) : updater;
-        console.log("New Filter (before):", newFilter);
-      
-        
-      
-        console.log("New Filter (after):", newFilter);
-        setFilter(newFilter);
-      }}
-
-      onColumnFilterFnsChange={(updater) => {
-        const newFilter = typeof updater === "function" ? updater(filterFns) : updater;
-        console.log("fns",newFilter); 
-        setFilterFns(newFilter)
-      }} 
-      
+      renderTopToolbarCustomActions={renderTopToolbarCustomActions}
+      onGroupingChange={handleGroupingChange}
+      onSortingChange={handleSortingChange}
+      onColumnFiltersChange={handleFilterChange}
+      onColumnFilterFnsChange={handleFilterFnsChange} 
       state={{
         grouping: groupedColumns,
         sorting: sorting,
-        columnFilters: filter,
+        columnFilters: filters,
         columnFilterFns: filterFns
       }}
     />

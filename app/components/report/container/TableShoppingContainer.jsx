@@ -1,33 +1,38 @@
-// components/TableContainer.js
 "use client";
 
+import React, { useMemo, useCallback } from "react";
 import { useTableContext } from "app/app/components/context/TableContext";
 import { MocksDataShopping } from "app/app/components/mocks/MocksDataShopping";
 import { initialColumnsShopping } from "app/app/components/utils/columns";
 import TableWithThemeProvider from "app/app/components/report/LocaleTable";
 import { Chart } from "../Chart";
+import useTableUtils from "../../hooks/useTableDetail";
 
 export default function TableContainer() {
   // Obtén las filas y columnas desde donde sea necesario
-  const rows = MocksDataShopping;
-  const columns = initialColumnsShopping;
-  const{getGroupedColumnValues, groupRowsWithAmount, sorting, getFilteredRows, filter} = useTableContext()
+  const rows = MocksDataShopping
+  const columns = initialColumnsShopping
+  
+  const {  sorting, filters, groupedColumns } = useTableContext();
+  const { getGroupedColumnValues, groupRowsWithAmount, getFilteredRows } = useTableUtils({filters, groupedColumns});
 
-  console.log("filtrado", filter)
-  const rowsFiltered = getFilteredRows(rows)
-  console.log("filter", rowsFiltered, filter)
-  const finalRow = Object.values(groupRowsWithAmount(getFilteredRows(rows)));
-  console.log("a", finalRow)
+  // Memoiza las filas filtradas
+  console.log("filtros", filters)
+  const rowsFiltered = useMemo(() => getFilteredRows(rows), [rows, getFilteredRows]);
+  console.log("rowsfiltered", rowsFiltered)
 
-// Función para obtener las 10 filas con mayor monto
-  const top10Rows = () => {
+  // Memoiza las filas agrupadas
+  const finalRow = useMemo(() => Object.values(groupRowsWithAmount(rowsFiltered)), [rowsFiltered, groupRowsWithAmount]);
+
+  // Memoiza la función para obtener las 10 filas con mayor monto
+  const top10Rows = useCallback(() => {
     if (!sorting || sorting.length === 0) {
       return finalRow.slice(0, 10);
     }
 
     const sortedRows = [...finalRow].sort((a, b) => {
       for (const { id, desc } of sorting) {
-        const aValue = a[id] ?? ""; 
+        const aValue = a[id] ?? "";
         const bValue = b[id] ?? "";
 
         if (aValue < bValue) return desc ? 1 : -1;
@@ -38,34 +43,36 @@ export default function TableContainer() {
 
     return sortedRows.slice(0, 10).map((row) => ({
       ...row,
-      amount: parseFloat(row.amount.toFixed(2)), 
+      amount: parseFloat(row.amount.toFixed(2)),
     }));
-};
+  }, [finalRow, sorting]);
 
+  // Memoiza los datos para el top 10
+  const top10Data = useMemo(() => top10Rows(), [top10Rows]);
 
-// Llamar a la función para obtener los datos
-const top10Data = top10Rows();
+  // Memoiza los datos para el gráfico
+  const chartData = useMemo(() => top10Data.map((row) => row.totalAmount), [top10Data]);
+  const chartCategories = useMemo(() => getGroupedColumnValues(top10Data), [top10Data, getGroupedColumnValues]);
 
-// Preparar los datos para el gráfico
-const chartData = top10Data.map((row) => row.totalAmount);
-console.log(getGroupedColumnValues(top10Data))
-const chartCategories = getGroupedColumnValues(top10Data)
-const values = [{
-  name: 'valor', 
-  data: chartData
-}];
+  // Memoiza los valores para el gráfico
+  const values = useMemo(() => [{
+    name: "valor",
+    data: chartData,
+  }], [chartData]);
+
+  console.log("top10Data:", top10Data);
+console.log("chartData:", chartData);
+console.log("chartCategories:", chartCategories);
+
 
   return (
     <>
-       <div className="max-h-[70vh]">
-          <TableWithThemeProvider rows={rows} columns={columns} />
+      <div className="max-h-[70vh]">
+        <TableWithThemeProvider rows={rows} columns={columns} />
       </div>
       <div className="pt-64">
-        <Chart series={values} categories={chartCategories}></Chart>
+        <Chart series={values} categories={chartCategories} />
       </div>
-      
     </>
-   
-    
   );
 }
