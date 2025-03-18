@@ -1,11 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useDataForm, useSectionOpen } from "app/app/components/context/IsGrid";
+import { useSectionOpen } from "app/app/components/context/IsGrid";
 import { ProcessPerspective } from "app/app/components/formula/ProcessPerspective";
 import { useSaveFormula } from "app/app/components/hooks/useFormula";
 import { ButtonCreate } from "app/app/components/target/ButtonCreate";
 import { useState, useRef, useEffect } from "react";
+import { useDataForm } from "app/app/components/context/useDataForm";
 
 const EditableMathField = dynamic(
   () =>
@@ -17,12 +18,11 @@ const EditableMathField = dynamic(
 );
 
 export default function FormulaEditor() {
-  const { formData, handleChange, handleFormulaChange, errorText, validate } =
+  const { formData, handleChange, handleFormulaChange, errorText, validate, addElement } =
     useDataForm();
   const { sectionOpen, toggleSection } = useSectionOpen();
   const { mutate, isLoading, isError, error, isSuccess } = useSaveFormula();
-  const mathFieldRef = useRef(null);
-
+  const mathFieldRef = useRef(null)
   const funciones = [
     { nombre: "Suma", valor: "SUM" },
     { nombre: "Contar", valor: "COUNT" },
@@ -48,11 +48,7 @@ export default function FormulaEditor() {
   }, [formData.formula, validate]);
 
   // Inserta elementos en la posición actual del cursor
-  const addElement = (element) => {
-    if (mathFieldRef.current) {
-      mathFieldRef.current.cmd(element);
-    }
-  };
+  
 
   console.log({ formula: formData.formula });
 
@@ -89,7 +85,7 @@ export default function FormulaEditor() {
 
         {errorText && <p className="text-red-500 mt-2">{errorText}</p>}
 
-        <ProcessPerspective />
+        <ProcessPerspective mathFieldRef={mathFieldRef}/>
 
         <div className="mt-4">
           <h4
@@ -103,7 +99,7 @@ export default function FormulaEditor() {
               {funciones.map((funcion) => (
                 <button
                   key={funcion.nombre}
-                  onClick={() => addElement(`${funcion.valor}(`)}
+                  onClick={() => addElement(mathFieldRef,`${funcion.valor}(`)}
                   className="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                 >
                   {funcion.nombre}()
@@ -125,7 +121,7 @@ export default function FormulaEditor() {
               {operadores.map((op) => (
                 <button
                   key={op}
-                  onClick={() => addElement(` ${op} `)}
+                  onClick={() => addElement(mathFieldRef, ` ${op} `)}
                   className="px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
                 >
                   {op}
@@ -147,7 +143,7 @@ export default function FormulaEditor() {
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
                 <button
                   key={num}
-                  onClick={() => addElement(num.toString())}
+                  onClick={() => addElement(mathFieldRef, num.toString())}
                   className="px-3 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
                 >
                   {num}

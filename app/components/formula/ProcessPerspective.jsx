@@ -1,8 +1,9 @@
 
-import { useDataForm, useSectionOpen } from "../context/IsGrid";
+import { useSectionOpen } from "../context/IsGrid";
+import { useDataForm } from "../context/useDataForm";
 import { usePerspective } from "../hooks/usePerspective";
 
-export function ProcessPerspective() {
+export function ProcessPerspective({mathFieldRef}) {
   const { formData, handleChange, handleFormulaChange, addElement } = useDataForm();
   const { sectionOpen, toggleSection } = useSectionOpen();
 
@@ -33,7 +34,7 @@ export function ProcessPerspective() {
               {vars.map((variable) => (
                 <button
                   key={variable}
-                  onClick={() => addElement(variable)}
+                  onClick={() => addElement(mathFieldRef,variable)}
                   className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
                   {variable}

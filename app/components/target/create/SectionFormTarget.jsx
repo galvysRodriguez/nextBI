@@ -155,7 +155,7 @@ export function SectionFormOptimalTarget() {
       </h2>
       <table className="w-full border-collapse border border-gray-300">
         <tbody>
-          {["optimal", "tolerable", "deficient"].map((type, index) => (
+          {["Óptimo", "Tolerable", "Deficiente"].map((type, index) => (
             <tr key={index} className="text-center">
               <td className="text-gray-600 border p-2 font-semibold">
                 {type.charAt(0).toUpperCase() + type.slice(1)}
