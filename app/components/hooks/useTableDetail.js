@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 
 const useTableUtils = ({ filters, groupedColumns }) => {
   const getFilteredRows = useCallback((rows) => {
-    console.log("222", filters)
     if (!filters || filters.length === 0) {
         return rows;
       }

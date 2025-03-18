@@ -10,8 +10,8 @@ import useTableUtils from "../../hooks/useTableDetail";
 
 export default function TableContainer() {
   // Obtén las filas y columnas desde donde sea necesario
-  const rows = MocksDataShopping
-  const columns = initialColumnsShopping
+  const rows = useMemo(()=> MocksDataShopping, [MocksDataShopping])
+  const columns = useMemo(()=> initialColumnsShopping, [initialColumnsShopping])
   
   const {  sorting, filters, groupedColumns } = useTableContext();
   const { getGroupedColumnValues, groupRowsWithAmount, getFilteredRows } = useTableUtils({filters, groupedColumns});

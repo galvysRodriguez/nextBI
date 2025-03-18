@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef} from "react";
 import { MaterialReactTable } from "material-react-table";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 
@@ -16,7 +16,6 @@ function isDayjsObject(obj) {
 const Table = ({ rows, initialColumns }) => {
   const [data, setData] = useState([]);
   const { groupedColumns, setGroupedColumns, setSorting, sorting, setFilter, filters, filterFns, setFilterFns } = useTableContext();
-  
 
   useEffect(() => {
     const rowsWithFormattedDates = rows.map((item) => {
@@ -122,39 +121,51 @@ const Table = ({ rows, initialColumns }) => {
   //enableColumnFilterModes
   return (
     <>
+    <div style={{ height: "600px", width: "100%" }}>
       <MaterialReactTable
-      columns={columnsWithAggregation}
-      data={data.length ? data : []}
-      enableRowSelection
-      enableGrouping
-      enableColumnResizing
-      enableSorting
-      enableGlobalFilter
-      enableStickyHeader
-      enableColumnOrdering
-      enablePagination={false}
-      enableColumnPinning
-      enableColumnVirtualization
-      enableRowVirtualization
-      localization={MRT_Localization_ES}
-      initialState={{
-        grouping: ["category", "subCategory"], // Agrupar por categoría y subcategoría
-        expanded: true,
-      }}
-      renderTopToolbarCustomActions={renderTopToolbarCustomActions}
-      onGroupingChange={handleGroupingChange}
-      onSortingChange={handleSortingChange}
-      onColumnFiltersChange={handleFilterChange}
-      onColumnFilterFnsChange={handleFilterFnsChange} 
-      state={{
-        grouping: groupedColumns,
-        sorting: sorting,
-        columnFilters: filters,
-        columnFilterFns: filterFns
-      }}
-    />
-     
-    </>
+        //columnVirtualizerOptions={{ overscan: 4 }}
+        //rowVirtualizerOptions={{ overscan: 12 }}
+        columns={columnsWithAggregation}
+        data={data.length ? data : []}
+        enableRowSelection
+        enableGrouping
+        enableColumnResizing
+        enableSorting
+        enableGlobalFilter
+        //enableStickyHeader
+        enableColumnOrdering
+        enablePagination={false}
+        enableBottomToolbar={false}
+        enableColumnPinning
+        //enableColumnVirtualization
+        enableRowVirtualization
+        localization={MRT_Localization_ES}
+        initialState={{
+          grouping: ["category", "subCategory"], // Agrupar por categoría y subcategoría
+          expanded: true,
+        }}
+        renderTopToolbarCustomActions={renderTopToolbarCustomActions}
+        onGroupingChange={handleGroupingChange}
+        onSortingChange={handleSortingChange}
+        onColumnFiltersChange={handleFilterChange}
+        onColumnFilterFnsChange={handleFilterFnsChange} 
+        state={{
+          grouping: groupedColumns,
+          sorting: sorting,
+          columnFilters: filters,
+          columnFilterFns: filterFns
+        }}
+        muiTableContainerProps={{
+          sx: { maxHeight: "500px" }, 
+        }}
+        memoMode="rows"
+        enableStickyFooter={false}
+        enableStickyHeader={false}
+      />
+      </div>
+      
+      
+      </>
     
   );
 };
