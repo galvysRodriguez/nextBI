@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { getConvertDate } from "../../utils/convert";
 import CustomBackButton from "../detail/BackButton";
 import { SectionFormDateTarget } from "./SectionFormDate";
+import { Button, Input, Select } from "../../utils/Input";
 
 
 export default function StepForm({ isCreate, initialStep, initialData }) {
@@ -62,16 +63,18 @@ export default function StepForm({ isCreate, initialStep, initialData }) {
 
   return (
     <>
-      <div className="flex w-[90vw] mx-auto mt-4">
-        <CustomBackButton></CustomBackButton>
-        <div className="flex items-center justify-center w-full">
-          <h1 className="text-4xl font-bold text-center text-[#1e377c] pt-4 mt-8 mb-6">
+      <div className="flex w-[80vw] mx-auto mt-4">
+        
+        <div className="flex items-center justify-between w-[100%] md:w-[66%]">
+          <CustomBackButton></CustomBackButton>
+          
+          <h1 className="text-3xl font-bold text-center text-[#1e377c] pt-4 mt-4 mb-6">
           Formulario de objetivos
         </h1>
         </div>
       </div>
       
-      <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl h-[460px] overflow-y-auto">
+      <div className="max-w-lg mx-auto mt-2 p-6 bg-white shadow-lg rounded-2xl h-[520px] overflow-y-auto">
         <div className="flex items-center justify-between mb-6 relative">
           {[1, 2, 3].map((s, index) => (
             <div key={index} className="relative flex items-center">
@@ -110,37 +113,39 @@ export function SectionFormInfoTarget() {
       <h2 className="text-xl text-center font-semibold mb-4">
         Definir Objetivo
       </h2>
-      <label className="block mb-2">Título</label>
-      <input
-        type="text"
-        name="title"
-        value={formData.title}
-        onChange={handleChange}
-        placeholder="Título del objetivo"
-        className="w-full p-2 border rounded-lg mb-4"
-        required
-      />
-
-      <label className="block mb-2">Formulas</label>
-      <select
-        name="formula_id"
-        value={formData.formula_id}
-        onChange={handleChange}
-        className="w-full p-2 border rounded-lg mb-4"
-        required
-      >
-        <OptionFormula initialData={formData}></OptionFormula>
-      </select>
-
-      <div className="flex justify-end">
-        <button
-          type="button"
-          onClick={nextStep}
-          className="bg-[#085494] text-white px-4 py-2 rounded-lg"
-        >
-          Siguiente
-        </button>
-      </div>
+      <div className="w-[80%] h-[370px] m-auto pt-2 flex flex-col justify-between">
+          <div className="flex flex-col justify-center">
+            <Input
+              label="Título"
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Título del objetivo"
+              required
+            />
+            <Select
+              label="Formula"
+              name="formula_id"
+              value={formData.formula_id}
+              onChange={handleChange}
+              required
+            >
+              <OptionFormula initialData={formData}></OptionFormula>
+            </Select>
+          </div>
+          <div className="mt-8">
+            <Button
+              type="button"
+              onClick={nextStep}
+              variant="primary"
+            >
+              Siguiente
+            </Button>
+          </div>
+        </div>
+      
+     
     </div>
   );
 }
@@ -153,44 +158,54 @@ export function SectionFormOptimalTarget() {
       <h2 className="text-xl text-center font-semibold mb-4">
         Asignación de Valores
       </h2>
-      <table className="w-full border-collapse border border-gray-300">
-        <tbody>
-          {["Óptimo", "Tolerable", "Deficiente"].map((type, index) => (
-            <tr key={index} className="text-center">
-              <td className="text-gray-600 border p-2 font-semibold">
-                {type.charAt(0).toUpperCase() + type.slice(1)}
-              </td>
-              <td className="border p-2">
-                <input
-                  type="number"
-                  name={type}
-                  value={formData[type]}
-                  onChange={handleChange}
-                  className="w-full p-1 border rounded"
-                  required
-                />
-              </td>
-              
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="w-[80%] h-[370px] m-auto pt-2 flex flex-col justify-between" >
+        <div className="flex flex-col justify-center">
+        <Input
+        label="Optimo"
+        type="number"
+        name="optimal"
+        value={formData.optimal}
+        onChange={handleChange}
+        placeholder="200"
+        required
+      />
+      <Input
+              label="Tolerable"
+              type="number"
+              name="tolerable"
+              value={formData.tolerable}
+              onChange={handleChange}
+              placeholder="100"
+              required
+            />
 
-      <div className="flex justify-between mt-4 pb-2 pt-12">
-        <button
-          type="button"
-          onClick={prevStep}
-          className="bg-gray-400 text-white px-4 py-2 rounded-lg"
-        >
-          Anterior
-        </button>
-        <button
-          type="submit"
-          className="bg-[#085494] text-white px-4 py-2 rounded-lg"
-        >
-          Enviar
-        </button>
+      <Input
+              label="Deficiente"
+              type="number"
+              name="deficient"
+              value={formData.deficient}
+              onChange={handleChange}
+              placeholder="50"
+              required
+            />
+        </div>
+        <div className="mt-8 flex flex-col">
+             <Button
+              type="submit"
+              variant="primary"
+            >
+              Siguiente
+            </Button>
+            <Button
+              type="button"
+              onClick={prevStep}
+              variant="secondary"
+            >
+              Volver
+            </Button>
+             </div>
       </div>
+        
     </div>
   );
 }

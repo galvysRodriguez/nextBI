@@ -1,0 +1,82 @@
+
+
+export function Input({ type, onChange, value, name, placeholder, label }) {
+    return (
+      <>
+        <label className="block text-gray-700 text-sm font-semibold mb-[1px]">{label}</label>
+        <input
+          type={type}
+          onChange={onChange}
+          value={value}
+          name={name}
+          placeholder={placeholder}
+          className="w-full h-10 px-2 py-0 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </>
+    );
+  }
+
+export function Select({type, onChange, value, name, placeholder, children, label}){
+    return (
+        <>
+            <label className="block text-gray-700 text-sm font-semibold mb-[1px]">{label}</label>
+            <select
+                type={type}
+                onChange={onChange}
+                value={value}
+                name={name}
+                placeholder={placeholder}
+                className="w-full h-10 px-2 py-0 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+                {children}
+            </select>
+        </>
+        
+    )
+}
+
+
+export function Button({
+    children,
+    onClick,
+    variant = 'primary', 
+    type = 'button', 
+  }) {
+  
+    const baseStyles = 'w-full h-10 px-4 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300';
+  
+    const variantStyles = {
+      primary: 'bg-[#085494] text-white hover:bg-[#06457a]', // Azul con letras blancas
+      secondary: 'bg-white text-[#085494] border-[#085494] hover:bg-[#eee]', // Blanco con letras azules
+    };
+  
+    return (
+      <button
+        type={type}
+        onClick={onClick}
+        className={`${baseStyles} ${variantStyles[variant]}`}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  export function Footer() {
+    return (
+      <footer className="w-full h-[32px]  border-t text-gray-800 py-6">
+        <div className="h-[32px] container mx-auto px-4">
+          <div className="w-[80%] mx-auto flex justify-between items-center text-center">
+            <div>
+                <p className="text-xl">AFTIM </p>
+            </div>
+            <p className="text-sm">
+              © Copyright 2025 - Somos Sistemas. Todos los derechos reservados.
+            </p>
+            <p className="text-sm">
+              Contacto: +1 (234) 567-890
+            </p>
+          </div>
+        </div>
+      </footer>
+    );
+  }

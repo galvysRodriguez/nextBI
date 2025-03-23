@@ -27,7 +27,7 @@ export function ButtonDelete() {
       className={`w-12 h-12 flex items-center justify-center 
         ${isNullSelected() ? "bg-gray-200 text-gray-600": "bg-gray-300 text-gray-600"}  
         font-bold rounded-full transition-all shadow-lg`}
-      disabled={isLoading} 
+      disabled={isLoading || isNullSelected()} 
     >
       <Trash className="w-6 h-6" />
     </button>

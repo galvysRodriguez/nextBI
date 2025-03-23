@@ -159,8 +159,8 @@ const Table = ({ rows, initialColumns }) => {
           sx: { maxHeight: "500px" }, 
         }}
         memoMode="rows"
-        enableStickyFooter={false}
-        enableStickyHeader={false}
+        //enableStickyFooter={false}
+        //enableStickyHeader={false}
       />
       </div>
       

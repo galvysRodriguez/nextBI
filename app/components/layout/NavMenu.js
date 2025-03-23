@@ -7,7 +7,7 @@ export const NAV_MENU = [
     {icon: <Users/>, text:'Clientes', href:'/dashboard/client', alert:'false'},
     {icon: <BookCheck/>, text:'Aprendizaje', href:'/dashboard/innovation', alert:'false'},
     {icon: <BookMarked/>, text:'Analitica', href:'/dashboard/analytic', alert:'false'},
-    {icon: <ChartNoAxesColumn/>, text:'Predicciones', href:'/dashboard/regresion', alert:'false'},
-    {icon: <Map/>, text:'Mapa', href:'/dashboard/map', alert:'false'}
+   // {icon: <ChartNoAxesColumn/>, text:'Predicciones', href:'/dashboard/regresion', alert:'false'},
+    //{icon: <Map/>, text:'Mapa', href:'/dashboard/map', alert:'false'}
 ]
 
