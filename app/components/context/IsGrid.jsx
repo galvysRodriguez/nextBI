@@ -43,6 +43,21 @@ export const useSectionOpen = create((set) =>({
 
 export const useCardStore = create((set, get) => ({
   selectedCard: null, 
+  rowSelection: {}, 
+
+  setRowSelection: (updater) => {
+    set((state) => {
+      // Si recibe una función (como useState), la ejecutamos
+      const newSelection = typeof updater === 'function' 
+        ? updater(state.rowSelection)
+        : updater;
+      
+      return {
+        rowSelection: newSelection,
+        selectedCard: Object.keys(newSelection)[0] || null
+      };
+    });
+  },
 
   handleSelect: (cardId) => {
     set((state) => {

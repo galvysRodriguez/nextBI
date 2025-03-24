@@ -2,16 +2,8 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef} from "react";
 import { MaterialReactTable } from "material-react-table";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
-
 import { ExportButtons } from "./ExportButtons";
-import { Chart } from "./Chart";
 import { useTableContext } from "../context/TableContext";
-import dayjs from 'dayjs';
-
-
-function isDayjsObject(obj) {
-  return obj instanceof dayjs().constructor && obj.constructor.name === 'Dayjs';
-}
 
 const Table = ({ rows, initialColumns }) => {
   const [data, setData] = useState([]);
@@ -82,6 +74,7 @@ const Table = ({ rows, initialColumns }) => {
   }, [groupedColumns]);
 
   const handleSortingChange = useCallback((updater) => {
+    console.log("sorting b")
     const newSortingColumns =
       typeof updater === "function" ? updater(sorting) : updater;
     setSorting(newSortingColumns);

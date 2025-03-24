@@ -7,6 +7,7 @@ import { initialColumnsShopping } from "app/app/components/utils/columns";
 import TableWithThemeProvider from "app/app/components/report/LocaleTable";
 import { Chart } from "../Chart";
 import useTableUtils from "../../hooks/useTableDetail";
+import Table from "../Table";
 
 export default function TableContainer() {
   // Obtén las filas y columnas desde donde sea necesario
@@ -68,7 +69,9 @@ console.log("chartCategories:", chartCategories);
   return (
     <>
       <div className="max-h-[70vh]">
-        <TableWithThemeProvider rows={rows} columns={columns} />
+        <TableWithThemeProvider>
+          <Table rows={rows} initialColumns={columns}/>
+        </TableWithThemeProvider>
       </div>
       <div className="pt-64">
         <Chart series={values} categories={chartCategories} />
