@@ -5,12 +5,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es'
 import { Button } from "../../utils/Input";
+import { useStep } from "../../context/StepContext";
 
 dayjs.locale('es')
 
 export function SectionFormDateTarget({ isCreate }) {
-    const { prevStep, nextStep, setFormData, formData, handleStartDateChange, handleEndDateChange} =
-      useTargetForm();
+    const { setFormData, formData, handleStartDateChange, handleEndDateChange} = useTargetForm();
+    const {prevStep, nextStep } = useStep()
     return (
       <div>
         <h2 className="text-xl text-center font-semibold mb-4">

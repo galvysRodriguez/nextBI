@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import dayjs from 'dayjs';
 
-export const steps = ["Información general", "Periodo de tiempo", "Resultados"];
-
 const today = new Date().toISOString().split("T")[0]
 
 const initialData= {
@@ -17,7 +15,6 @@ const initialData= {
 }
 
 export const useTargetForm = create((set, get) => ({
-  activeStep: 0,
   formData: initialData,
   extraData: {
     optimalPercentage: "",
@@ -32,18 +29,6 @@ export const useTargetForm = create((set, get) => ({
   setExtraData: (field, value) =>
     set((state) => ({
       extraData: { ...state.extraData, [field]: value },
-    })),
-  nextStep: () =>
-    set((state) => ({
-      activeStep: Math.min(state.activeStep + 1, steps.length - 1),
-    })),
-  setStep: (step) =>
-      set((state) => ({
-        activeStep: step,
-      })),
-  prevStep: () =>
-    set((state) => ({
-      activeStep: Math.max(state.activeStep - 1, 0),
     })),
   handleChange: (e) => {
       const { name, value } = e.target;
