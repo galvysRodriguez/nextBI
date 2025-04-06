@@ -4,20 +4,21 @@ import CustomBackButton from "app/app/components/target/detail/BackButton";
 import { useStep } from "../../context/StepContext";
 
 
-export default function StepForm({ initialStep, children }) {
-  const { activeStep, setStep} = useStep();
+export default function StepForm({ initialStep, children, stepList, title }) {
+  const { activeStep, setStep, setSteps} = useStep();
 
   useEffect(()=>{
     setStep(initialStep)
-  }, [initialStep])
+    setSteps(stepList)
+  }, [initialStep, stepList])
   return (
     <>
       <div className="flex w-[80vw] mx-auto mt-4">
-        <HeaderForm/>
+        <HeaderForm title={title}/>
       </div>
-      <div className="max-w-lg mx-auto mt-2 p-6 bg-white shadow-lg rounded-2xl h-[520px] overflow-y-auto">
+      <div className="max-w-lg mx-auto mt-2 p-6 bg-white shadow-lg rounded-2xl  overflow-y-auto">
         <div className="flex items-center justify-between mb-6 relative">
-          {[1, 2, 3].map((s, index) => (
+          {stepList.map((s, index) => (
             <div key={index} className="relative flex items-center">
               {index > 0 && (
                 <div className="absolute w-full h-1 bg-gray-300 top-1/2 -translate-y-1/2 left-0 right-0 z-0"></div>
@@ -27,7 +28,7 @@ export default function StepForm({ initialStep, children }) {
                   activeStep === index ? "bg-blue-500" : "bg-gray-300"
                 }`}
               >
-                {s}
+                {index+1}
               </div>
             </div>
           ))}

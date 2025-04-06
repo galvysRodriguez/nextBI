@@ -11,7 +11,7 @@ const BasicTable = ({ rows, initialColumns }) => {
   const selectedRowId = Object.keys(rowSelection)[0] || null;
   return (
     <>
-    <div style={{ maxHeight: "600px", width: "70%" }}>
+    <div style={{ maxHeight: "600px", width: "70%", minHeight: "400px", margin: "0 auto" }}>
       <MaterialReactTable
         columns={initialColumns}
         data={rows.length ? rows : []}

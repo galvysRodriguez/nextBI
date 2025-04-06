@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  nodeapp:
+    image: node:14  # Aquí usas la imagen base de Node.js, pero puedes cambiarla por la imagen personalizada si tienes una
+    build:
+      context: ./nodeapp  # Directorio donde se encuentra tu código de la app de Node.js
+    ports:
+      - "3000:3000"  # Mapea el puerto de la aplicación a tu máquina local
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./nodeapp:/usr/src/app  # Asegúrate de que el directorio sea el correcto
+    networks:
+      - backend
+    command: ["npm", "start"]  # Este es el comando para iniciar la aplicación Node.js
+    deploy:
+      replicas: 3  # Número de réplicas del servicio
+    restart: always
+
+networks:
+  backend:
+    driver: bridge

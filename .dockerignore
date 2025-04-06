@@ -1,0 +1,26 @@
+# Ignorar node_modules y dependencias locales
+node_modules
+npm-debug.log
+yarn.lock
+package-lock.json
+
+# Ignorar archivos de configuración del editor/IDE
+.vscode
+.idea
+*.swp
+
+# Ignorar archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar directorios de compilación
+.next
+out
+dist
+
+# Ignorar archivos de entorno
+.env
+.env.local
+.env.development
+.env.production
+.env.test

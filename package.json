@@ -13,6 +13,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@formulajs/formulajs": "^4.4.9",
+    "@hookform/resolvers": "^5.0.1",
     "@mui/icons-material": "^6.4.1",
     "@mui/material": "^6.4.1",
     "@mui/x-charts": "^7.24.1",
@@ -38,10 +39,12 @@
     "react-datepicker": "^8.0.0",
     "react-dom": "^19.0.0",
     "react-flow-renderer": "^10.3.17",
+    "react-hook-form": "^7.55.0",
     "react-mathquill": "^1.0.3",
     "react-select": "^5.10.1",
     "react-sparklines": "^1.7.0",
     "xlsx": "^0.18.5",
+    "yup": "^1.6.1",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

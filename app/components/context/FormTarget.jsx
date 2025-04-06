@@ -12,6 +12,7 @@ const initialData= {
   optimal: "",
   tolerable: "",
   deficient: "",
+  tags: [],
 }
 
 export const useTargetForm = create((set, get) => ({
@@ -65,4 +66,33 @@ export const useTargetForm = create((set, get) => ({
       }));
     }
   },
+  setTags: (newTags) => 
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        tags: newTags, 
+      },
+    })),
+  setIcons: (newTags) => 
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        icons: newTags, 
+      },
+    })),
+    setIndicators: (newTags) => 
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        indicators: newTags, 
+      },
+    })),
+    setPerspectives: (newTags) => 
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        perspectives: newTags, 
+      },
+    })),
+
 }));

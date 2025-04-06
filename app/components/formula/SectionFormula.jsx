@@ -7,19 +7,19 @@ import { mocksFormula } from "../mocks/mocksFormula"
 import { initialColumnsFormula } from "../utils/columns"
 
 
-export function SectionFormula({content, title}) {
+export function SectionFormula({content, title, children}) {
     return (
         <>
             <PrincipalContainer>
                 <Title   title={title}  />
                 <HeaderTarget></HeaderTarget>
-                <GetTable></GetTable>
+                {children}
             </PrincipalContainer>
         </>
     )
 }
 
-export function GetTable(){
+export function GetTableFormula(){
     return(
           <BasicTable rows={mocksFormula.data} initialColumns={initialColumnsFormula}/>
     )

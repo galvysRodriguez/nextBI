@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
         <SectionTarget content={"/targets/finance/"}
-          title={"Perspectiva de finanzas"}
+          title={"Perspectiva de clientes"}
         ></SectionTarget>
     </>
   );
