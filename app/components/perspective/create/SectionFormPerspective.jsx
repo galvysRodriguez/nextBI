@@ -1,35 +1,39 @@
 "use client";
-import { useEffect } from "react";
+import { Formik, Form } from 'formik';
 import { useStep } from "../../context/StepContext";
-import { useDataForm } from "../../context/useDataForm";
-import { useSaveFormula } from "../../hooks/useFormula";
 import { SectionFormInfo } from "./SectionFormInfo";
 import { SectionFormTag } from "./SectionFormTag";
-import { useTargetForm } from "../../context/FormTarget";
+import { perspectiveSchema } from '../../schemas/perspectiveSchema';
+import { useSaveFormula } from "../../hooks/useFormula";
 
 export function SectionFormPerspective({ isCreate }) {
-   const { formData,validate } =useTargetForm();
-   const{activeStep}= useStep()
-   const { mutate} = useSaveFormula();
-   const saveFormula = (e) => {
-        e.preventDefault();
-       
-            alert(
-              `Fórmula creada con éxito: ${formData.tags[0].value}`
-            );
-            //mutate(formData);
-          
-        };
+  const { activeStep } = useStep();
+  const { mutate } = useSaveFormula();
 
-   useEffect(()=>{
-    console.log("tags:", formData.tags)
-   },[formData.tags])
+  const initialValues = {
+    title: '',
+    icons: null,
+    tags: [],
+    // otros campos iniciales
+  };
 
+  const handleSubmit = (values, { setSubmitting }) => {
+    mutate(values); // Usa tu hook de mutación
+    setSubmitting(false);
+  };
 
   return (
-    <form onSubmit={saveFormula}>
-      {activeStep === 0 && <SectionFormInfo />}
-      {activeStep === 1 && <SectionFormTag isCreate={isCreate} />}
-    </form>
+    <Formik
+      initialValues={initialValues}
+      validateOnChange={true}
+      validateOnBlur={true}
+      validationSchema={perspectiveSchema}
+      onSubmit={handleSubmit}
+    >
+      <Form>
+        {activeStep === 0 && <SectionFormInfo />}
+        {activeStep === 1 && <SectionFormTag isCreate={isCreate} />}
+      </Form>
+    </Formik>
   );
 }

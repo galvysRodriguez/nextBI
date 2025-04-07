@@ -1,6 +1,6 @@
 
 
-export function Input({ type, onChange, value, name, placeholder, label }) {
+export function Input({ type, onChange, value, name, placeholder, label, error}) {
     return (
       <>
         <label className="block text-gray-700 text-sm font-semibold mb-[1px]">{label}</label>
@@ -10,7 +10,11 @@ export function Input({ type, onChange, value, name, placeholder, label }) {
           value={value}
           name={name}
           placeholder={placeholder}
-          className="w-full h-10 px-2 py-0 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full h-10 px-2 py-0 mb-[2px] border rounded-lg focus:outline-none focus:ring-2 ${
+            error 
+              ? 'border-red-500 focus:ring-red-300 bg-red-50/50' 
+              : 'border-gray-300 focus:ring-blue-500'
+          }`}
         />
       </>
     );

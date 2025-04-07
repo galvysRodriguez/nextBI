@@ -8,72 +8,71 @@ const spanishMessages = {
   loadingMessage: () => "Cargando...",
   placeholder: () => "Seleccione...",
 };
-
-const styleSelect = {
+// styles/selectStyles.js
+export const customSelectStyles = ({ error = false, focusColor = '#3B82F6' } = {}) => ({
     control: (base, { isFocused }) => ({
       ...base,
-      width: '100%',                     
-      minHeight: '40px',                 
-      paddingTop: '0',                   
+      width: '100%',
+      minHeight: '40px',
+      paddingTop: '0',
       paddingBottom: '0',
-      border: '1px solid #e2e8f0',       
-      borderRadius: '0.5rem',            
-      marginBottom: '16px',              
-      boxShadow: isFocused               
-        ? '0 0 0 2px #3B82F6' 
+      border: `1px solid ${error ? '#f87171' : '#e2e8f0'}`, 
+      borderRadius: '0.5rem',
+      marginBottom: '2px',
+      backgroundColor: error ? '#fef2f2' : 'white', 
+      boxShadow: isFocused
+        ? `0 0 0 2px ${error ? '#fecaca' : focusColor}` 
         : 'none',
-      outline: 'none',                   
+      outline: 'none',
       '&:hover': {
-        borderColor: '#e2e8f0',         
+        borderColor: error ? '#f87171' : '#cbd5e0', 
       },
     }),
     menu: (base) => ({
       ...base,
-      width: '100%',                    
-      maxHeight: '200px',               
-      borderRadius: '0.5rem',            
-      border: '1px solid #e2e8f0',       
-      marginTop: '4px',                  
+      width: '100%',
+      maxHeight: '200px',
+      borderRadius: '0.5rem',
+      border: '1px solid #e2e8f0',
+      marginTop: '4px',
+      zIndex: 10,
     }),
     option: (base, { isFocused }) => ({
       ...base,
-      backgroundColor: isFocused 
-        ? '#ebf4ff'                      
-        : 'transparent',
-      color: '#1a202c',                  
+      backgroundColor: isFocused ? '#ebf4ff' : 'transparent',
+      color: '#1a202c',
       '&:active': {
-        backgroundColor: '#bee3f8',      
+        backgroundColor: '#bee3f8',
       },
     }),
-  };
+  });
 
-export default function SelectMultiple({ options, value, onChange, name, label, placeholder, children }) {
-  return (
-    <>
-       <label className="block text-gray-700 text-sm font-semibold mb-[1px]">
-          {label}
-       </label>
-      <Select
-        closeMenuOnSelect={false}
-        onChange={onChange}
-        name={name}
-        components={animatedComponents}
-        value={value}
-        placeholder={placeholder || spanishMessages.placeholder()}
-        isMulti
-        options={options}
-        noOptionsMessage={spanishMessages.noOptionsMessage}
-        loadingMessage={spanishMessages.loadingMessage}
-        styles={styleSelect}
-      >
-        {children}
-        </Select>
-    </>
-  );
-}
+  export default function SelectMultiple({ options, value, onChange, name, label, placeholder, children, error }) {
+    return (
+      <>
+         <label className="block text-gray-700 text-sm font-semibold mb-[1px]">
+            {label}
+         </label>
+        <Select
+          closeMenuOnSelect={false}
+          onChange={onChange}
+          name={name}
+          components={animatedComponents}
+          value={value}
+          placeholder={placeholder || spanishMessages.placeholder()}
+          isMulti
+          options={options}
+          noOptionsMessage={spanishMessages.noOptionsMessage}
+          loadingMessage={spanishMessages.loadingMessage}
+          styles={customSelectStyles({ error })}
+        >
+          {children}
+          </Select>
+      </>
+    );
+  }
 
-
-export function SelectSimple({options, value, onChange, name, label, placeholder, children}){
+export function SelectSimple({options, value, onChange, name, label, placeholder, children, error}){
     return(
         <>
             <label className="block text-gray-700 text-sm font-semibold mb-[1px]">
@@ -90,7 +89,7 @@ export function SelectSimple({options, value, onChange, name, label, placeholder
                 options={options}
                 noOptionsMessage={spanishMessages.noOptionsMessage}
                 loadingMessage={spanishMessages.loadingMessage}
-                styles={styleSelect}
+                styles={customSelectStyles({ error })}
             >
                 {children}
             </Select>
