@@ -3,6 +3,7 @@ import { useTargetForm } from "../../context/FormTarget";
 import { Button, Input, Select } from "app/app/components/utils/Input";
 import { useStep } from "app/app/components/context/StepContext";
 import SelectMultiple from "../../utils/SelectMultiple";
+import { useFormTagThree } from "../../hooks/validations/useFormTagThree";
 
 export const mocksOptions = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -11,7 +12,13 @@ export const mocksOptions = [
   ]
 
 export function SectionFormPerspective() {
-  const { setFormData, formData, handleChange, setPerspectives } = useTargetForm();
+  const { values,
+        errors,
+        touched,
+        setFieldValue,
+        handleNext,
+        validateField,
+      } = useFormTagThree()
 
   const {prevStep} = useStep()
   return (
@@ -24,17 +31,25 @@ export function SectionFormPerspective() {
             <SelectMultiple
               label="Perspectivas"
               name="perspectives"
-              value={formData.perspectives}
-              onChange={setPerspectives}
+              value={values.perspectives}
               required
               options={mocksOptions}
+              onChange={(selected) => {
+                setFieldValue('perspectives', selected);
+                validateField('perspectives');
+              }}
+              error={touched.perspectives && errors.perspectives}
             >
             </SelectMultiple>
+            {touched.perspectives && errors.perspectives && (
+            <p className="text-red-500 text-sm mt-1">{errors.perspectives}</p>
+          )}
           </div>
           <div className="mt-8 flex flex-col">
                 <Button
                     type="submit"
                     variant="primary"
+                    onClick={handleNext}
                 >
                     Siguiente
                 </Button>

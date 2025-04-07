@@ -8,7 +8,7 @@ const spanishMessages = {
   loadingMessage: () => "Cargando...",
   placeholder: () => "Seleccione...",
 };
-// styles/selectStyles.js
+
 export const customSelectStyles = ({ error = false, focusColor = '#3B82F6' } = {}) => ({
     control: (base, { isFocused }) => ({
       ...base,
@@ -65,6 +65,7 @@ export const customSelectStyles = ({ error = false, focusColor = '#3B82F6' } = {
           noOptionsMessage={spanishMessages.noOptionsMessage}
           loadingMessage={spanishMessages.loadingMessage}
           styles={customSelectStyles({ error })}
+          instanceId="my-custom-select"
         >
           {children}
           </Select>
@@ -90,6 +91,7 @@ export function SelectSimple({options, value, onChange, name, label, placeholder
                 noOptionsMessage={spanishMessages.noOptionsMessage}
                 loadingMessage={spanishMessages.loadingMessage}
                 styles={customSelectStyles({ error })}
+                instanceId="my-custom-select"
             >
                 {children}
             </Select>

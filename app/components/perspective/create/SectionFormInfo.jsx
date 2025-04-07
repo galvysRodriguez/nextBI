@@ -1,34 +1,21 @@
 "use client";
-import { useFormikContext } from 'formik';
 import { Button, Input } from "app/app/components/utils/Input";
 import { SelectSimple } from "../../utils/SelectMultiple";
 import { mocksOptions } from "./SectionFormTag";
-import { useStep } from "app/app/components/context/StepContext";
 import { IconError } from '../../utils/IconError';
+import { useFormPerspectiveOne } from '../../hooks/validations/useFormPerspectiveOne';
+
 
 export function SectionFormInfo() {
-  const { nextStep } = useStep();
-  const {
-    values,
+  const { values,
     errors,
     touched,
     handleChange,
     handleBlur,
     setFieldValue,
     setFieldTouched,
-    validateForm
-  } = useFormikContext();
-
-  const handleNext = async () => {
-    // Marcar campos como touched y validar
-    setFieldTouched('title', true);
-    setFieldTouched('icons', true);
-    
-    const errors = await validateForm();
-    if (!errors.title && !errors.icons) {
-      nextStep();
-    }
-  };
+    handleNext,
+  } = useFormPerspectiveOne()
 
   return (
     <div>

@@ -14,11 +14,10 @@ export function SectionFormPerspective({ isCreate }) {
     title: '',
     icons: null,
     tags: [],
-    // otros campos iniciales
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    mutate(values); // Usa tu hook de mutación
+    //mutate(values);
     setSubmitting(false);
   };
 

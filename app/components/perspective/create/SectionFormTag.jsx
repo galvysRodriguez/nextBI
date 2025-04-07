@@ -3,6 +3,7 @@ import { useFormikContext } from 'formik';
 import { Button } from "app/app/components/utils/Input";
 import SelectMultiple from "../../utils/SelectMultiple";
 import { useStep } from "app/app/components/context/StepContext";
+import { useFormPerspectiveTwo } from '../../hooks/validations/useFormPerspectiveTwo';
 
 export const mocksOptions = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -12,26 +13,13 @@ export const mocksOptions = [
 
 export function SectionFormTag() {
   const { prevStep } = useStep();
-  const {
-    values,
-    errors,
-    touched,
-    setFieldValue,
-    validateField,
-    handleSubmit,
-    setFieldTouched,
-    validateForm,
-  } = useFormikContext();
-
-  const handleNext = async () => {
-    // Marcar campos como touched y validar
-    setFieldTouched('tags', true);
-    
-    const errors = await validateForm();
-    if (!errors.tags) {
-      handleSubmit()
-    }
-  };
+  const { values,
+      errors,
+      touched,
+      setFieldValue,
+      handleNext,
+      validateField,
+    } = useFormPerspectiveTwo()
 
   return (
     <div>

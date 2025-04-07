@@ -1,6 +1,7 @@
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { LOGO_AFTIM } from "./components/utils/const";
+import { ToastContainerModal } from "./components/utils/ToastContainer";
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         className={montserrat.variable}
       >
         {children}
+        <ToastContainerModal/>
       </body>
     </html>
   );

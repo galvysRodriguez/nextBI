@@ -1,14 +1,18 @@
 "use client";
-import { useTargetForm } from "../../context/FormTarget";
 import { Button, Input, Select } from "app/app/components/utils/Input";
-import { useStep } from "app/app/components/context/StepContext";
-import { SelectSimple } from "../../utils/SelectMultiple";
-import { mocksOptions } from "./SectionFormTag";
+import { useFormTagOne } from "../../hooks/validations/useFormTagOne";
 
 
 export function SectionFormInfo() {
-  const { setFormData, formData, handleChange, setIcons } = useTargetForm();
-  const {nextStep} = useStep()
+  const { values,
+      errors,
+      touched,
+      handleChange,
+      handleBlur,
+      setFieldValue,
+      setFieldTouched,
+      handleNext,
+    } = useFormTagOne()
   return (
     <div>
       <h2 className="text-xl text-center font-semibold mb-4">
@@ -20,16 +24,21 @@ export function SectionFormInfo() {
               label="Título"
               type="text"
               name="title"
-              value={formData.title}
+              value={values.title}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Título"
               required
+              error={touched.title && errors.title}
             />
+            {touched.title && errors.title && (
+              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+            )}
           </div>
           <div className="mt-8">
             <Button
               type="button"
-              onClick={nextStep}
+              onClick={handleNext}
               variant="primary"
             >
               Siguiente

@@ -1,8 +1,8 @@
 "use client";
-import { useTargetForm } from "../../context/FormTarget";
 import { Button, Input, Select } from "app/app/components/utils/Input";
 import { useStep } from "app/app/components/context/StepContext";
 import SelectMultiple from "../../utils/SelectMultiple";
+import { useFormTagTwo } from "../../hooks/validations/useFormTagTwo";
 
 export const mocksOptions = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -11,7 +11,13 @@ export const mocksOptions = [
   ]
 
 export function SectionFormIndicator() {
-  const { setFormData, formData, handleChange, setIndicators } = useTargetForm();
+  const { values,
+    errors,
+    touched,
+    setFieldValue,
+    handleNext,
+    validateField,
+  } = useFormTagTwo()
 
   const {prevStep, nextStep} = useStep()
   return (
@@ -24,17 +30,24 @@ export function SectionFormIndicator() {
             <SelectMultiple
               label="Indicadores"
               name="indicators"
-              value={formData.indicators}
-              onChange={setIndicators}
+              value={values.indicators}
+              onChange={(selected) => {
+                setFieldValue('indicators', selected);
+                validateField('indicators');
+              }}
               required
               options={mocksOptions}
+              error={touched.indicators && errors.indicators}
             >
             </SelectMultiple>
+            {touched.indicators && errors.indicators && (
+              <p className="text-red-500 text-sm mt-1">{errors.indicators}</p>
+            )}
           </div>
           <div className="mt-8 flex flex-col">
                 <Button
                     type="button"
-                    onClick={nextStep}
+                    onClick={handleNext}
                     variant="primary"
                 >
                     Siguiente
