@@ -19,6 +19,7 @@ export function SectionFormTag({ isCreate }) {
 
   const handleSubmit = (values, { setSubmitting }) => {
     //mutate(values);
+    console.log("values", {values})
     setSubmitting(false);
   };
 

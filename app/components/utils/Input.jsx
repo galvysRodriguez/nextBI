@@ -66,20 +66,19 @@ export function Button({
 
   export function Footer() {
     return (
-      <footer className="w-full h-[32px]  border-t text-gray-800 py-6">
-        <div className="h-[32px] container mx-auto px-4">
+      <footer className="bg-blue-950 w-full border-t text-gray-50 py-6">
+        <div className="container mx-auto px-4">
           <div className="w-[80%] mx-auto flex justify-between items-center text-center">
             <div>
-                <p className="text-xl">AFTIM </p>
+              <p className="text-xl">AFTIM</p>
             </div>
             <p className="text-sm">
               © Copyright 2025 - Somos Sistemas. Todos los derechos reservados.
             </p>
-            <p className="text-sm">
-              Contacto: +1 (234) 567-890
-            </p>
+            <p className="text-sm">Contacto: +1 (234) 567-890</p>
           </div>
         </div>
       </footer>
     );
   }
+  

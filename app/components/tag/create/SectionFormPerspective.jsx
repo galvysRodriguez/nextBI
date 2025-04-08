@@ -51,7 +51,7 @@ export function SectionFormPerspective() {
                     variant="primary"
                     onClick={handleNext}
                 >
-                    Siguiente
+                    Enviar
                 </Button>
                 <Button
                     type="button"
