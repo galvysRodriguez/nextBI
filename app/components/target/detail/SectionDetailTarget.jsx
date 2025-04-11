@@ -1,10 +1,9 @@
 "use client"
 import { useRouter } from "next/navigation";
-import { useEffect, useState, Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { Box } from "@mui/material";
 import { KeyboardDoubleArrowRight } from "@mui/icons-material";
 import { LogoCard } from "../CardTarget";
-import { useTargetId } from "../../hooks/useTargetId";
 import { convertDate } from "../../utils/convert";
 import CustomBackButton from "./BackButton";
 

@@ -6,15 +6,15 @@ import { SectionFormTag } from "./SectionFormTag";
 import { perspectiveSchema } from '../../schemas/perspectiveSchema';
 import { useSaveFormula } from "../../hooks/useFormula";
 
+const initialValues = {
+  title: '',
+  icons: null,
+  tags: [],
+};
+
 export function SectionFormPerspective({ isCreate }) {
   const { activeStep } = useStep();
   const { mutate } = useSaveFormula();
-
-  const initialValues = {
-    title: '',
-    icons: null,
-    tags: [],
-  };
 
   const handleSubmit = (values, { setSubmitting }) => {
     //mutate(values);

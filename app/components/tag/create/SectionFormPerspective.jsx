@@ -42,7 +42,10 @@ export function SectionFormPerspective() {
             >
             </SelectMultiple>
             {touched.perspectives && errors.perspectives && (
-            <p className="text-red-500 text-sm mt-1">{errors.perspectives}</p>
+              <div className="text-red-500 text-sm flex items-start">
+                <IconError></IconError>
+                {errors.perspectives}
+              </div>
           )}
           </div>
           <div className="mt-8 flex flex-col">

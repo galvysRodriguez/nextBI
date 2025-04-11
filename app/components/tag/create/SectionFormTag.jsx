@@ -7,15 +7,16 @@ import { SectionFormIndicator } from './SectionFormIndicator';
 import { tagSchema } from '../../schemas/tagSchema';
 import { useSaveFormula } from "../../hooks/useFormula";
 
+const initialValues = {
+  title: '',
+  perspectives: [],
+  indicators: [],
+};
+
+
 export function SectionFormTag({ isCreate }) {
   const { activeStep } = useStep();
   const { mutate } = useSaveFormula();
-
-  const initialValues = {
-    title: '',
-    perspectives: [],
-    indicators: [],
-  };
 
   const handleSubmit = (values, { setSubmitting }) => {
     //mutate(values);

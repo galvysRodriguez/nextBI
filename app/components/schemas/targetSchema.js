@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export const objectiveSchema = yup.object().shape({
+export const targetSchema = yup.object().shape({
   title: yup
     .string()
     .required('El título es obligatorio')
@@ -14,26 +14,26 @@ export const objectiveSchema = yup.object().shape({
     .number()
     .typeError('Debe ser un número válido')
     .required('El valor tolerable es requerido')
-    .lessThan(yup.ref('optime'), 'Debe ser menor que el valor óptimo')
+    .lessThan(yup.ref('optimal'), 'Debe ser menor que el valor óptimo')
     .moreThan(yup.ref('deficient'), 'Debe ser mayor que el valor deficiente'),
-  optime: yup
+  optimal: yup
     .number()
     .typeError('Debe ser un número válido')
     .required('El valor óptimo es requerido')
     .moreThan(yup.ref('tolerable'), 'Debe ser mayor que el valor tolerable'),
   start_date: yup
     .date()
-    .required('La fecha de inicio es obligatoria')
-    .max(yup.ref('end_date'), 'La fecha de inicio no puede ser posterior a la fecha final'),
+    .required('La fecha inicial es obligatoria')
+    .max(yup.ref('end_date'), 'La fecha inicial no puede ser posterior a la final'),
   end_date: yup
     .date()
     .required('La fecha final es obligatoria')
-    .min(yup.ref('start_date'), 'La fecha final no puede ser anterior a la fecha de inicio'),
-  formula: yup
-    .string()
-    .required('La fórmula es obligatoria')
-    .matches(
-      /^[a-zA-Z0-9+\-*/() ]+$/,
-      'La fórmula solo puede contener números, letras y operadores básicos'
-    )
+    .min(yup.ref('start_date'), 'La fecha final no puede ser anterior a la inicial'),
+  formula_id: yup
+    .number()
+    .required('La formula es obligatoria'),
+  tag: yup
+    .number()
+    .required('La etiqueta es obligatoria'),
+   
 });

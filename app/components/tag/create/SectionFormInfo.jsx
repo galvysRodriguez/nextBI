@@ -1,6 +1,7 @@
 "use client";
 import { Button, Input, Select } from "app/app/components/utils/Input";
 import { useFormTagOne } from "../../hooks/validations/useFormTagOne";
+import { IconError } from "../../utils/IconError";
 
 
 export function SectionFormInfo() {
@@ -32,7 +33,10 @@ export function SectionFormInfo() {
               error={touched.title && errors.title}
             />
             {touched.title && errors.title && (
-              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+              <div className="text-red-500 text-sm flex items-start">
+                <IconError></IconError>
+                {errors.title}
+              </div>
             )}
           </div>
           <div className="mt-8">

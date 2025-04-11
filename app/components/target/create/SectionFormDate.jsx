@@ -1,94 +1,85 @@
-import { useTargetForm } from "../../context/FormTarget";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import 'dayjs/locale/es'
+"use client";
 import { Button } from "../../utils/Input";
 import { useStep } from "../../context/StepContext";
+import { useFormTargetTwo } from "../../hooks/validations/useFormTargetTwo";
+import { IconError } from '../../utils/IconError';
+import { InputDate } from "../../utils/InputDate";
 
-dayjs.locale('es')
 
 export function SectionFormDateTarget({ isCreate }) {
-    const { setFormData, formData, handleStartDateChange, handleEndDateChange} = useTargetForm();
-    const {prevStep, nextStep } = useStep()
-    return (
-      <div>
-        <h2 className="text-xl text-center font-semibold mb-4">
-          Seleccionar Fechas
-        </h2>
-        <div className="w-[80%] h-[370px] m-auto pt-2 flex flex-col justify-between">
-          <div className="flex flex-col justify-center">
-            <label className="block text-gray-700 text-sm font-semibold mb-[1px]">Fecha inicial</label>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DesktopDatePicker
-                value={formData.start_date ? dayjs(formData.start_date) : null}
-                onChange={handleStartDateChange}
-                fullWidth
+  const {
+    values,
+    errors,
+    touched,
+    setFieldValue,
+    handleNext,
+    setFieldTouched,
+  } = useFormTargetTwo();
+
+  const { prevStep, nextStep } = useStep();
+
+  const handleDateChange = (field) => (date) => {
+    const formattedDate = date ? date.format('YYYY-MM-DD') : '';
+    setFieldValue(field, formattedDate);
+    setFieldTouched(field, true, false);
+  };
+
+  return (
+    <div>
+      <h2 className="text-xl text-center font-semibold mb-4">
+        Seleccionar Fechas
+      </h2>
+      <div className="w-[80%] h-[420px] m-auto pt-2 flex flex-col justify-between">
+        <div className="w-full flex flex-col justify-center gap-4">
+          <div>
+              <InputDate
+                label={"Fecha inicial"}
+                name={"start_date"}
+                values={values.start_date}
+                error={touched.start_date && errors.start_date}
+                handleDateChange={handleDateChange}
                 disabled={isCreate}
-                sx={{
-                    "& .MuiInputBase-root": {
-                      width: "100%", 
-                      height: "2.5rem",
-                      padding: "0.5rem", 
-                      border: "1px solid #ccc", 
-                      borderRadius: "0.5rem", 
-                      marginBottom: "1rem", 
-                    },
-                    "& .MuiInputBase-input": {
-                      padding: "0", 
-                    },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                  }}
-                
-                />
-            </LocalizationProvider>
-            <label className="block text-gray-700 text-sm font-semibold mb-[1px]">Fecha final</label>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DesktopDatePicker
-                value={formData.end_date ? dayjs(formData.end_date) : null}
-                onChange={handleEndDateChange}
-                fullWidth
-                sx={{
-                    "& .MuiInputBase-root": {
-                      width: "100%", 
-                      height: "2.5rem",
-                      padding: "0.5rem", 
-                      border: "1px solid #ccc", 
-                      borderRadius: "0.5rem", 
-                      marginBottom: "1rem", 
-                    },
-                    "& .MuiInputBase-input": {
-                      padding: "0", 
-                    },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                  }}
-                
-                />
-            </LocalizationProvider>
+              />
+              {touched.start_date && errors.start_date && (
+                <div className="text-red-500 text-sm flex items-start">
+                  <IconError></IconError>
+                  {errors.start_date}
+                </div>
+              )}
           </div>
-         <div className="mt-8 flex flex-col">
-                     <Button
-                      type="submit"
-                      variant="primary"
-                      onClick={nextStep}
-                    >
-                      Siguiente
-                    </Button>
-                    <Button
-                      type="button"
-                      onClick={prevStep}
-                      variant="secondary"
-                    >
-                      Volver
-                    </Button>
+          <div>
+            <InputDate
+                  label={"Fecha final"}
+                  name={"end_date"}
+                  values={values.end_date}
+                  error={touched.end_date && errors.end_date}
+                  handleDateChange={handleDateChange}
+                />
+              {touched.end_date && errors.end_date && (
+                <div className="text-red-500 text-sm flex items-start">
+                  <IconError></IconError>
+                  {errors.end_date}
+                </div>
+              )}
+          </div>    
           </div>
+        <div className="mt-8 flex flex-col">
+          <Button
+              type="submit"
+              variant="primary"
+              onClick={handleNext}
+          >
+            Siguiente
+          </Button>
+          <Button
+            type="button"
+            onClick={prevStep}
+            variant="secondary"
+          >
+            Volver
+          </Button>
         </div>
-        
       </div>
-    );
-  }
+    </div>
+  );
+}

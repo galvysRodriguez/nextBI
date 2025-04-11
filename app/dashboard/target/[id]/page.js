@@ -21,7 +21,7 @@ const TargetDataFetcher = async ({ id }) => {
 
 async function fetchTargetId(id) {
   if (!id) return null;
-  const response = await fetch(`http://localhost:8000/targets/detail/${id}`);
+  const response = await fetch(`http://localhost:8000/targets/${id}`);
   if (!response.ok) {
     throw new Error("Error fetching data");
   }

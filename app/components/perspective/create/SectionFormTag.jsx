@@ -4,6 +4,7 @@ import { Button } from "app/app/components/utils/Input";
 import SelectMultiple from "../../utils/SelectMultiple";
 import { useStep } from "app/app/components/context/StepContext";
 import { useFormPerspectiveTwo } from '../../hooks/validations/useFormPerspectiveTwo';
+import { IconError } from '../../utils/IconError';
 
 export const mocksOptions = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -41,7 +42,10 @@ export function SectionFormTag() {
             error={touched.tags && errors.tags}
           />
           {touched.tags && errors.tags && (
-            <p className="text-red-500 text-sm mt-1">{errors.tags}</p>
+            <div className="text-red-500 text-sm flex items-start">
+              <IconError></IconError>
+              {errors.tags}
+            </div>
           )}
         </div>
         <div className="mt-8 flex flex-col">

@@ -3,6 +3,7 @@ import { Button, Input, Select } from "app/app/components/utils/Input";
 import { useStep } from "app/app/components/context/StepContext";
 import SelectMultiple from "../../utils/SelectMultiple";
 import { useFormTagTwo } from "../../hooks/validations/useFormTagTwo";
+import { IconError } from "../../utils/IconError";
 
 export const mocksOptions = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -41,7 +42,10 @@ export function SectionFormIndicator() {
             >
             </SelectMultiple>
             {touched.indicators && errors.indicators && (
-              <p className="text-red-500 text-sm mt-1">{errors.indicators}</p>
+              <div className="text-red-500 text-sm flex items-start">
+                <IconError></IconError>
+                {errors.indicators}
+              </div>
             )}
           </div>
           <div className="mt-8 flex flex-col">
