@@ -32,7 +32,7 @@ export const targetSchema = yup.object().shape({
   formula_id: yup
     .number()
     .required('La formula es obligatoria'),
-  tag: yup
+  tag_id: yup
     .number()
     .required('La etiqueta es obligatoria'),
    

@@ -31,11 +31,16 @@ export const customSelectStyles = ({ error = false, focusColor = '#3B82F6' } = {
     menu: (base) => ({
       ...base,
       width: '100%',
-      maxHeight: '200px',
+      maxHeight: '150px',
       borderRadius: '0.5rem',
       border: '1px solid #e2e8f0',
       marginTop: '4px',
       zIndex: 10,
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: 0,
+      maxHeight: '120px',
     }),
     option: (base, { isFocused }) => ({
       ...base,
@@ -47,7 +52,7 @@ export const customSelectStyles = ({ error = false, focusColor = '#3B82F6' } = {
     }),
   });
 
-  export default function SelectMultiple({ options, value, onChange, name, label, placeholder, children, error }) {
+  export default function SelectMultiple({ options, value, onChange, name, label, placeholder, children, error, isDisabled }) {
     return (
       <>
          <label className="block text-gray-700 text-sm font-semibold mb-[1px]">
@@ -65,6 +70,7 @@ export const customSelectStyles = ({ error = false, focusColor = '#3B82F6' } = {
           noOptionsMessage={spanishMessages.noOptionsMessage}
           loadingMessage={spanishMessages.loadingMessage}
           styles={customSelectStyles({ error })}
+          isDisabled={isDisabled}
           instanceId="my-custom-select"
         >
           {children}
@@ -73,7 +79,7 @@ export const customSelectStyles = ({ error = false, focusColor = '#3B82F6' } = {
     );
   }
 
-export function SelectSimple({options, value, onChange, name, label, placeholder, children, error}){
+export function SelectSimple({options, value, onChange, name, label, placeholder, children, error, isDisabled}){
     return(
         <>
             <label className="block text-gray-700 text-sm font-semibold mb-[1px]">
@@ -91,6 +97,7 @@ export function SelectSimple({options, value, onChange, name, label, placeholder
                 noOptionsMessage={spanishMessages.noOptionsMessage}
                 loadingMessage={spanishMessages.loadingMessage}
                 styles={customSelectStyles({ error })}
+                isDisabled={isDisabled}
                 instanceId="my-custom-select"
             >
                 {children}

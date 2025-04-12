@@ -36,12 +36,12 @@ export function InputDate({label, values, error, name, handleDateChange, disable
                             : "#9ca3af", 
                         },
                         "&.Mui-focused": {
-                          borderColor: error
-                            ? "#ef4444"
-                            : "#3b82f6", 
+                          border: error
+                            ? "1px solid #ef4444"
+                            : "2px solid #3b82f6", 
                           boxShadow: error
                             ? "0 0 0 2px rgba(239, 68, 68, 0.2)" 
-                            : "0 0 0 2px rgba(59, 130, 246, 0.2)",
+                            : "",
                         },
                     },
                     "& .MuiInputBase-input": {

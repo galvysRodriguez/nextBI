@@ -3,6 +3,7 @@ import { SectionFormTarget } from "app/app/components/target/create/SectionFormT
 import StepForm from "app/app/components/container/create/StepForm";
 
 const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/targets`
+export const steps = ["Información general", "Periodo de tiempo", "Resultados"]
 
 export default async function Home({ params }) {
   const id = (await params).id;
@@ -10,8 +11,8 @@ export default async function Home({ params }) {
   
   return (
     <>
-        <StepForm initialStep={1} initialData={initialData.data}>
-          <SectionFormTarget isCreate={false}></SectionFormTarget>
+        <StepForm initialStep={1} stepList={steps}>
+          <SectionFormTarget isCreate={false} initialData={initialData.data} targetId={id}></SectionFormTarget>
         </StepForm>
     </>
   );

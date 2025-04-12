@@ -1,8 +1,10 @@
 "use client";
 import { useFormikContext } from "formik";
 import { useStep } from "app/app/components/context/StepContext";
+import { useExistTarget, useExistTargetUpdate } from "../exists/useExistTarget";
 
-export const useFormTargetOne = () => {
+
+export const useFormTargetOne = ({ isCreate, targetId}) => {
   const { nextStep } = useStep();
   const {
     values,
@@ -14,19 +16,62 @@ export const useFormTargetOne = () => {
     setFieldTouched,
     validateForm,
     validateField,
+    setErrors,
   } = useFormikContext();
 
-  const handleNext = async () => {
-    setFieldTouched("title", true);
-    setFieldTouched("tag", true);
-    setFieldTouched("formula_id", true);
+  const createTargetCheck = useExistTarget();
+  const updateTargetCheck = useExistTargetUpdate();
 
-    const errors = await validateForm();
-    if (!errors.title && !errors.tag && !errors.formula_id) {
-        //showSuccessToast('!Guardado exitosamente!')
-        nextStep();
-      };
+  const handleNext = async () => {
+    // Marcar campos como touched
+    setFieldTouched("title", true);
+    setFieldTouched("tag_id", true);
+    setFieldTouched("formula_id", true);
+  
+    // Validar primero los campos requeridos
+    const validationErrors = await validateForm();
     
+    if (validationErrors.title || validationErrors.tag_id || validationErrors.formula_id) {
+      return;
+    }
+  
+    const payload = { title: values.title };
+    try {
+      let response;
+      
+      if (!isCreate) {
+        if (!targetId) {
+          setErrors({
+            ...errors,
+            title: "Se requiere un ID válido para actualizar"
+          });
+          return;
+        }
+        response = await updateTargetCheck.mutateAsync({ 
+          formData: payload, 
+          id: targetId 
+        });
+      } else {
+        response = await createTargetCheck.mutateAsync(payload);
+      }
+  
+      if (response?.data === true) {
+        setErrors({
+          ...errors,
+          title: "Este título ya está registrado"
+        });
+        setFieldTouched("title", true, false);
+        return;
+      }
+      
+      nextStep();
+    } catch (err) {
+      setErrors({
+        ...errors,
+        title: "Este título ya está registrado"
+      });
+      setFieldTouched("title", true, false);
+    }
   };
 
   return {

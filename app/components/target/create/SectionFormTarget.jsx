@@ -1,8 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
 import { Formik, Form } from 'formik';
 import { useSaveForm, useUpdateForm } from "../../hooks/useSaveForm";
-import { useTargetForm } from "../../context/FormTarget";
 import { useRouter } from "next/navigation";
 import { SectionFormDateTarget } from "./SectionFormDate";
 import { SectionFormOptimal } from "./SectionFormOptimal";
@@ -20,15 +18,14 @@ const initialValues = {
   optimal: "",
   tolerable: "",
   deficient: "",
-  tag: "",
+  tag_id: "",
 };
 
-export function SectionFormTarget({ isCreate }) {
+export function SectionFormTarget({ isCreate, initialData=initialValues, targetId }) {
   const { mutate: create } = useSaveForm();
   const { mutate: update } = useUpdateForm();
   const{activeStep}= useStep()
   const router = useRouter();
-
 
   const handleSubmit = (values, { setSubmitting }) => {
     const mutation = isCreate ? create : update;
@@ -53,7 +50,7 @@ export function SectionFormTarget({ isCreate }) {
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={initialData}
       validateOnChange={true}
       validateOnBlur={true}
       onSubmit={handleSubmit}
@@ -61,7 +58,7 @@ export function SectionFormTarget({ isCreate }) {
       enableReinitialize={true}
     >
       <Form>
-        {activeStep === 0 && <SectionFormInfo />}
+        {activeStep === 0 && <SectionFormInfo isCreate={isCreate} targetId={targetId}/>}
         {activeStep === 1 && <SectionFormDateTarget isCreate={isCreate} />}
         {activeStep === 2 && <SectionFormOptimal />}
       </Form>
