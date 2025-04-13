@@ -1,88 +1,38 @@
 "use client";
 import { useFormikContext } from "formik";
 import { useStep } from "app/app/components/context/StepContext";
-import { useExistTarget, useExistTargetUpdate } from "../exists/useExistTarget";
+import { useExistTargetQuery } from "../exists/useExistTarget";
+import { useValidation } from "./useValidation";
+import { useFormActions } from "./useFormAction";
 
+const requiredFields = ["title", "tag_id", "formula_id"];
 
-export const useFormTargetOne = ({ isCreate, targetId}) => {
+export const useFormTargetOne = ({ isCreate, targetId }) => {
   const { nextStep } = useStep();
-  const {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    setFieldValue,
-    setFieldTouched,
-    validateForm,
-    validateField,
-    setErrors,
-  } = useFormikContext();
+  const formik = useFormikContext();
 
-  const createTargetCheck = useExistTarget();
-  const updateTargetCheck = useExistTargetUpdate();
+  console.log(targetId)
+  console.log(isCreate)
+  
+  const { refetch } = useExistTargetQuery(
+    { title: formik.values.title, target_id: isCreate ? undefined : targetId },
+    { enabled: false }
+  );
 
-  const handleNext = async () => {
-    // Marcar campos como touched
-    setFieldTouched("title", true);
-    setFieldTouched("tag_id", true);
-    setFieldTouched("formula_id", true);
-  
-    // Validar primero los campos requeridos
-    const validationErrors = await validateForm();
-    
-    if (validationErrors.title || validationErrors.tag_id || validationErrors.formula_id) {
-      return;
-    }
-  
-    const payload = { title: values.title };
-    try {
-      let response;
-      
-      if (!isCreate) {
-        if (!targetId) {
-          setErrors({
-            ...errors,
-            title: "Se requiere un ID válido para actualizar"
-          });
-          return;
-        }
-        response = await updateTargetCheck.mutateAsync({ 
-          formData: payload, 
-          id: targetId 
-        });
-      } else {
-        response = await createTargetCheck.mutateAsync(payload);
-      }
-  
-      if (response?.data === true) {
-        setErrors({
-          ...errors,
-          title: "Este título ya está registrado"
-        });
-        setFieldTouched("title", true, false);
-        return;
-      }
-      
-      nextStep();
-    } catch (err) {
-      setErrors({
-        ...errors,
-        title: "Este título ya está registrado"
-      });
-      setFieldTouched("title", true, false);
-    }
-  };
+  const { validateRequiredFields, checkTitleExists } = useValidation({
+    requiredFields,
+    refetch
+  });
+
+  const { handleSubmit } = useFormActions({
+    validateRequiredFields,
+    checkTitleExists,
+    nextStep,
+    ...formik
+  });
 
   return {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    setFieldValue,
-    validateField,
-    setFieldTouched,
-    handleNext,
+    ...formik,
+    handleNext: () => handleSubmit(formik),
   };
 };

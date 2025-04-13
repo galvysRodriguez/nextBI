@@ -14,6 +14,7 @@ export function useIndicatorOption() {
     return useQuery({
       queryKey: ["indicators"],
       queryFn: fetchIndicator,
+      staleTime: 5 * 60 * 1000
     });
   }
   

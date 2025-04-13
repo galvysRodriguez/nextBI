@@ -30,20 +30,8 @@ export function SectionFormInfo({isCreate, targetId}) {
 
   const { data: dataFormula, isLoading: isLoadingFormula, error: errorFormula } = useFormulaByTagOption(values.tag_id);
 
-  const tagsOptions = convertOption(dataTag, "id", "tag");
+  const tagsOptions = convertOption(dataTag, "id", "title");
   const formulaOptions = convertOption(dataFormula, "id", "title");
-
-  const handleTagChange = (selected) => {
-    const tagValue = selected?.value ?? "";
-  
-    setFieldValue("tag_id", tagValue);
-    setFieldTouched("tag_id", true, false);
-  
-    values.formula_id = ''
-  };
-
-  //if (isLoadingTag) return <p>Cargando etiquetas...</p>;
-  //if (errorTag) return <p>Error al cargar etiquetas</p>;
 
   return (
     <div>

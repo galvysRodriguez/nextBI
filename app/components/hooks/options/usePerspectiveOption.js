@@ -14,6 +14,7 @@ export function usePerspectiveOption() {
     return useQuery({
       queryKey: ["perspectives"],
       queryFn: fetchPerspective,
+      staleTime: 5 * 60 * 1000
     });
   }
   

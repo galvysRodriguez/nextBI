@@ -6,10 +6,9 @@ export const perspectiveSchema = yup.object().shape({
     .required('El título es obligatorio')
     .min(5, 'El título debe tener al menos 5 caracteres')
     .max(100, 'El título no puede exceder 100 caracteres'),
-  icons: yup
-    .mixed()
-    .nullable()
-    .required('Debe seleccionar un icono'),
+  icon_id: yup
+    .number()
+    .required('La etiqueta es obligatoria'),
   tags: yup
     .array()
     .min(1, 'Debe seleccionar al menos una etiqueta')

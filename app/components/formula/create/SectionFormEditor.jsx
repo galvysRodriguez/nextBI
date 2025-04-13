@@ -43,6 +43,7 @@ export function SectionFormEditor() {
   const operadores = ["+", "-", "*", "/"];
 
   const handleFormulaChange = (mathField) => {
+    console.log(mathField.latex());
     setFieldValue("formula", mathField.latex());
     setFieldTouched("formula", true, false);
     validateField("formula");

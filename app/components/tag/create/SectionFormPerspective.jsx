@@ -1,9 +1,11 @@
 "use client";
-import { useTargetForm } from "../../context/FormTarget";
 import { Button, Input, Select } from "app/app/components/utils/Input";
 import { useStep } from "app/app/components/context/StepContext";
 import SelectMultiple from "../../utils/SelectMultiple";
 import { useFormTagThree } from "../../hooks/validations/useFormTagThree";
+import { IconError } from "../../utils/IconError";
+import { usePerspectiveOption } from "../../hooks/options/usePerspectiveOption";
+import { convertOption, mapIdsToArray } from "../../utils/convertOption";
 
 export const mocksOptions = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -18,9 +20,14 @@ export function SectionFormPerspective() {
         setFieldValue,
         handleNext,
         validateField,
+        setFieldTouched,
       } = useFormTagThree()
 
   const {prevStep} = useStep()
+  const { data: dataPerspective, isLoading: isLoadingPerspective, error: errorPerspective } = usePerspectiveOption();
+
+  const perspectivesOptions = convertOption(dataPerspective, "id", "title");
+
   return (
     <div>
       <h2 className="text-xl text-center font-semibold mb-4">
@@ -31,14 +38,18 @@ export function SectionFormPerspective() {
             <SelectMultiple
               label="Perspectivas"
               name="perspectives"
-              value={values.perspectives}
+              value={perspectivesOptions.filter(opt =>
+                values.perspectives.some(p => p.id === opt.value)
+              )}
               required
-              options={mocksOptions}
-              onChange={(selected) => {
-                setFieldValue('perspectives', selected);
-                validateField('perspectives');
+              options={perspectivesOptions}
+              onChange={(selectedOptions) => {
+                const selectedIds = selectedOptions?.map(option => option.value) || [];
+                setFieldValue('perspectives', mapIdsToArray(perspectivesOptions, selectedIds));
+                setFieldTouched("perspectives", true, false);
               }}
               error={touched.perspectives && errors.perspectives}
+              isDisabled={isLoadingPerspective || errorPerspective}
             >
             </SelectMultiple>
             {touched.perspectives && errors.perspectives && (

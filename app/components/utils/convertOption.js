@@ -7,3 +7,8 @@ export const convertOption = (array, idKey, labelKey) => {
     })) || [];
   };
   
+export const mapIdsToArray = (array, ids) => {
+    return array
+      .filter(opt => ids.includes(opt.value))
+      .map(opt => ({ id: opt.value, name: opt.label }));
+  };

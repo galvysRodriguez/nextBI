@@ -4,9 +4,11 @@ import { SelectSimple } from "../../utils/SelectMultiple";
 import { mocksOptions } from "./SectionFormTag";
 import { IconError } from '../../utils/IconError';
 import { useFormPerspectiveOne } from '../../hooks/validations/useFormPerspectiveOne';
+import { useIconOption } from "../../hooks/options/useIconOption";
+import { convertOption } from "../../utils/convertOption";
 
 
-export function SectionFormInfo() {
+export function SectionFormInfo({isCreate, perspectiveId}) {
   const { values,
     errors,
     touched,
@@ -15,7 +17,10 @@ export function SectionFormInfo() {
     setFieldValue,
     setFieldTouched,
     handleNext,
-  } = useFormPerspectiveOne()
+  } = useFormPerspectiveOne({isCreate, perspectiveId})
+
+  const { data: dataIcon, isLoading: isLoadingIcon, error: errorIcon } = useIconOption();
+  const iconsOptions = convertOption(dataIcon, "id", "icon");
 
   return (
     <div>
@@ -47,21 +52,21 @@ export function SectionFormInfo() {
           <div>
             <SelectSimple
               label="Ícono"
-              name="icons"
-              value={values.icons}
-              onChange={(value) => {
-                setFieldTouched('icons', true, false);
-                setFieldValue('icons', value, true);
+              name="icon_id"
+              value={iconsOptions.find(opt => opt.value === values.icon_id) || null}
+              onChange={(selected) => {
+                setFieldValue('icon_id', selected?.value ?? "");
+                setFieldTouched('icon_id', true, false);
               }}
-              onBlur={() => setFieldTouched('icons', true)}
-              options={mocksOptions}
+              options={iconsOptions}
               required
-              error={touched.icons && errors.icons}
+              error={touched.icon_id && errors.icon_id}
+              isDisabled={isLoadingIcon || errorIcon}
             />
-            {touched.icons && errors.icons && (
+            {touched.icon_id && errors.icon_id && (
               <div className="text-red-500 text-sm flex items-start">
                <IconError></IconError>
-                {errors.icons}
+                {errors.icon_id}
               </div>
             )}
           </div>

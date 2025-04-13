@@ -4,7 +4,7 @@ import { useFormTagOne } from "../../hooks/validations/useFormTagOne";
 import { IconError } from "../../utils/IconError";
 
 
-export function SectionFormInfo() {
+export function SectionFormInfo({isCreate, tagId}) {
   const { values,
       errors,
       touched,
@@ -13,7 +13,7 @@ export function SectionFormInfo() {
       setFieldValue,
       setFieldTouched,
       handleNext,
-    } = useFormTagOne()
+    } = useFormTagOne({isCreate, tagId})
   return (
     <div>
       <h2 className="text-xl text-center font-semibold mb-4">

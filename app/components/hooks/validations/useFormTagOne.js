@@ -1,39 +1,37 @@
 "use client";
 import { useFormikContext } from "formik";
 import { useStep } from "app/app/components/context/StepContext";
+import { useValidation } from "./useValidation";
+import { useFormActions } from "./useFormAction";
+import { useExistTagQuery } from "../exists/useExistTag";
 
-export const useFormTagOne = () => {
+const requiredFields = ["title"];
+
+export const useFormTagOne = ({ isCreate, tagId }) => {
   const { nextStep } = useStep();
-  const {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    setFieldValue,
-    setFieldTouched,
-    validateForm,
-  } = useFormikContext();
+  const formik = useFormikContext();
+  const { isSubmitting, setSubmitting, setErrors } = formik;
+  
+  const { refetch } = useExistTagQuery(
+    { title: formik.values.title, id: isCreate ? undefined : tagId },
+    { enabled: false }
+  );
 
-  const handleNext = async () => {
-    setFieldTouched("title", true);
+  const { validateRequiredFields, checkTitleExists } = useValidation({
+    requiredFields,
+    refetch
+  });
 
-    const errors = await validateForm();
-    if (!errors.title) {
-        //showSuccessToast('!Guardado exitosamente!')
-        nextStep();
-      };
-    
-  };
+  const { handleSubmit } = useFormActions({
+    validateRequiredFields,
+    checkTitleExists,
+    nextStep,
+    setErrors,
+    setSubmitting
+  });
 
   return {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    setFieldValue,
-    setFieldTouched,
-    handleNext,
+    ...formik,
+    handleNext: () => handleSubmit(formik),
   };
 };

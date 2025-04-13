@@ -1,46 +1,38 @@
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/targets/exist/`
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
+const BASE_URL = `${API_BASE}/targets/exist/`;
 
-const verifyTarget = async (formData) => {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al guardar los datos");
-  }
-
-  return response.json();
-};
-
-
-const verifyTargetUpdate = async ({ formData, id }) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/targets/exist/update/${id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al guardar los datos");
-  }
-
-  return response.json();
-};
-
-
-export const useExistTarget = () => {
-    return useMutation(verifyTarget);
-  };
-
+const verifyTargetExistence = async ({ title, target_id = null }) => {
+  const url = new URL(BASE_URL);
+  url.searchParams.append('title', title);
   
-export const useExistTargetUpdate = () => {
-  return useMutation(verifyTargetUpdate);
+  if (target_id) url.searchParams.append('target_id', target_id.toString());
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Error verifying title${target_id ? ' (update)' : ''}`
+    );
+  }
+
+  return response.json();
+};
+
+export const useExistTargetQuery = ({ title, target_id }) => {
+  return useQuery({
+    queryKey: ["targetExistence", title, target_id],
+    queryFn: () => verifyTargetExistence({ title, target_id }),
+    enabled: false, 
+    retry: false,
+    staleTime: 0,
+    cacheTime: 0,
+  });
 };

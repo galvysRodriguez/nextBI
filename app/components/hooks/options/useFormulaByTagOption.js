@@ -16,5 +16,6 @@ export function useFormulaByTagOption(tagId) {
     queryKey: ["formula_by_tag", tagId],
     queryFn: () => fetchFormulaByTag(tagId),
     enabled: isValidTag, 
+    staleTime: 5 * 60 * 1000
   });
 }

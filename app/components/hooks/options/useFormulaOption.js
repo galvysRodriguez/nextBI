@@ -14,6 +14,7 @@ export function useFormulaOption() {
     return useQuery({
       queryKey: ["formula"],
       queryFn: fetchFormula,
+      staleTime: 5 * 60 * 1000
     });
   }
   

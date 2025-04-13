@@ -1,41 +1,37 @@
 "use client";
 import { useFormikContext } from "formik";
 import { useStep } from "app/app/components/context/StepContext";
-import { showSuccessToast } from "../../utils/toast";
+import { useValidation } from "./useValidation";
+import { useFormActions } from "./useFormAction";
+import { useExistPerspectiveQuery } from "../exists/useExistPerspective";
 
-export const useFormPerspectiveOne = () => {
+const requiredFields = ["title", "icons"];
+
+export const useFormPerspectiveOne = ({ isCreate, perspectiveId }) => {
   const { nextStep } = useStep();
-  const {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    setFieldValue,
-    setFieldTouched,
-    validateForm,
-  } = useFormikContext();
+  const formik = useFormikContext();
+  const { isSubmitting, setSubmitting, setErrors } = formik;
+  
+  const { refetch } = useExistPerspectiveQuery(
+    { title: formik.values.title, id: isCreate ? undefined : perspectiveId },
+    { enabled: false }
+  );
 
-  const handleNext = async () => {
-    setFieldTouched("title", true);
-    setFieldTouched("icons", true);
+  const { validateRequiredFields, checkTitleExists } = useValidation({
+    requiredFields,
+    refetch
+  });
 
-    const errors = await validateForm();
-    if (!errors.title && !errors.icons) {
-        //showSuccessToast('!Guardado exitosamente!')
-        nextStep();
-      };
-    
-  };
+  const { handleSubmit } = useFormActions({
+    validateRequiredFields,
+    checkTitleExists,
+    nextStep,
+    setErrors,
+    setSubmitting
+  });
 
   return {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    setFieldValue,
-    setFieldTouched,
-    handleNext,
+    ...formik,
+    handleNext: () => handleSubmit(formik),
   };
 };

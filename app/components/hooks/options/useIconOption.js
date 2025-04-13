@@ -14,6 +14,7 @@ export function useIconOption() {
     return useQuery({
       queryKey: ["icons"],
       queryFn: fetchIcon,
+      staleTime: 5 * 60 * 1000
     });
   }
   

@@ -4,6 +4,8 @@ import { useStep } from "app/app/components/context/StepContext";
 import SelectMultiple from "../../utils/SelectMultiple";
 import { useFormTagTwo } from "../../hooks/validations/useFormTagTwo";
 import { IconError } from "../../utils/IconError";
+import { convertOption, mapIdsToArray } from "../../utils/convertOption";
+import { useIndicatorOption } from "../../hooks/options/useIndicatorOption";
 
 export const mocksOptions = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -21,6 +23,9 @@ export function SectionFormIndicator() {
   } = useFormTagTwo()
 
   const {prevStep, nextStep} = useStep()
+  const { data: dataIndicator, isLoading: isLoadingIndicator, error: errorIndicator } = useIndicatorOption();
+  
+    const indicatorsOptions = convertOption(dataIndicator, "id", "indicator");
   return (
     <div>
       <h2 className="text-xl text-center font-semibold mb-4">
@@ -31,14 +36,18 @@ export function SectionFormIndicator() {
             <SelectMultiple
               label="Indicadores"
               name="indicators"
-              value={values.indicators}
-              onChange={(selected) => {
-                setFieldValue('indicators', selected);
-                validateField('indicators');
+              value={indicatorsOptions.filter(opt =>
+                values.indicators.some(p => p.id === opt.value)
+              )}
+              onChange={(selectedOptions) => {
+                const selectedIds = selectedOptions?.map(option => option.value) || [];
+                setFieldValue('indicators', mapIdsToArray(indicatorsOptions, selectedIds));
+                setFieldTouched("indicators", true, false);
               }}
               required
-              options={mocksOptions}
+              options={indicatorsOptions}
               error={touched.indicators && errors.indicators}
+              isDisabled={isLoadingIndicator || errorIndicator}
             >
             </SelectMultiple>
             {touched.indicators && errors.indicators && (

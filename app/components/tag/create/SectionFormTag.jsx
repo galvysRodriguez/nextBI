@@ -5,7 +5,9 @@ import { SectionFormInfo } from "./SectionFormInfo";
 import { SectionFormPerspective } from "./SectionFormPerspective";
 import { SectionFormIndicator } from './SectionFormIndicator';
 import { tagSchema } from '../../schemas/tagSchema';
-import { useSaveFormula } from "../../hooks/useFormula";
+import { useSaveFormTag, useUpdateFormTag } from '../../hooks/create/useSaveTag';
+import { useParentRedirect } from '../../hooks/useParentRedirect';
+import { showSuccessToast } from '../../utils/toast';
 
 const initialValues = {
   title: '',
@@ -14,26 +16,39 @@ const initialValues = {
 };
 
 
-export function SectionFormTag({ isCreate }) {
+export function SectionFormTag({ isCreate, initialData=initialValues, tagId }) {
   const { activeStep } = useStep();
-  const { mutate } = useSaveFormula();
+  const { mutate: create} = useSaveFormTag()
+  const {mutate : update} = useUpdateFormTag()
+  const { redirectToParent} = useParentRedirect()
 
   const handleSubmit = (values, { setSubmitting }) => {
-    //mutate(values);
-    console.log("values", {values})
-    setSubmitting(false);
+    const mutation = isCreate ? create : update;
+    const message = isCreate ? 'Guardado' : 'Actualizado';
+
+    mutation(values, {
+      onSuccess: () => {
+        setSubmitting(false);
+        showSuccessToast(`${message} exitosamente`);
+        redirectToParent()
+      },
+      onError: (error) => {
+        console.error(`Error al ${isCreate ? 'crear' : 'actualizar'} el formulario:`, error);
+        setSubmitting(false);
+      },
+    });
   };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={initialData}
       validateOnChange={true}
       validateOnBlur={true}
       validationSchema={tagSchema}
       onSubmit={handleSubmit}
     >
       <Form>
-        {activeStep === 0 && <SectionFormInfo />}
+        {activeStep === 0 && <SectionFormInfo isCreate={isCreate} tagId={tagId}/>}
         {activeStep === 2 && <SectionFormPerspective isCreate={isCreate} />}
         {activeStep === 1 && <SectionFormIndicator isCreate={isCreate} />}
       </Form>

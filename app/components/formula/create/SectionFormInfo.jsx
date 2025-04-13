@@ -3,6 +3,8 @@ import { Button, Input, Select } from "app/app/components/utils/Input";
 import { SelectSimple } from "../../utils/SelectMultiple";
 import { useFormFormulaOne } from "../../hooks/validations/useFormFormulaOne";
 import { IconError } from "../../utils/IconError";
+import { useTagOption } from "../../hooks/options/useTagOption";
+import { convertOption } from "../../utils/convertOption";
 
 export const mocksOptions = [
   { value: 1, label: 'Chocolate' },
@@ -10,7 +12,7 @@ export const mocksOptions = [
   { value: 3, label: 'Vanilla' }
 ]
 
-export function SectionFormInfo() {
+export function SectionFormInfo({isCreate, formulaId}) {
    const { values,
       errors,
       touched,
@@ -19,7 +21,12 @@ export function SectionFormInfo() {
       setFieldValue,
       setFieldTouched,
       handleNext,
-    } = useFormFormulaOne()
+    } = useFormFormulaOne({isCreate, formulaId})
+
+    console.log(formulaId)
+
+  const { data: dataTag, isLoading: isLoadingTag, error: errorTag } = useTagOption()
+  const tagsOptions = convertOption(dataTag, "id", "title");
   return (
     <div>
       <h2 className="text-xl text-center font-semibold mb-4">
@@ -49,20 +56,22 @@ export function SectionFormInfo() {
             <div>
               <SelectSimple
                 label="Etiqueta"
-                name="tag"
-                value={mocksOptions.find(opt => opt.value === values.tag)}
+                name="tag_id"
+                value={tagsOptions.find(opt => opt.value === values.tag_id) || null}
+                onBlur={handleBlur}
                 onChange={(selected) => {
-                  setFieldValue('tag', selected?.value ?? '');
-                  setFieldTouched('tag', true, false);
+                  setFieldValue('tag_id', selected?.value ?? '');
+                  setFieldTouched('tag_id', true, false);
                 }}
-                options={mocksOptions}
-                error={touched.tag && errors.tag}
+                options={tagsOptions}
+                error={touched.tag_id && errors.tag_id}
+                isDisabled={isLoadingTag || errorTag}
               >
               </SelectSimple>
-              {touched.tag && errors.tag && (
+              {touched.tag_id && errors.tag_id && (
                 <div className="text-red-500 text-sm flex items-start">
                     <IconError></IconError>
-                    {errors.tag}
+                    {errors.tag_id}
                 </div>
               )}
             </div>

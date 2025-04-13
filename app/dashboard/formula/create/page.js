@@ -7,8 +7,9 @@ export default function Home() {
   return (
     <>
       <StepForm initialStep={0} stepList={steps} title={"Formulario de fórmulas"}>
-        <SectionFormFormula></SectionFormFormula>
+        <SectionFormFormula isCreate={true}></SectionFormFormula>
       </StepForm>
     </>
   );
 }
+

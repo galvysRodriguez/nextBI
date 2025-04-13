@@ -1,10 +1,11 @@
 "use client";
-import { useFormikContext } from 'formik';
 import { Button } from "app/app/components/utils/Input";
 import SelectMultiple from "../../utils/SelectMultiple";
 import { useStep } from "app/app/components/context/StepContext";
 import { useFormPerspectiveTwo } from '../../hooks/validations/useFormPerspectiveTwo';
 import { IconError } from '../../utils/IconError';
+import { useTagOption } from '../../hooks/options/useTagOption';
+import { convertOption, mapIdsToArray } from '../../utils/convertOption';
 
 export const mocksOptions = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -22,6 +23,9 @@ export function SectionFormTag() {
       validateField,
     } = useFormPerspectiveTwo()
 
+  const { data: dataTag, isLoading: isLoadingTag, error: errorTag } = useTagOption();
+  const tagsOptions = convertOption(dataTag, "id", "title");
+
   return (
     <div>
       <h2 className="text-xl text-center font-semibold mb-4">
@@ -32,14 +36,18 @@ export function SectionFormTag() {
           <SelectMultiple
             label="Etiquetas"
             name="tags"
-            value={values.tags}
-            onChange={(selected) => {
-              setFieldValue('tags', selected);
-              validateField('tags');
+            value={tagsOptions.filter(opt =>
+              values.tags.some(p => p.id === opt.value)
+            )}
+            onChange={(selectedOptions) => {
+              const selectedIds = selectedOptions?.map(option => option.value) || [];
+              setFieldValue('tags', mapIdsToArray(indicatorsOptions, selectedIds));
+              setFieldTouched("tags", true, false);
             }}
             required
-            options={mocksOptions}
+            options={tagsOptions}
             error={touched.tags && errors.tags}
+            isDisabled={isLoadingTag || errorTag}
           />
           {touched.tags && errors.tags && (
             <div className="text-red-500 text-sm flex items-start">

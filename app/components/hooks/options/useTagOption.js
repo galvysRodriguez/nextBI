@@ -14,6 +14,7 @@ export function useTagOption() {
     return useQuery({
       queryKey: ["tags"],
       queryFn: fetchTag,
+      staleTime: 5 * 60 * 1000
     });
   }
   

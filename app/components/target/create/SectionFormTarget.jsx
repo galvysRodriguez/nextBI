@@ -37,14 +37,12 @@ export function SectionFormTarget({ isCreate, initialData=initialValues, targetI
       start_date: new Date(values.start_date).toISOString().split("T")[0],
       end_date: values.end_date ? new Date(values.end_date).toISOString().split("T")[0] : ""
     };
-
-    console.log({"valores": formattedValues})
   
     mutation(formattedValues, {
       onSuccess: () => {
+        setSubmitting(false);
         showSuccessToast(`${message} exitosamente`);
         redirectToParent()
-        setSubmitting(false);
       },
       onError: (error) => {
         console.error(`Error al ${isCreate ? 'crear' : 'actualizar'} el formulario:`, error);
