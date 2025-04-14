@@ -21,6 +21,7 @@ export function SectionFormTag() {
       setFieldValue,
       handleNext,
       validateField,
+      setFieldTouched,
     } = useFormPerspectiveTwo()
 
   const { data: dataTag, isLoading: isLoadingTag, error: errorTag } = useTagOption();
@@ -41,7 +42,7 @@ export function SectionFormTag() {
             )}
             onChange={(selectedOptions) => {
               const selectedIds = selectedOptions?.map(option => option.value) || [];
-              setFieldValue('tags', mapIdsToArray(indicatorsOptions, selectedIds));
+              setFieldValue('tags', mapIdsToArray(tagsOptions, selectedIds));
               setFieldTouched("tags", true, false);
             }}
             required

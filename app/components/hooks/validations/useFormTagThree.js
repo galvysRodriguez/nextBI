@@ -21,13 +21,6 @@ export const useFormTagThree = () => {
 
   const handleNext = async () => {
     setFieldTouched("perspectives", true);
-
-    const errors = await validateForm();
-    if (!errors.perspectives) {
-        showSuccessToast('!Guardado exitosamente!')
-        //handleSubmit()
-        redirectToParent()
-      };
   };
 
   return {

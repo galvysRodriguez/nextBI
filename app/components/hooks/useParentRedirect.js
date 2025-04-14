@@ -6,8 +6,10 @@ export const useParentRedirect = () => {
   const pathname = usePathname();
 
   const redirectToParent = () => {
-    const parentPath = pathname.split("/").slice(0, -1).join("/");
-    router.push(parentPath);
+    const segments = pathname.split("/").filter(Boolean);
+    const countBack = segments.includes("update") ? -2 : -1;
+    const parentPath = "/" + segments.slice(0, countBack).join("/");
+    router.push(parentPath || "/"); 
   };
 
   return { redirectToParent };

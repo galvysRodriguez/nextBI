@@ -26,7 +26,13 @@ export function SectionFormTag({ isCreate, initialData=initialValues, tagId }) {
     const mutation = isCreate ? create : update;
     const message = isCreate ? 'Guardado' : 'Actualizado';
 
-    mutation(values, {
+    const formattedValues = {
+      ...values,
+      perspectives: values.perspectives.map(perspective => typeof perspective === 'object' ? perspective.id : perspective),
+      indicators: values.indicators.map(indicator => typeof indicator === 'object' ? indicator.id : indicator)
+    };
+
+    mutation(formattedValues, {
       onSuccess: () => {
         setSubmitting(false);
         showSuccessToast(`${message} exitosamente`);

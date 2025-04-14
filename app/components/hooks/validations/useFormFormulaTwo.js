@@ -20,13 +20,6 @@ export const useFormFormulaTwo = () => {
   const { redirectToParent } = useParentRedirect();
 
   const handleNext = async () => {
-
-    const errors = await validateForm();
-    if (!errors.formula) {
-        showSuccessToast('!Guardado exitosamente!')
-        //handleSubmit()
-        redirectToParent()
-      };
   };
 
   return {

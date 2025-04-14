@@ -19,6 +19,7 @@ export function SectionFormIndicator() {
     touched,
     setFieldValue,
     handleNext,
+    setFieldTouched,
     validateField,
   } = useFormTagTwo()
 

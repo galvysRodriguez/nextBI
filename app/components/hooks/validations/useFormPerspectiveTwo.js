@@ -20,13 +20,6 @@ export const useFormPerspectiveTwo = () => {
 
   const handleNext = async () => {
     setFieldTouched("tags", true);
-
-    const errors = await validateForm();
-    if (!errors.tags) {
-        showSuccessToast('!Guardado exitosamente!')
-        //handleSubmit()
-        redirectToParent()
-      };
   };
 
   return {

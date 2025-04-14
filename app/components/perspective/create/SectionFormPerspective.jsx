@@ -19,14 +19,17 @@ export function SectionFormPerspective({ isCreate, initialData=initialValues, pe
   const { mutate: create} = useSaveFormPerspective()
   const { mutate: update} = useUpdateFormPerspective()
   const { redirectToParent } = useParentRedirect();
-
-  console.log("initialData", initialData)
   
     const handleSubmit = (values, { setSubmitting }) => {
       const mutation = isCreate ? create : update;
       const message = isCreate ? 'Guardado' : 'Actualizado';
+
+      const formattedValues = {
+        ...values,
+        tags: values.tags.map(tag => typeof tag === 'object' ? tag.id : tag)
+      };
   
-      mutation(values, {
+      mutation(formattedValues, {
         onSuccess: () => {
           setSubmitting(false)
           showSuccessToast(`${message} exitosamente`);
