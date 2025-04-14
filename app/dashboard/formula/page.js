@@ -1,4 +1,5 @@
-import { GetTableFormula, SectionFormula } from "app/app/components/formula/SectionFormula"
+import { GetTableFormula } from "app/app/components/formula/GetTableFormula";
+import { SectionFormula } from "app/app/components/formula/SectionFormula"
 
 export default function Home() {
   return (

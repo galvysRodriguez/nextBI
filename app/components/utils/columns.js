@@ -98,7 +98,7 @@ export const initialColumnsFormula = [
     header: "Titulo",
   },
   { accessorKey: "tag", 
-    header: "Grupo",
+    header: "Etiqueta",
   },
 ]
 
