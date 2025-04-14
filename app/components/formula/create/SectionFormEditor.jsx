@@ -25,7 +25,8 @@ export function SectionFormEditor() {
     setFieldValue,
     setFieldTouched,
     handleNext,
-    validateField
+    validateField,
+    isSubmitting
   } = useFormFormulaTwo();
 
   const { sectionOpen, toggleSection } = useSectionOpen();
@@ -159,6 +160,7 @@ export function SectionFormEditor() {
             type="button"
             onClick={prevStep}
             variant="secondary"
+            isDisabled={isSubmitting}
           >
             Volver
           </Button>

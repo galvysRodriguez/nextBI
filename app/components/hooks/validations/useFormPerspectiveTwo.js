@@ -15,6 +15,7 @@ export const useFormPerspectiveTwo = () => {
     validateForm,
     validateField,
     handleSubmit,
+    isSubmitting,
   } = useFormikContext();
   const { redirectToParent } = useParentRedirect();
 
@@ -28,6 +29,7 @@ export const useFormPerspectiveTwo = () => {
     touched,
     handleChange,
     handleBlur,
+    isSubmitting,
     setFieldValue,
     setFieldTouched,
     handleNext,

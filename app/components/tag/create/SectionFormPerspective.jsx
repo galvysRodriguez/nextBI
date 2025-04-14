@@ -21,6 +21,7 @@ export function SectionFormPerspective() {
         handleNext,
         validateField,
         setFieldTouched,
+        isSubmitting,
       } = useFormTagThree()
 
   const {prevStep} = useStep()
@@ -71,6 +72,7 @@ export function SectionFormPerspective() {
                     type="button"
                     onClick={prevStep}
                     variant="secondary"
+                    isDisabled={isSubmitting}
                 >
                     Volver
                 </Button>

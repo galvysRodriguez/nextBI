@@ -12,6 +12,7 @@ export function SectionFormOptimal() {
             setFieldValue,
             handleNext,
             handleChange,
+            isSubmitting,
             handleBlur,
             validateField,
             setFieldTouched,
@@ -90,6 +91,7 @@ export function SectionFormOptimal() {
               type="button"
               onClick={prevStep}
               variant="secondary"
+              isDisabled={isSubmitting}
             >
               Volver
             </Button>

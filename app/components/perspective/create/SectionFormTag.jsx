@@ -21,6 +21,7 @@ export function SectionFormTag() {
       setFieldValue,
       handleNext,
       validateField,
+      isSubmitting,
       setFieldTouched,
     } = useFormPerspectiveTwo()
 
@@ -68,6 +69,7 @@ export function SectionFormTag() {
           <Button
             type="button"
             onClick={prevStep}
+            isDisabled={isSubmitting}
             variant="secondary"
           >
             Volver
