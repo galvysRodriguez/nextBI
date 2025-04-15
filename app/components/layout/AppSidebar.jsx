@@ -1,23 +1,31 @@
 "use client"
-
-import { useState } from "react"
 import { Menu, X } from "lucide-react" 
-import { NAV_MENU } from "./NavMenu"
-import Sidebar, { IconUser } from "./Sidebar"
-import { SidebarItem } from "./SidebarItem"
+import { IconUser } from "./Sidebar"
+import { NAV_MENU, NAV_MENU_FINAL } from "./NavMenu"
 import { Logo } from "./Logo"
 import { useMenuMobile } from "../context/IsGrid"
-import SidebarMobile from "./SidebarMobile"
-import { SidebarItemMobile } from "./SidebarItemMobile"
+import { SidebarOptionsMobile, SidebarOptionsPC } from "./SidebarOptions"
+import { usePerspectiveIconOption } from "./useDynamicPerspective"
+import { useEffect } from "react"
+import { mapBackendPerspectivesToNav } from "./mapBackendPerspectivesToNav"
 
 export default function AppSidebar() {
-  const{menuMobile, changeMenuMobile} = useMenuMobile()
+  const { menuMobile, changeMenuMobile } = useMenuMobile()
+  const { data, isLoading, error } = usePerspectiveIconOption()
+  
+  // Fusionar los datos de la API con NAV_MENU
+  const mergedNavMenu = [
+    ...NAV_MENU,
+    ...mapBackendPerspectivesToNav(data?.data || []),
+    ...NAV_MENU_FINAL
+  ]
+
+  //if (isLoading) return <div className="p-4">Cargando...</div>
+  //if (error) return <div className="p-4 text-red-500">Error: {error.message}</div>
 
   return (
     <>
-      {/* Header para móvil */}
       <div className="md:hidden w-full bg-white shadow-md p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
-        
         <button
           onClick={() => changeMenuMobile()}
           className="p-2 bg-gray-200 rounded"
@@ -26,31 +34,19 @@ export default function AppSidebar() {
         </button>
         <div className="flex place-items-center gap-2">
           <Logo></Logo>
-          <strong className="text-xl font-semibold text-[#253664]" >AFTIM</strong>
+          <strong className="text-xl font-semibold text-[#253664]">AFTIM</strong>
         </div>
-        
         <IconUser></IconUser>
       </div>
 
-      {menuMobile && (
-        <div className="fixed h-full bg-white shadow-lg z-50 transform transition-transform duration-300">
-          <SidebarMobile>
-            {NAV_MENU.map((nav) => (
-              <SidebarItemMobile {...nav} key={nav.text} />
-            ))}
-          </SidebarMobile>
-        </div>
-      )}
+      {menuMobile && <SidebarOptionsMobile array={mergedNavMenu}/>}
 
-      <div className="hidden md:block">
-        <Sidebar>
-            {NAV_MENU.map((nav) => (
-              <SidebarItem {...nav} key={nav.text} />
-            ))}
-          </Sidebar>
-      </div>
+      <SidebarOptionsPC array={mergedNavMenu}/>
       {menuMobile && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={() => changeMenuMobile()} />
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" 
+          onClick={() => changeMenuMobile()} 
+        />
       )}
     </>
   )

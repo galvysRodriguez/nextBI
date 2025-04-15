@@ -4,11 +4,11 @@ import { Title } from "../container/Title"
 import { PrincipalContainer } from "../container/PrincipalContainer"
 
 
-export function SectionTarget({content, title}) {
+export function SectionTarget({content, id}) {
     return (
         <>
             <PrincipalContainer>
-                <Title   title={title}  />
+                <Title   id={id}  />
                 <HeaderTarget></HeaderTarget>
                 <MainTarget content={content}></MainTarget>
             </PrincipalContainer>

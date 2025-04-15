@@ -1,13 +1,24 @@
+import { BookUser } from "lucide-react"
+import { Tags } from "lucide-react"
+import { SquareSigma } from "lucide-react"
 import { Users, Home, CircleDollarSign, PackageSearch, BookCheck, ChartNoAxesColumn, Map, BookMarked } from "lucide-react"
 
 export const NAV_MENU = [
     {icon: <Home/>, text:'Inicio', href:'/dashboard/home', alert:'false'},
-    {icon: <CircleDollarSign/>, text:'Finanzas', href:'/dashboard/finance', alert:'false'},
-    {icon: <PackageSearch/>, text:'Procesos', href:'/dashboard/process', alert:'false'},
-    {icon: <Users/>, text:'Clientes', href:'/dashboard/client', alert:'false'},
-    {icon: <BookCheck/>, text:'Aprendizaje', href:'/dashboard/innovation', alert:'false'},
-    {icon: <BookMarked/>, text:'Analitica', href:'/dashboard/analytic', alert:'false'},
+    //{icon: <CircleDollarSign/>, text:'Finanzas', href:'/dashboard/finance', alert:'false'},
+    //{icon: <PackageSearch/>, text:'Procesos', href:'/dashboard/process', alert:'false'},
+    //{icon: <Users/>, text:'Clientes', href:'/dashboard/client', alert:'false'},
+    //{icon: <BookCheck/>, text:'Aprendizaje', href:'/dashboard/innovation', alert:'false'},
+    //{icon: <BookMarked/>, text:'Analitica', href:'/dashboard/analytic', alert:'false'},
    // {icon: <ChartNoAxesColumn/>, text:'Predicciones', href:'/dashboard/regresion', alert:'false'},
     //{icon: <Map/>, text:'Mapa', href:'/dashboard/map', alert:'false'}
 ]
 
+export const NAV_MENU_FINAL = [
+    {icon: <BookMarked/>, text:'Analitica', href:'/dashboard/analytic', alert:'false'},
+    {icon: <SquareSigma/>, text:'Formula', href:'/dashboard/formula', alert:'false'},
+    {icon: <Tags/>, text:'Etiqueta', href:'/dashboard/tag', alert:'false'},
+    {icon: <BookUser/>, text:'Perspectiva', href:'/dashboard/perspective', alert:'false'}
+   // {icon: <ChartNoAxesColumn/>, text:'Predicciones', href:'/dashboard/regresion', alert:'false'},
+    //{icon: <Map/>, text:'Mapa', href:'/dashboard/map', alert:'false'}
+]

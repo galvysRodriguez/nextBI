@@ -4,15 +4,24 @@ import { useCardStore } from "../context/IsGrid";
 import { useDeleteTarget } from "../hooks/useDeleteTargets";
 import Progress from "../utils/Progress";
 import { useTargetStore } from "../hooks/useSearch";
+import { useRouter } from "next/navigation";
 
 export function ButtonDelete() {
   const { selectedCard, isNullSelected} = useCardStore();
   const { mutate, isLoading } = useDeleteTarget(); 
   const { deleteById } = useTargetStore();
+  const router = useRouter(); 
 
   const handleDelete = () => {
-      mutate(selectedCard)
-      deleteById(selectedCard)
+    mutate(selectedCard, {
+      onSuccess: () => {
+        deleteById(selectedCard); 
+        router.refresh(); 
+      },
+      onError: (error) => {
+        console.error("Error al eliminar el target:", error);
+      },
+    });
   };
 
   if(isLoading){
