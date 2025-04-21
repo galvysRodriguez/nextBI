@@ -4,18 +4,37 @@ import { Button, Input, Footer } from '../components/utils/Input';
 import Image from 'next/image';
 import { LOGO_AFTIM } from '../components/utils/const';
 import { loginSchema } from '../components/schemas/loginSchema';
+import { useRouter } from 'next/navigation';
+import { useLogin } from '../components/hooks/auth/useLogin';
+import { useEffect } from 'react';
+import { useAuthStore } from '../components/hooks/auth/useAuthStore';
 
 export default function Login() {
+  const router = useRouter()
+  const { login, loading, error } = useLogin();
+  const { isAuthenticated} = useAuthStore()
+
   const formik = useFormik({
     initialValues: {
       username: '',
-      password: '',
+      hashed_password: '',
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      console.log('Login values:', values);
+    onSubmit: async (values, { setFieldError }) => {
+      try {
+        await login(values);
+      } catch (err) {
+        const errorMessage = err.response?.data?.message || 'Error de autenticación';
+        setFieldError('hashed_password', errorMessage);
+      }
     },
   });
+
+  useEffect(() => {
+    if (isAuthenticated) { 
+      router.push('/dashboard/home');
+    }
+  }, [isAuthenticated, router]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -28,49 +47,52 @@ export default function Login() {
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mb-8">
             <h2 className="text-xl font-semibold text-center text-black mb-6">Iniciar Sesión</h2>
             <form onSubmit={formik.handleSubmit}>
-                <div className="w-[80%] h-[300px] m-auto pt-2 flex flex-col justify-between text-gray-950">
-                  <div className="flex flex-col justify-center gap-4">
-                    <div>
-                      <Input
-                        label="Usuario"
-                        type="text"
-                        name="username"
-                        value={formik.values.username}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.username && formik.errors.username}
-                        required
-                      />
-                      {formik.touched.username && formik.errors.username && (
-                        <p className="text-red-500 text-sm">{formik.errors.username}</p>
-                      )}
-                    </div>
-                    <div>
-                      <Input
-                        label="Contraseña"
-                        type="password"
-                        name="password"
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.password && formik.errors.password}
-                        required
-                      />
-                      {formik.touched.password && formik.errors.password && (
-                        <p className="text-red-500 text-sm">{formik.errors.password}</p>
-                      )}
-                    </div>
+              <div className="w-[80%] h-[300px] m-auto pt-2 flex flex-col justify-between text-gray-950">
+                <div className="flex flex-col justify-center gap-4">
+                  <div>
+                    <Input
+                      label="Usuario"
+                      type="text"
+                      name="username"
+                      value={formik.values.username}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.username && formik.errors.username}
+                      required
+                    />
+                    {formik.touched.username && formik.errors.username && (
+                      <p className="text-red-500 text-sm">{formik.errors.username}</p>
+                    )}
                   </div>
-                  <div className="mt-8">
-                    <Button
-                      type="submit" 
-                      variant="primary"
-                      disabled={formik.isSubmitting}
-                    >
-                      {formik.isSubmitting ? 'Enviando...' : 'Enviar'}
-                    </Button>
+                  <div>
+                    <Input
+                      label="Contraseña"
+                      type="hashed_password"
+                      name="hashed_password"
+                      value={formik.values.hashed_password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.hashed_password && formik.errors.hashed_password}
+                      required
+                    />
+                    {formik.touched.hashed_password && formik.errors.hashed_password && (
+                      <p className="text-red-500 text-sm">{formik.errors.hashed_password}</p>
+                    )}
                   </div>
                 </div>
+                {error && (
+                  <p className="text-red-600 text-sm text-center mt-2">{error}</p>
+                )}
+                <div className="mt-8">
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    disabled={formik.isSubmitting || loading}
+                  >
+                    {loading ? 'Cargando...' : 'Enviar'}
+                  </Button>
+                </div>
+              </div>
             </form>
           </div>
         </div>
