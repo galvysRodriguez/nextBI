@@ -9,7 +9,8 @@ export const mapBackendPerspectivesToNav = (data) => {
           icon: <IconComponent />,
           text: item.perspective,
           href: `/dashboard/target/perspective/${item.id}`,
-          alert: 'false'
+          alert: 'false',
+          resource: `${item.perspective}/${item.id}`
         };
       });
   };

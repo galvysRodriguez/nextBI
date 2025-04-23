@@ -1,7 +1,7 @@
+import { apiRequest } from "app/app/components/api/apiRequest";
+import { API_ROUTES } from "app/app/components/api/routes";
 import StepForm from "app/app/components/container/create/StepForm";
 import { SectionFormPerspective } from "app/app/components/perspective/create/SectionFormPerspective";
-
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/perspectives`
 
 export const steps = ["Informacion general", "Etiquetas"]
 
@@ -19,9 +19,8 @@ export default async function Home({params}) {
 }
 
 export async function fetchDataFromServer(id) {
-  const response = await fetch(`${url}/${id}`);
-  if (!response.ok) {
-    throw new Error('Error al obtener los datos');
-  }
-  return response.json();
+    return apiRequest({
+      endpoint: API_ROUTES.PERSPECTIVES.get(id), 
+      method: "GET",
+    });
 }

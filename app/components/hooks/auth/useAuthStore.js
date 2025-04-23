@@ -1,18 +1,17 @@
+"use client"
 import { create } from 'zustand';
 import Cookies from 'js-cookie';
+import { setAuthToken } from '../../utils/authClient';
+
 
 export const useAuthStore = create((set) => ({
   token: Cookies.get('authToken') || null,
-  user: null,
+  user: JSON.parse(localStorage.getItem('authUser')) || null,
   isAuthenticated: !!Cookies.get('authToken'),
   
   setAuthData: (data) => {
-    Cookies.set('authToken', data.access_token, {
-      expires: 1,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      path: '/',
-    });
+    setAuthToken(data.access_token)
+    localStorage.setItem('authUser', JSON.stringify(data.user))
     set({ 
       token: data.access_token,
       user: data.user,

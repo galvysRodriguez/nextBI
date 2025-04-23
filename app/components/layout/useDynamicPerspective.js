@@ -1,20 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/perspectives/icons/`
-// Función para obtener los datos de la API
-const fetchPerspectiveIcon = async () => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('Error fetching data');
-  }
-  return response.json();
-};
+import { API_ROUTES } from "../api/routes";
+import { useApiQuery } from "../api/useApiQuery";
 
 export function usePerspectiveIconOption() {
-    return useQuery({
-      queryKey: ["perspectives-icon"],
-      queryFn: fetchPerspectiveIcon,
-      staleTime: 1200 * 60 * 1000
-    });
-  }
-  
+  return useApiQuery({
+    endpoint: API_ROUTES.PERSPECTIVES.icons,
+    queryKey: ["perspectives-icon"],
+    method: 'GET',
+    staleTime: 1200 * 60 * 1000,
+  });
+}

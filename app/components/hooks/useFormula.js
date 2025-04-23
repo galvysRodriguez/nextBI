@@ -1,26 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
-
 import { useMutation } from "@tanstack/react-query";
-
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/formula/`
-
-const saveFormulaData = async (formData) => {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al guardar los datos");
-  }
-
-  return response.json();
-};
+import { apiRequest } from "../api/apiRequest";
+import { API_ROUTES } from "../api/routes";
 
 export const useSaveFormula = () => {
+  const saveFormulaData = async (formData) => {
+    return await apiRequest({
+      method: "POST",
+      endpoint: API_ROUTES.FORMULA.create,
+      body: formData,
+    });
+  };
+
   return useMutation(saveFormulaData);
 };
-

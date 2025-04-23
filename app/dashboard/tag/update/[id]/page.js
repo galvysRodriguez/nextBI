@@ -1,7 +1,8 @@
+import { apiRequest } from "app/app/components/api/apiRequest";
+import { API_ROUTES } from "app/app/components/api/routes";
 import StepForm from "app/app/components/container/create/StepForm";
 import { SectionFormTag } from "app/app/components/tag/create/SectionFormTag";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/tags`
 export const steps = ["Informacion general", "Etiquetas", "Persepctivas"]
 
 export default async function Home({params}) {
@@ -18,9 +19,8 @@ export default async function Home({params}) {
 }
 
 export async function fetchDataFromServer(id) {
-  const response = await fetch(`${url}/${id}`);
-  if (!response.ok) {
-    throw new Error('Error al obtener los datos');
-  }
-  return response.json();
+    return apiRequest({
+      endpoint: API_ROUTES.TAGS.get(id), 
+      method: "GET",
+    });
 }

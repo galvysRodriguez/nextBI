@@ -1,8 +1,9 @@
 
 import { SectionFormTarget } from "app/app/components/target/create/SectionFormTarget"
 import StepForm from "app/app/components/container/create/StepForm";
+import { API_ROUTES } from "app/app/components/api/routes";
+import { apiRequest } from "app/app/components/api/apiRequest";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/targets`
 export const steps = ["Información general", "Periodo de tiempo", "Resultados"]
 
 export default async function Home({ params }) {
@@ -19,11 +20,11 @@ export default async function Home({ params }) {
 }
 
 export async function fetchDataFromServer(id) {
-  const response = await fetch(`${url}/${id}`);
-  if (!response.ok) {
-    throw new Error('Error al obtener los datos');
-  }
-  return response.json();
+    return apiRequest({
+      endpoint: API_ROUTES.TARGETS.get(id), 
+      method: "GET",
+    });
 }
+
 
 /*<ManageUpdate id={id} isCreate={true} activeStep={1}></ManageUpdate>*/

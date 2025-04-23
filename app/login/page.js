@@ -67,7 +67,7 @@ export default function Login() {
                   <div>
                     <Input
                       label="Contraseña"
-                      type="hashed_password"
+                      type="password"
                       name="hashed_password"
                       value={formik.values.hashed_password}
                       onChange={formik.handleChange}

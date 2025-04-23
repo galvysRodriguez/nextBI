@@ -1,28 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { API_ROUTES } from "../api/routes";
+import { useApiQuery } from "../api/useApiQuery";
 
-const fetchTargets = async ({ queryKey }) => {
-  const [, content] = queryKey; // Extraer `content` de `queryKey`
-  
-  if (!content) {
-    throw new Error("No content provided for API request"); // Validación para evitar el error
-  }
-
-  const url = `${process.env.NEXT_PUBLIC_API_URL || ""}${content}`; // Usar `content` en la URL dinámica
-  console.log("Fetching URL:", url); // Debugging
-
-  const response = await fetch(url, {
-    cache: "no-store",
-  });
-
-  if (!response.ok) throw new Error("Error fetching targets");
-
-  return response.json();
-};
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 export function useTargets(content) {
-  return useQuery({
-    queryKey: ["targets", content], 
-    queryFn: fetchTargets,
-    enabled: !!content,
+  return useApiQuery({
+    endpoint: `${API_BASE_URL}${content}`,
+    queryKey: ["targets", content],
+    method: "GET",
+    staleTime: 0, 
   });
 }

@@ -1,13 +1,12 @@
 "use client"
 import { Menu, X } from "lucide-react" 
-import { IconUser } from "./Sidebar"
 import { NAV_MENU, NAV_MENU_FINAL } from "./NavMenu"
 import { Logo } from "./Logo"
 import { useMenuMobile } from "../context/IsGrid"
 import { SidebarOptionsMobile, SidebarOptionsPC } from "./SidebarOptions"
 import { usePerspectiveIconOption } from "./useDynamicPerspective"
-import { useEffect } from "react"
 import { mapBackendPerspectivesToNav } from "./mapBackendPerspectivesToNav"
+import { Avatar } from "./Avatar"
 
 export default function AppSidebar() {
   const { menuMobile, changeMenuMobile } = useMenuMobile()
@@ -36,7 +35,7 @@ export default function AppSidebar() {
           <Logo></Logo>
           <strong className="text-xl font-semibold text-[#253664]">AFTIM</strong>
         </div>
-        <IconUser></IconUser>
+        <Avatar></Avatar>
       </div>
 
       {menuMobile && <SidebarOptionsMobile array={mergedNavMenu}/>}

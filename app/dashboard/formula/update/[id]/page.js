@@ -1,8 +1,9 @@
+import { apiRequest } from "app/app/components/api/apiRequest";
+import { API_ROUTES } from "app/app/components/api/routes";
 import StepForm from "app/app/components/container/create/StepForm";
 import { SectionFormFormula } from "app/app/components/formula/create/SectionFormFormula";
 
 export const steps = ["Informacion general", "Editor de formula"]
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/formula`
 
 export default async function Home({params}) {
   const id = (await params).id;
@@ -19,9 +20,8 @@ export default async function Home({params}) {
 
 
 export async function fetchDataFromServer(id) {
-  const response = await fetch(`${url}/${id}`);
-  if (!response.ok) {
-    throw new Error('Error al obtener los datos');
-  }
-  return response.json();
+    return apiRequest({
+      endpoint: API_ROUTES.FORMULA.get(id), 
+      method: "GET",
+    });
 }

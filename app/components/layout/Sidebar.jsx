@@ -1,8 +1,9 @@
 "use client"
-
 import { ChevronFirst, Menu } from "lucide-react"
 import { Logo } from "./Logo"
 import { useIsExpanded } from "../context/IsGrid";
+import { InfoUserNav } from "./InfoUserNav";
+import { DetailUserNav } from "./DetailUserNav";
 
 export default function Sidebar({ children }) {
   const { expanded, changeExpanded } = useIsExpanded();
@@ -34,64 +35,8 @@ export default function Sidebar({ children }) {
         </div>
 
         <ul className="flex flex-col md:flex-1 px-3 ">{children}</ul>
-
-        <div className="hidden md:flex border-t p-3 items-center">
-          <img
-            src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
-            alt=""
-            className="w-10 h-10 rounded-md"
-          />
-          <div
-            className={`overflow-hidden transition-all ${
-              expanded ? "w-52 ml-3" : "w-0"
-            }`}
-          >
-            <div className="leading-4">
-              <h4 className="font-semibold">John Doe</h4>
-              <span className="text-xs text-gray-600">johndoe@gmail.com</span>
-            </div>
-          </div>
-        </div>
+        <InfoUserNav></InfoUserNav>
       </nav>
     </header>
   );
-}
-
-
-export function NavUser() {
-  const { expanded, changeExpanded } = useIsExpanded();
-  return (
-    <div
-      className={`overflow-hidden transition-all${
-        expanded ? "w-52 ml-3" : "w-0"
-      }`}
-    >
-      <div className="leading-4">
-        <h4 className="font-semibold">John Doe</h4>
-        <span className="text-xs text-gray-600">johndoe@gmail.com</span>
-      </div>
-    </div>
-  );
-}
-
-export function IconUsers() {
-  return (
-    <div className="hidden md:flex border-t p-3 items-center">
-      <img
-        src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
-        alt=""
-        className="w-10 h-10 rounded-md"
-      />
-    </div>
-  );
-}
-
-export function IconUser(){
-  return (
-    <img
-      src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
-      alt=""
-      className="w-10 h-10 rounded-md"
-    />
-  )
 }

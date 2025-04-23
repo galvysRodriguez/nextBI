@@ -1,3 +1,5 @@
+import { apiRequest } from "../api/apiRequest";
+import { API_ROUTES } from "../api/routes";
 import BasicTable from "../container/table/BasicTable";
 import { mocksTags } from "../mocks/mocksCategories";
 import { initialColumnsTag } from "../utils/columns";
@@ -13,9 +15,8 @@ export async function GetTableTags(){
 }
 
 export async function fetchDataFromServer() {
-  const response = await fetch(`${url}`);
-  if (!response.ok) {
-    throw new Error('Error al obtener los datos');
-  }
-  return response.json();
+    return apiRequest({
+      endpoint: API_ROUTES.TAGS.getAll, 
+      method: "GET",
+    });
 }

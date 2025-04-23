@@ -1,44 +1,23 @@
 import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "../../api/apiRequest";
+import { API_ROUTES } from "../../api/routes";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/perspectives/`
-
-const saveFormDataPerspective = async (formDataPerspective) => {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formDataPerspective),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al guardar los datos");
-  }
-
-  return response.json();
+export const useSaveFormTarget = () => {
+  return useMutation((formDataPerspective) =>
+    apiRequest({
+      method: "POST",
+      endpoint: API_ROUTES.PERSPECTIVES.create,
+      body: formDataPerspective,
+    })
+  );
 };
 
-export const useSaveFormPerspective = () => {
-  return useMutation(saveFormDataPerspective);
-};
-
-
-const updateFormDataPerspective = async (formDataPerspective) => {
-  const response = await fetch(`${url}${formDataPerspective.id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formDataPerspective),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al guardar los datos");
-  }
-
-  return response.json();
-};
-
-export const useUpdateFormPerspective = () => {
-  return useMutation(updateFormDataPerspective);
+export const useUpdateFormTarget = () => {
+  return useMutation((formDataPerspective) =>
+    apiRequest({
+      method: "PUT",
+      endpoint: API_ROUTES.PERSPECTIVES.update(formDataPerspective.id),
+      body: formDataPerspective,
+    })
+  );
 };

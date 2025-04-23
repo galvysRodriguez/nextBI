@@ -1,19 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/indicators/perspective`
-// Función para obtener los datos de la API
-const fetchPerspective = async () => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('Error fetching data');
-  }
-  return response.json();
-};
+import { API_ROUTES } from "../api/routes";
+import { useApiQuery } from "../api/useApiQuery";
 
 export function usePerspective() {
-    return useQuery({
-      queryKey: ["perspective"],
-      queryFn: fetchPerspective,
+  return useApiQuery({
+      endpoint: API_ROUTES.INDICATORS.perspectives,
+      queryKey: ["perspectives"],
+      method: "GET",
+      staleTime: 0, 
     });
-  }
-  
+}

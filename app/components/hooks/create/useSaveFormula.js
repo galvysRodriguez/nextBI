@@ -1,44 +1,23 @@
 import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "../../api/apiRequest";
+import { API_ROUTES } from "../../api/routes";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/formula/`
-
-const saveFormDataFormula = async (formDataFormula) => {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formDataFormula),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al guardar los datos");
-  }
-
-  return response.json();
+export const useSaveFormTag = () => {
+  return useMutation((formDataFormula) =>
+    apiRequest({
+      method: "POST",
+      endpoint: API_ROUTES.TAGS.create,
+      body: formDataFormula,
+    })
+  );
 };
 
-export const useSaveFormFormula = () => {
-  return useMutation(saveFormDataFormula);
-};
-
-
-const updateFormDataFormula = async (formDataFormula) => {
-  const response = await fetch(`${url}${formDataFormula.id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formDataFormula),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al guardar los datos");
-  }
-
-  return response.json();
-};
-
-export const useUpdateFormFormula = () => {
-  return useMutation(updateFormDataFormula);
+export const useUpdateFormTag = () => {
+  return useMutation((formDataFormula) =>
+    apiRequest({
+      method: "PUT",
+      endpoint: API_ROUTES.TAGS.update(formDataFormula.id),
+      body: formDataFormula,
+    })
+  );
 };

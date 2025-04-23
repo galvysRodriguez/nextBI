@@ -1,21 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { API_ROUTES } from "../../api/routes";
+import { useApiQuery } from "../../api/useApiQuery";
 
-// Función para obtener los datos de la API
-const fetchFormulaByTag = async (tagId) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/formula/tag/${tagId}`);
-  if (!response.ok) {
-    throw new Error('Error fetching data');
-  }
-  return response.json();
-};
-
-export function useFormulaByTagOption(tagId) {
-    const isValidTag = !!(tagId && !isNaN(tagId));
-
-  return useQuery({
-    queryKey: ["formula_by_tag", tagId],
-    queryFn: () => fetchFormulaByTag(tagId),
-    enabled: isValidTag, 
-    staleTime: 5 * 60 * 1000
+export function useFormulaByTagOption() {
+  return useApiQuery({
+    endpoint: API_ROUTES.FORMULA.getAll,
+    queryKey: ["formula"],
+    method: "GET",
+    staleTime: 5 * 60 * 1000,
   });
 }
