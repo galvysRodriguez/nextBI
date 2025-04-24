@@ -17,6 +17,7 @@ export const API_ROUTES = {
     update: (id) => `${API_BASE_URL}/formula/${id}`,
     delete: (id) => `${API_BASE_URL}/formula/${id}`,
     exist: `${API_BASE_URL}/formula/exist/`,
+    getTag: `${API_BASE_URL}/formula/tag/`,
     tag: (value) => `${API_BASE_URL}/formula/tag/${value}`
   },
   PERSPECTIVES: {
@@ -43,6 +44,6 @@ export const API_ROUTES = {
   },
   INDICATORS: {
     perspectives: `${API_BASE_URL}/indicators/perspective`,
-    get: (id) => `${API_BASE_URL}/indicators/${id}`,
+    getAll:`${API_BASE_URL}/indicators/`,
   },
 };

@@ -13,7 +13,7 @@ export async function GetTableFormula(){
 
 export async function fetchDataFromServer() {
     return apiRequest({
-      endpoint: API_ROUTES.FORMULA.getAll(), 
+      endpoint: API_ROUTES.FORMULA.getTag, 
       method: "GET",
     });
 }

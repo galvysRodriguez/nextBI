@@ -10,7 +10,7 @@ export const mapBackendPerspectivesToNav = (data) => {
           text: item.perspective,
           href: `/dashboard/target/perspective/${item.id}`,
           alert: 'false',
-          resource: `${item.perspective}/${item.id}`
+          resource: `/targets/perspective/${item.id}`
         };
       });
   };

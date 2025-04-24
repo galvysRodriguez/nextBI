@@ -8,6 +8,6 @@ export const showSuccessToast = (message) => {
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      theme: "dark",
+      theme: "light",
     });
   };

@@ -16,12 +16,16 @@ function matchResourcePath(permResource, inputResource) {
 export function usePermissions() {
     const {user} = useAuthStore()
 
-    const isValid = useCallback((resourcePath) => {
+    const isValid = useCallback((resourcePath, action = "get") => {
         return user.permissions.some((perm) => {
-          const matchModule = perm.module === "*" || perm.module === "BI"; 
-          const matchControlator = perm.controlator === "NULL" || resourcePath.includes(perm.controlator);
-          const matchResource = perm.resource === "*" || matchResourcePath(perm.resource, resourcePath);
-          const matchAction = perm.action === "NULL"; 
+          if (perm.module === "*") return true
+           
+          const matchControlator = resourcePath.includes(perm.controlator);
+          if(matchControlator && perm.action === "*") return true
+
+          const matchModule = perm.module === "BI";
+          const matchResource = matchResourcePath(perm.resource, resourcePath);
+          const matchAction =  perm.action === action
     
           return matchModule && matchControlator && matchResource && matchAction;
         });

@@ -15,7 +15,9 @@ export const NAV_MENU = [
 ]
 
 export const NAV_MENU_FINAL = [
-    {icon: <BookMarked/>, text:'Analitica', href:'/dashboard/analytic', alert:'false', resource:'/reports/purchase'},
+    {icon: <BookMarked/>, text:'Rep2', href:'/dashboard/analytic', alert:'false', resource:'/reports/purchase'},
+    {icon: <BookMarked/>, text:'Rep3', href:'/dashboard/analytic', alert:'false', resource:'/reports/sale'},
+    {icon: <BookMarked/>, text:'Rep1', href:'/dashboard/analytic', alert:'false', resource:'/reports/warehouse'},
     {icon: <SquareSigma/>, text:'Formula', href:'/dashboard/formula', alert:'false', resource:'/formula'},
     {icon: <Tags/>, text:'Etiqueta', href:'/dashboard/tag', alert:'false', resource:'/tags'},
     {icon: <BookUser/>, text:'Perspectiva', href:'/dashboard/perspective/info', alert:'false', resource:'/perspectives'}
