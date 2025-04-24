@@ -1,30 +1,47 @@
-"use client"
-import { create } from 'zustand';
-import Cookies from 'js-cookie';
-import { setAuthToken } from '../../utils/authClient';
-
+"use client";
+import { create } from "zustand";
+import { getClientAuthToken, removeAuthToken, setAuthToken } from "../../utils/authClient";
 
 export const useAuthStore = create((set) => ({
-  token: Cookies.get('authToken') || null,
-  user: JSON.parse(localStorage.getItem('authUser')) || null,
-  isAuthenticated: !!Cookies.get('authToken'),
-  
+  token: null,
+  user:  null,
+  isAuthenticated: false,
+
+  loadFromStorage: () => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("authUser")
+      const token = getClientAuthToken()
+      if (user && token) {
+        set({
+          user: JSON.parse(user),
+          token,
+          isAuthenticated: true,
+        });
+      }
+    }
+  },
+
   setAuthData: (data) => {
-    setAuthToken(data.access_token)
-    localStorage.setItem('authUser', JSON.stringify(data.user))
-    set({ 
+    setAuthToken(data.access_token);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("authUser", JSON.stringify(data.user));
+    }
+    set({
       token: data.access_token,
       user: data.user,
-      isAuthenticated: !!data.access_token
+      isAuthenticated: !!data.access_token,
     });
   },
-  
+
   clearAuthData: () => {
-    Cookies.remove('authToken');
-    set({ 
+    removeAuthToken()
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("authUser");
+    }
+    set({
       token: null,
       user: null,
-      isAuthenticated: false 
+      isAuthenticated: false,
     });
   },
 }));

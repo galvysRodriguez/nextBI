@@ -8,6 +8,7 @@ import { usePerspectiveIconOption } from "./useDynamicPerspective"
 import { mapBackendPerspectivesToNav } from "./mapBackendPerspectivesToNav"
 import { Avatar } from "./Avatar"
 import { usePermissions } from "../hooks/auth/usePermissions"
+import { ButtonLogout } from "./ButtonLogout"
 
 export default function AppSidebar() {
   const { menuMobile, changeMenuMobile } = useMenuMobile()
@@ -39,7 +40,10 @@ export default function AppSidebar() {
           <Logo></Logo>
           <strong className="text-xl font-semibold text-[#253664]">AFTIM</strong>
         </div>
-        <Avatar></Avatar>
+        <div className="flex place-items-center gap-1">
+          <Avatar></Avatar>
+          <ButtonLogout></ButtonLogout>
+        </div>
       </div>
 
       {menuMobile && <SidebarOptionsMobile array={filteredMenu}/>}

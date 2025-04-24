@@ -17,6 +17,7 @@ export function usePermissions() {
     const {user} = useAuthStore()
 
     const isValid = useCallback((resourcePath, action = "get") => {
+        if (!user || !user.permissions) return false
         return user.permissions.some((perm) => {
           if (perm.module === "*") return true
            
@@ -29,7 +30,7 @@ export function usePermissions() {
     
           return matchModule && matchControlator && matchResource && matchAction;
         });
-      }, [user.permissions]);
+      }, [user]);
 
     return {isValid}
    

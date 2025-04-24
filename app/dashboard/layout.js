@@ -4,9 +4,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import AppSidebar from "../components/layout/AppSidebar";
 import MainContainer from "../components/layout/Main";
+import { useEffect } from "react";
+import { useAuthStore } from "../components/hooks/auth/useAuthStore";
 
 export default function RootLayout({ children }) {
   const [queryClient] = useState(() => new QueryClient()); // Evita re-creaciones
+
+  const loadFromStorage = useAuthStore((state) => state.loadFromStorage);
+
+  useEffect(() => {
+    loadFromStorage();
+  }, [loadFromStorage]);
 
   return (
     <QueryClientProvider client={queryClient}>
