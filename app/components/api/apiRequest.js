@@ -1,3 +1,4 @@
+import { getServerAuthToken } from "../utils/auth";
 import { getClientAuthToken } from "../utils/authClient";
 
 export const apiRequest = async ({
@@ -7,7 +8,7 @@ export const apiRequest = async ({
     params = {},
     headers = {},
   }) => {
-    const token = getClientAuthToken();
+    const token = (typeof window !== "undefined") ? getClientAuthToken() : await getServerAuthToken();
 
     const url = new URL(endpoint);
 

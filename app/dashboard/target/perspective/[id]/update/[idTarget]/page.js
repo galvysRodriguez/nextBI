@@ -7,7 +7,7 @@ import { apiRequest } from "app/app/components/api/apiRequest";
 export const steps = ["Información general", "Periodo de tiempo", "Resultados"]
 
 export default async function Home({ params }) {
-  const id = (await params).id;
+  const id = (await params).idTarget;
   const initialData = await fetchDataFromServer(id);
   
   return (
@@ -25,6 +25,3 @@ export async function fetchDataFromServer(id) {
       method: "GET",
     });
 }
-
-
-/*<ManageUpdate id={id} isCreate={true} activeStep={1}></ManageUpdate>*/

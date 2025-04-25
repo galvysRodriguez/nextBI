@@ -3,19 +3,18 @@ export const routePermissionsMap = {
 
   '/dashboard/target': { resource: '/targets', method:'GET' },
   '/dashboard/target/perspective/:id/create': { resource: '/targets', method:'POST' },
-  '/dashboard/target/update/:id': { resource: '/targets', method:'PUT' },
+  '/dashboard/target/perspective/:id/update/:id': { resource: '/targets', method:'PUT' },
   '/dashboard/target/:id': { resource: '/targets/:id', method:'DELETE' },
-  '/dashboard/target/detail/:id': { resource: '/targets/detail', method:'GET' },
+  '/dashboard/target/:id': { resource: '/targets/detail', method:'GET' },
 
   '/dashboard/formula': { resource: '/formula', method:'GET' },
   '/dashboard/formula/create': { resource: '/formula', method:'POST' },
   '/dashboard/formula/update/:id': { resource: '/formula', method:'PUT' },
   '/dashboard/formula/:id': { resource: '/formula/:id', method:'DELETE' },
-  '/dashboard/formula/:id': { resource: '/formula/:id', method:'GET' },
 
   '/dashboard/perspective/:id': { resource: '/targets/perspectives/:id', method:'GET' },
   '/dashboard/perspective/info/create': { resource: '/perspectives', method:'POST' },
-  '/dashboard/perspective/info/update/:id': { resource: '/perspectives', method:'PUT' },
+  '/dashboard/perspective/info/update/:id': { resource: '/perspectives/:id', method:'PUT' },
   '/dashboard/perspective/info': { resource: '/perspectives', method:'GET' },
   '/dashboard/perspective/info/:id': { resource: '/perspectives/:id', method:'DELETE' },
   '/dashboard/perspective/info/:id': { resource: '/perspectives/:id', method:'GET' },

@@ -37,6 +37,14 @@ export const API_ROUTES = {
     delete: (id) => `${API_BASE_URL}/tags/${id}`,
     exist: `${API_BASE_URL}/tags/exist/`,
   },
+  ICONS: {
+    get: (id) => `${API_BASE_URL}/icons/${id}`,
+    getAll: `${API_BASE_URL}/icons`,
+    create: `${API_BASE_URL}/icons`,
+    update: (id) => `${API_BASE_URL}/icons/${id}`,
+    delete: (id) => `${API_BASE_URL}/icons/${id}`,
+    exist: `${API_BASE_URL}/icons/exist/`,
+  },
   USERS: {
     get: (id) => `${API_BASE_URL}/users/${id}`,
     getAll: `${API_BASE_URL}/users`,

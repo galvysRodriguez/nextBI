@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../../api/apiRequest";
 import { API_ROUTES } from "../../api/routes";
 
-export const useSaveFormTag = () => {
+export const useSaveFormFormula = () => {
   return useMutation((formDataFormula) =>
     apiRequest({
       method: "POST",
@@ -12,7 +12,7 @@ export const useSaveFormTag = () => {
   );
 };
 
-export const useUpdateFormTag = () => {
+export const useUpdateFormFormula = () => {
   return useMutation((formDataFormula) =>
     apiRequest({
       method: "PUT",

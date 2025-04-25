@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import TargetDetailPage, { LoadingSkeletonDetail } from "app/app/components/target/detail/SectionDetailTarget";
 import Progress from "app/app/components/utils/Progress";
+import { apiRequest } from "app/app/components/api/apiRequest";
+import { API_ROUTES } from "app/app/components/api/routes";
 
 const ProductReviews = async ({ params }) => {
   const id = (await params).id;
@@ -15,18 +17,16 @@ const ProductReviews = async ({ params }) => {
 export default ProductReviews;
 
 const TargetDataFetcher = async ({ id }) => {
-  const targetData = await fetchTargetId(id);
+  const targetData = await fetchDataFromServer(id);
   return <TargetDetailPage targetData={targetData.data} />
 };
 
-async function fetchTargetId(id) {
-  if (!id) return null;
-  const response = await fetch(`http://localhost:8000/targets/detail/${id}`);
-  if (!response.ok) {
-    throw new Error("Error fetching data");
-  }
-  return response.json();
-
+export async function fetchDataFromServer(id) {
+    return apiRequest({
+      endpoint: API_ROUTES.TARGETS.detail(id), 
+      method: "GET",
+    });
 }
+
 
 

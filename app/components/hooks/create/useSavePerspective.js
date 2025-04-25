@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../../api/apiRequest";
 import { API_ROUTES } from "../../api/routes";
 
-export const useSaveFormTarget = () => {
+export const useSaveFormPerspective = () => {
   return useMutation((formDataPerspective) =>
     apiRequest({
       method: "POST",
@@ -12,7 +12,7 @@ export const useSaveFormTarget = () => {
   );
 };
 
-export const useUpdateFormTarget = () => {
+export const useUpdateFormPerspective = () => {
   return useMutation((formDataPerspective) =>
     apiRequest({
       method: "PUT",

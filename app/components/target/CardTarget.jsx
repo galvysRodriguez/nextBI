@@ -10,6 +10,7 @@ import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import { useCardStore } from "../context/IsGrid";
 import { useEffect } from "react";
+import { ButtonSecondary } from "./ButtonSecondary";
 
 function formatDate(date) {
   const newDate = new Date(date);
@@ -88,33 +89,11 @@ function formatDecimal(num) {
 }
   
   export function ContainerButton({id}) {
-    
-  
     return (
       <div className="h-16 w-full flex justify-center pt-4">
         <ButtonSecondary text={"Ver detalles"} id={id}/>
       </div>
     )
-  }
-
-  export function ButtonSecondary({ text, id }) {
-    const router = useRouter();
-
-    const handleClick = (event) => {
-      event.stopPropagation()
-      router.push(`/dashboard/target/${id}`)
-      
-    }
-  
-    return (
-      <button
-        onClick={handleClick}
-        className="bg-[#ffffff] border-2 border-[#085494] text-[#085494] w-full h-full rounded-lg text-lg px-4 py-2 
-                   hover:bg-[#e4e6e8] transition-all duration-300"
-      >
-        {text}
-      </button>
-    );
   }
 
   export function TitleCard({ text = "Aumentar las ventas un 15%" }) {

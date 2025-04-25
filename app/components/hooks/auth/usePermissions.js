@@ -16,7 +16,7 @@ function matchResourcePath(permResource, inputResource) {
 export function usePermissions() {
     const {user} = useAuthStore()
 
-    const isValid = useCallback((resourcePath, action = "get") => {
+    const isValid = useCallback((resourcePath, action = "GET") => {
         if (!user || !user.permissions) return false
         return user.permissions.some((perm) => {
           if (perm.module === "*") return true
@@ -26,7 +26,7 @@ export function usePermissions() {
 
           const matchModule = perm.module === "BI";
           const matchResource = matchResourcePath(perm.resource, resourcePath);
-          const matchAction =  perm.action === action
+          const matchAction =  perm.action.toUpperCase() === action
     
           return matchModule && matchControlator && matchResource && matchAction;
         });
