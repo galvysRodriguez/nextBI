@@ -20,7 +20,7 @@ export default async function Home({params}) {
 
 
 export async function fetchDataFromServer(id) {
-    return apiRequest({
+    return await apiRequest({
       endpoint: API_ROUTES.FORMULA.get(id), 
       method: "GET",
     });

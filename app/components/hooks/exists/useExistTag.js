@@ -11,6 +11,7 @@ export const useExistTagQuery = ({ title, id }) => {
       ...(id && { tag_id: id }),
     },
     staleTime: 0,
-    enabledValue: !!title,
+    enabledValue: false,
+    retry: false,
   });
 };

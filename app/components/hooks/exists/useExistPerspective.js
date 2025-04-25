@@ -11,6 +11,7 @@ export const useExistPerspectiveQuery = ({ title, id }) => {
       ...(id && { perspective_id: id }),
     },
     staleTime: 0,
-    enabledValue: !!title,
+    enabledValue: false,
+    retry: false,
   });
 };

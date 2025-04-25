@@ -15,7 +15,7 @@ export async function GetTableTags(){
 }
 
 export async function fetchDataFromServer() {
-    return apiRequest({
+    return await apiRequest({
       endpoint: API_ROUTES.TAGS.getAll, 
       method: "GET",
     });

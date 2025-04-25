@@ -13,7 +13,7 @@ export async function GetTablePerspectives(){
 }
 
 export async function fetchDataFromServer() {
-    return apiRequest({
+    return await apiRequest({
       endpoint: API_ROUTES.PERSPECTIVES.getAll, 
       method: "GET",
     });

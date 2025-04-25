@@ -21,6 +21,7 @@ export function SectionFormFormula({ isCreate, initialData=initialValues, formul
    const {redirectToParent} = useParentRedirect()
 
    const handleSubmit = (values, { setSubmitting }) => {
+    console.log("value")
     const mutation = isCreate ? create : update;
     const message = isCreate ? 'Guardado' : 'Actualizado';
 

@@ -22,7 +22,7 @@ const TargetDataFetcher = async ({ id }) => {
 };
 
 export async function fetchDataFromServer(id) {
-    return apiRequest({
+    return await apiRequest({
       endpoint: API_ROUTES.TARGETS.detail(id), 
       method: "GET",
     });

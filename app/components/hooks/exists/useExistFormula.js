@@ -11,6 +11,7 @@ export const useExistFormulaQuery = ({ title, id }) => {
       ...(id && { formula_id: id }),
     },
     staleTime: 0,
-    enabledValue: !!title,
+    enabledValue: false,
+    retry: false,
   });
 };

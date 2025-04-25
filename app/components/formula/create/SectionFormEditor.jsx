@@ -150,11 +150,11 @@ export function SectionFormEditor() {
         </div>
         <div className="mt-8 flex flex-col">
           <Button
-            type="button"
+            type="submit"
             variant="primary"
             onClick={handleNext}
           >
-            Siguiente
+            Enviar
           </Button>
           <Button
             type="button"

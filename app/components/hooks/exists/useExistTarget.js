@@ -11,6 +11,7 @@ export const useExistTargetQuery = ({ title, id }) => {
       ...(id && { target_id: id }),
     },
     staleTime: 0,
-    enabledValue: !!title,
+    enabledValue: false,
+    retry: false,
   });
 };
