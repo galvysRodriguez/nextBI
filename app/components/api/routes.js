@@ -54,4 +54,9 @@ export const API_ROUTES = {
     perspectives: `${API_BASE_URL}/indicators/perspective`,
     getAll:`${API_BASE_URL}/indicators/`,
   },
+  REPORTS: {
+    sale: `${API_BASE_URL}/reports/sale`,
+    purchase: `${API_BASE_URL}/reports/purchase`,
+    warehouse: `${API_BASE_URL}/reports/warehouse`,
+  },
 };

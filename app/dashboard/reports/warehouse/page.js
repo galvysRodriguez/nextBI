@@ -1,18 +1,22 @@
 
 "use client"
-import { useTableContext } from "app/app/components/context/TableContext";
-import { MocksDataShopping } from "app/app/components/mocks/MocksDataShopping";
-import TableContainer from "app/app/components/report/container/TableShoppingContainer";
-import TableWithThemeProvider from "app/app/components/report/LocaleTable";
-
-import { initialColumnsShopping } from "app/app/components/utils/columns";
+import { useContextFetch } from "app/app/components/hooks/reports/useContextFetch"
+import { useGetReportWarehouse } from "app/app/components/hooks/reports/warehouse/useGetReportWarehouse"
+import { TableContainer } from "app/app/components/report/container/TableContainer"
+import { initialColumnsWarehouse } from "app/app/components/report/warehouse/column"
 
 export default function Home(){
-    
+    const {refetch, isLoading, isError, isRefetching} = useGetReportWarehouse()
   
     return(
         <>
-            <TableContainer></TableContainer>
+            <TableContainer 
+                columns={initialColumnsWarehouse} 
+                title={"Movimientos de inventario"}
+                isLoading={isRefetching || isLoading}
+                refetch={refetch}
+                >
+            </TableContainer>
         </>
     )
 }

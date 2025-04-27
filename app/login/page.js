@@ -24,8 +24,8 @@ export default function Login() {
       try {
         await login(values);
       } catch (err) {
-        const errorMessage = err.response?.data?.message || 'Error de autenticación';
-        setFieldError('hashed_password', errorMessage);
+        /*const errorMessage = err.response?.data?.message || 'Error de autenticación';
+        setFieldError('hashed_password', errorMessage);*/
       }
     },
   });

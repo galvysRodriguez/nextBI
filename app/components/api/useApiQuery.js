@@ -8,12 +8,17 @@ export function useApiQuery({
   staleTime = 5 * 60 * 1000, 
   method, 
   enabledValue, 
-  retry= 3}) {
+  retry= 3,
+  keepPreviousData = false,
+  onSuccess = () => {},
+}) {
   return useQuery({
     queryKey,
     queryFn: () => apiRequest({ method, endpoint, params }),
     staleTime,
     enabled: !!endpoint && (enabledValue === undefined || enabledValue),
-    retry: retry
+    retry: retry,
+    keepPreviousData: keepPreviousData,
+    onSuccess: onSuccess,
   });
 }

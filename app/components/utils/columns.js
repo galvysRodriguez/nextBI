@@ -1,4 +1,4 @@
-const filterSelectOptions= [
+export const filterSelectOptions= [
   { value: "fuzzy", label: "Busqueda" },
   { value: "contains", label: "Contiene" },
   { value: "startsWith", label: "Empieza con" },

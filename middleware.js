@@ -4,7 +4,7 @@ import { getMiddlewareAuthToken } from './app/components/utils/auth';
 export function middleware(request) {
   const token = getMiddlewareAuthToken(request)
   const { pathname } = request.nextUrl
-  const publicRoutes = ['/login', '/_next', '/favicon.ico', '/images/favicon.svg']
+  const publicRoutes = ['/login', '/_next', '/favicon.ico', '/images/favicon.svg', '/dashboard/reports/sale']
 
   if (publicRoutes.some(route => pathname.startsWith(route))) {
     return NextResponse.next()
