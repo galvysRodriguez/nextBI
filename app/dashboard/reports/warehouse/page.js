@@ -3,6 +3,7 @@
 import { useContextFetch } from "app/app/components/hooks/reports/useContextFetch"
 import { useGetReportWarehouse } from "app/app/components/hooks/reports/warehouse/useGetReportWarehouse"
 import { TableContainer } from "app/app/components/report/container/TableContainer"
+import { ViewReport } from "app/app/components/report/container/ViewReport"
 import { initialColumnsWarehouse } from "app/app/components/report/warehouse/column"
 
 export default function Home(){
@@ -11,11 +12,14 @@ export default function Home(){
     return(
         <>
             <TableContainer 
-                columns={initialColumnsWarehouse} 
                 title={"Movimientos de inventario"}
-                isLoading={isRefetching || isLoading}
-                refetch={refetch}
                 >
+                    <ViewReport
+                        columns={initialColumnsWarehouse} 
+                        isLoading={isRefetching || isLoading}
+                        refetch={refetch}
+                    >
+                    </ViewReport>
             </TableContainer>
         </>
     )

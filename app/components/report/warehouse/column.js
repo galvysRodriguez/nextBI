@@ -23,7 +23,12 @@ export const initialColumnsWarehouse = [
     type: "number", 
     filterVariant: 'range',
     filterFn: 'betweenInclusive',
-    defaultValue: [0, 1000]
+    defaultValue: [0, 1000],
+    aggregationFn: "sum",
+    AggregatedCell: ({ cell }) => (
+      <strong>Total: {cell.getValue()?.toLocaleString()}</strong>
+    ),
+    total: true,
   },
   { 
     accessorKey: "date", 

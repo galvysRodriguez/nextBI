@@ -1,10 +1,13 @@
 import { useReportLayout } from "../../context/reportLayout";
+import { useReportFormat } from "../../context/useReportFormat";
+import { useReportScope } from "../../context/useReportScope";
 import { ButtonExport } from "./ButtonExport";
 import { ContainerMenu, normalStyle, selectedStyle, SubtitleContainerMenu } from "./ContainerMenu";
 
 
 export function MenuExport(){
-    const { format, setFormat, scope, setScope} = useReportLayout()
+    const { format, setFormat} = useReportFormat()
+    const { setScope, scope} = useReportScope()
 
     return (
         <>

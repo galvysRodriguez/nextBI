@@ -1,9 +1,11 @@
 import { useReportLayout } from "../../context/reportLayout";
+import { useReportView } from "../../context/useReportView";
 import { ContainerMenu, normalStyle, selectedStyle, SubtitleContainerMenu } from "./ContainerMenu";
+import { shallow } from "zustand/shallow";
 
 
 export function ViewToggle(){
-  const {setIsChart, isChart} = useReportLayout()
+  const { setIsChart, isChart } = useReportView()
   return (
     <>
         <ContainerMenu>

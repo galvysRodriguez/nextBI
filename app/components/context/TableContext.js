@@ -34,12 +34,8 @@ export const useTableContext = create((set, get) => ({
 
 export const useTableDataContext = create((set, get) => ({
   groupedColumns: [],
-  isLoading:false,
-  refetch: () => {},
   rows: [],
   selectedRows: [],
-  orderBy: 'id',
-  order: 'asc',
   columns: [],
   sorting:[],
   filters:[],
@@ -55,10 +51,6 @@ export const useTableDataContext = create((set, get) => ({
   setSelectedRows: (selectedRows) => set({ selectedRows }),
   setPagination: (pagination) => set({ pagination }),
   setColumns: (columns) => set({ columns }),
-  setorderBy: (orderBy) => set({ orderBy }),
-  setOrder: (order) => set({ order }),
-  setIsLoading: (isLoading) => set({ isLoading }),
-  setRefetch: (refetch) => set({ refetch}),
   setSearch: (search) => set({ search }),
   setPageCount: (pageCount) => set({ pageCount}),
   setTotalRows: (totalRows) => set({ totalRows}),

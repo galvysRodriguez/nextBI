@@ -29,6 +29,8 @@ export function TableData ({initialColumns, isLoading, refetch}) {
         totalRows,
     } = useTableDataContext()
 
+    console.log({rows})
+
     return (
         <>
         <div style={{ maxHeight: "800px", width: "80%", minHeight: "400px", margin: "0 auto", paddingBottom:'6rem'}}>

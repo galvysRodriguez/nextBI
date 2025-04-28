@@ -1,8 +1,9 @@
 import { useReportLayout } from "../../context/reportLayout";
+import { useReportMenu } from "../../context/useReportMenu";
 
 
 export function ButtonExport(){
-    const {setIsMenuOpen} =  useReportLayout()
+    const {setIsMenuOpen} =  useReportMenu()
     const handleExport = () => {
         
         setIsMenuOpen(false); // Cerrar menu luego de exportar

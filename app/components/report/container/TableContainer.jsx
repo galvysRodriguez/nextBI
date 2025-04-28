@@ -4,15 +4,13 @@ import { TableData } from "app/app/components/report/TableData";
 import { TitleBase } from "../../container/Title";
 import { HeaderReport } from "./HeaderReport";
 
-export function TableContainer({columns, title, isLoading, refetch}) {
+export function TableContainer({title, children}) {
   return (
     <>
       <div className="pb-18">
         <TitleBase title={title}></TitleBase>
         <HeaderReport></HeaderReport>
-        <TableWithThemeProvider>
-          <TableData initialColumns={columns} isLoading={isLoading} refetch={refetch}/>
-        </TableWithThemeProvider>
+        {children}
       </div>
     </>
   );

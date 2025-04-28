@@ -11,12 +11,8 @@ export function useHandleTable(refetch) {
     setGroupedColumns,
     setSorting,
     setFilter,
-    orderBy,
-    order,
     search,
     setSearch,
-    setorderBy,
-    setOrder,
     selectedRows,
     pagination,
     setPagination,
@@ -52,14 +48,6 @@ export function useHandleTable(refetch) {
     [refetch, filters, setFilter]
   );
 
-
-  const handleOrderChange = useCallback(
-    (newOrderBy, newOrder) => {
-      setorderBy(newOrderBy);
-      setOrder(newOrder);
-    },
-    [setorderBy, setOrder]
-  );
 
   const handlePaginationChange = useCallback(
     (updater) => {
@@ -102,7 +90,6 @@ export function useHandleTable(refetch) {
     handleGroupingChange,
     handleSortingChange,
     handleFilterChange,
-    handleOrderChange,
     handlePaginationChange,
     handleSelectRowsChange,
     handleGlobalFilterChange,
