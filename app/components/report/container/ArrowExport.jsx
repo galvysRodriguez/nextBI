@@ -7,7 +7,7 @@ import { shallow } from "zustand/shallow";
 import { useReportMenu } from "../../context/useReportMenu";
 
 
-export function ArrowExport(){
+export function ArrowExport({initialColumns}){
     const { setIsMenuOpen, isMenuOpen } = useReportMenu()
     return (
         <>
@@ -16,7 +16,7 @@ export function ArrowExport(){
                     <ArrowUpToLine className="w-6 h-6" /> : 
                     <Download className="w-6 h-6" />}
             </ButtonBase>
-            {isMenuOpen && ( <MenuExport></MenuExport>)}
+            {isMenuOpen && ( <MenuExport initialColumns={initialColumns}></MenuExport>)}
         </>
     )
 }

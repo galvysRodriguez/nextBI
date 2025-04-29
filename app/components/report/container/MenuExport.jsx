@@ -5,7 +5,7 @@ import { ButtonExport } from "./ButtonExport";
 import { ContainerMenu, normalStyle, selectedStyle, SubtitleContainerMenu } from "./ContainerMenu";
 
 
-export function MenuExport(){
+export function MenuExport({initialColumns}){
     const { format, setFormat} = useReportFormat()
     const { setScope, scope} = useReportScope()
 
@@ -22,9 +22,8 @@ export function MenuExport(){
                     <div className="flex flex-col gap-2 mb-4">
                         <button onClick={() => setScope('current')} className={scope === 'current' ? selectedStyle : normalStyle}>Página actual</button>
                         <button onClick={() => setScope('all')} className={scope === 'all' ? selectedStyle : normalStyle}>Todas las páginas</button>
-                        <button onClick={() => setScope('selected')} className={scope === 'selected' ? selectedStyle : normalStyle}>Filas seleccionadas</button>
                     </div>
-                    <ButtonExport></ButtonExport>
+                    <ButtonExport initialColumns={initialColumns}></ButtonExport>
             </ContainerMenu>
         </>
             

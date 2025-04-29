@@ -1,9 +1,14 @@
 import { useCallback } from "react";
 import { useTableDataContext } from "../../context/TableContext";
+import { useRows } from "../../context/report/useRows";
+import { useGroupedColumns } from "../../context/report/useGroupedColumns";
+import { useSelectedRows } from "../../context/report/useSelectedRows";
 
 
 export function useGrouping(){
-    const {rows, selectedRows, groupedColumns} = useTableDataContext()
+    const {rows} = useRows()
+    const{groupedColumns} = useGroupedColumns()
+    const {selectedRows} = useSelectedRows()
 
     const filteredGroupedRows = useCallback(() => {
         return rows.filter(row =>

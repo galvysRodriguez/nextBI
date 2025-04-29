@@ -4,9 +4,19 @@ import { MRT_Localization_ES } from "material-react-table/locales/es";
 import { mocksDataAgrouped } from "../mocks/mocksDataAgrouped";
 import { useHandleTable } from "../hooks/reports/useHandleTable";
 import { useTableDataContext } from "../context/TableContext";
+import { useGroupedColumns } from "../context/report/useGroupedColumns";
+import { useRows } from "../context/report/useRows";
+import { useSelectedRows } from "../context/report/useSelectedRows";
+import { usePageCount } from "../context/report/usePageCount";
+import { useTotalRows } from "../context/report/useTotalRows";
+import { useSearch } from "../context/report/useSearch";
+import { usePaginationTable } from "../context/report/usePagination";
+import { useSorting } from "../context/report/useSorting";
+import { useFilters } from "../context/report/useFilters";
+import { useMemo } from "react";
 
 
-export function TableData ({initialColumns, isLoading, refetch}) {
+export default function  TableData ({initialColumns, isLoading, refetch}) {
     const {
         handleGroupingChange,
         handleSortingChange,
@@ -17,17 +27,26 @@ export function TableData ({initialColumns, isLoading, refetch}) {
     } = useHandleTable(refetch)
 
 
-    const {
-        groupedColumns,
-        sorting,
-        filters,
-        pagination,
-        rows,
-        search,
-        selectedRows,
-        pageCount,
-        totalRows,
-    } = useTableDataContext()
+ 
+    const {groupedColumns} = useGroupedColumns()
+    const {rows} = useRows()
+    const {selectedRows} = useSelectedRows()
+    const {pageCount} = usePageCount()
+    const {totalRows} = useTotalRows()
+    const {filters} = useFilters()
+    const {sorting} = useSorting()
+    const {pagination} = usePaginationTable()
+    const {search} = useSearch()
+
+
+    const memoizedGroupedColumns = useMemo(() => groupedColumns, [groupedColumns]);
+    const memoizedRows = useMemo(() => rows, [rows]);
+    const memoizedPageCount = useMemo(() => pageCount, [pageCount]);
+    const memoizedTotalRows = useMemo(() => totalRows, [totalRows]);
+    const memoizedFilters = useMemo(() => filters, [filters]);
+    const memoizedSorting = useMemo(() => sorting, [sorting]);
+    const memoizedPagination = useMemo(() => pagination, [pagination]);
+    const memoizedSearch = useMemo(() => search, [search]);
 
     console.log({rows})
 
@@ -39,13 +58,13 @@ export function TableData ({initialColumns, isLoading, refetch}) {
             //columnnas, filas e idioma
             columns={initialColumns}
             //data={mocksDataAgrouped}
-            data={rows}
+            data={memoizedRows}
             localization={MRT_Localization_ES}
 
             //opciones permitidas y manuales
             enableGrouping
             enableColumnResizing
-            enableRowSelection
+            //enableRowSelection
             enableColumnOrdering
             enableColumnPinning
             manualFiltering
@@ -58,11 +77,11 @@ export function TableData ({initialColumns, isLoading, refetch}) {
             onSortingChange={handleSortingChange}
             onColumnFiltersChange={handleFilterChange}
             onPaginationChange={handlePaginationChange}
-            onRowSelectionChange={handleSelectRowsChange}
+            //onRowSelectionChange={handleSelectRowsChange}
             onGlobalFilterChange={handleGlobalFilterChange}
             
-            rowCount={totalRows}
-            pageCount={pageCount}
+            rowCount={memoizedTotalRows}
+            pageCount={memoizedPageCount}
 
             //estados
             initialState={{
@@ -72,12 +91,12 @@ export function TableData ({initialColumns, isLoading, refetch}) {
 
             state={{ 
                 isLoading: isLoading,
-                grouping: groupedColumns,
-                sorting: sorting,
-                pagination: pagination,
-                columnFilters: filters,
-                globalFilter: search,
-                rowSelection: selectedRows,
+                grouping: memoizedGroupedColumns,
+                sorting: memoizedSorting,
+                pagination: memoizedPagination,
+                columnFilters: memoizedFilters,
+                globalFilter: memoizedSearch,
+                //rowSelection: selectedRows,
             }}
     
             //progreso de la barra spinner

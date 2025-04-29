@@ -1,23 +1,21 @@
 
 
 import { useCallback } from "react";
-import { useTableDataContext } from "../../context/TableContext";
+import { useGroupedColumns } from "../../context/report/useGroupedColumns";
+import { useFilters } from "../../context/report/useFilters";
+import { useSorting } from "../../context/report/useSorting";
+import { useSearch } from "../../context/report/useSearch";
+import { useSelectedRows } from "../../context/report/useSelectedRows";
+import { usePaginationTable } from "../../context/report/usePagination";
 
 export function useHandleTable(refetch) {
-  const {
-    groupedColumns,
-    sorting,
-    filters,
-    setGroupedColumns,
-    setSorting,
-    setFilter,
-    search,
-    setSearch,
-    selectedRows,
-    pagination,
-    setPagination,
-    setSelectedRows,
-  } = useTableDataContext();
+  const {pagination, setPagination} = usePaginationTable()
+  const {groupedColumns, setGroupedColumns} = useGroupedColumns()
+  const {filters, setFilter} = useFilters()
+  const {sorting, setSorting} = useSorting()
+  const {search, setSearch} = useSearch()
+  const {selectedRows, setSelectedRows} = useSelectedRows()
+
 
   const handleGroupingChange = useCallback(
     (updater) => {

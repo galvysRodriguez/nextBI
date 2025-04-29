@@ -4,12 +4,12 @@ import { TableData } from "app/app/components/report/TableData";
 import { TitleBase } from "../../container/Title";
 import { HeaderReport } from "./HeaderReport";
 
-export function TableContainer({title, children}) {
+export function TableContainer({title, children, initialColumns}) {
   return (
     <>
       <div className="pb-18">
         <TitleBase title={title}></TitleBase>
-        <HeaderReport></HeaderReport>
+        <HeaderReport initialColumns={initialColumns}></HeaderReport>
         {children}
       </div>
     </>

@@ -2,23 +2,16 @@ import { API_ROUTES } from "app/app/components/api/routes";
 import { useApiQuery } from "app/app/components/api/useApiQuery";
 import { useWarehouseParams } from "./useWarehouseParams";
 import { useTableDataContext } from "app/app/components/context/TableContext";
-
-function cleanParams(obj) {
-  const cleaned = {};
-  for (const key in obj) {
-    if (obj[key] !== null && 
-      obj[key] !== undefined && 
-      obj[key] !== "" &&  
-      !(typeof value === "number" && isNaN(value))) {
-      cleaned[key] = obj[key];
-    }
-  }
-  return cleaned;
-}
+import { useRows } from "app/app/components/context/report/useRows";
+import { usePageCount } from "app/app/components/context/report/usePageCount";
+import { useTotalRows } from "app/app/components/context/report/useTotalRows";
+import { cleanParams } from "app/app/components/report/cleanParams";
 
 export function useGetReportWarehouse() {
   const params = useWarehouseParams();
-  const {setRows, setPageCount, setTotalRows} = useTableDataContext(); 
+  const {setRows} = useRows()
+  const {setPageCount} = usePageCount()
+  const {setTotalRows} = useTotalRows()
   const cleanedParams = cleanParams(params);
   
 

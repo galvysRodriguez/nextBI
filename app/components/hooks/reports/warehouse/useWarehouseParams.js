@@ -1,13 +1,15 @@
 import { useMemo } from "react";
 import { useTableDataContext } from "app/app/components/context/TableContext";
+import { useFilters } from "app/app/components/context/report/useFilters";
+import { useSorting } from "app/app/components/context/report/useSorting";
+import { usePagination, usePaginationTable } from "app/app/components/context/report/usePagination";
+import { useSearch } from "app/app/components/context/report/useSearch";
 
 export function useWarehouseParams() {
-  const {
-    filters,
-    sorting,
-    pagination,
-    search,
-  } = useTableDataContext();
+  const {filters} = useFilters()
+  const {sorting} = useSorting()
+  const {pagination} = usePaginationTable()
+  const {search} = useSearch()
 
   const params = useMemo(() => {
     const findFilterValue = (id) => {

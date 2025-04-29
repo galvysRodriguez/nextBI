@@ -28,7 +28,7 @@ const chartComponents = {
   donut: <DonutChart></DonutChart>,
   pieSemi: <PieChartSemicircular></PieChartSemicircular>
 };
-export function ChartData({series, categories}) {
+export default function ChartData({series, categories}) {
     const{selectedChart} = useReportChart()
   return (
     <div className="p-6">
