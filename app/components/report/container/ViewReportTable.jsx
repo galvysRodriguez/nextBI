@@ -9,6 +9,8 @@ import TableData from "../TableData";
 
 export function ViewReportTable({columns, isLoading, refetch}){
     const {isChart} = useReportView()
+    if(isChart) return <></>
+    
     return(
             <>
                 {!isChart && (

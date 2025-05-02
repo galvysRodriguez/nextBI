@@ -1,12 +1,13 @@
+import { COLORS } from "../../utils/const";
+
 export const TITLE_APEX = {
-    title: {
-        align: 'center', // equivalente a left: "center"
-        margin: 10,       // espacio desde arriba
+        align: "center",
+        margin: 20,
         style: {
-          fontSize: '20px',
-          fontWeight: 'bold',
-          color: '#000',
+          color: COLORS.black,
+          fontFamily: 'Arial, sans-serif',
+          fontSize: '24px',
+          fontWeight: '500',
         },
-      }
 }
   

@@ -1,10 +1,7 @@
 "use client"
-import { lazy, Suspense, useMemo } from "react";
-import { useReportLayout } from "../../context/reportLayout";
+import { lazy, Suspense} from "react";
 import { useReportView } from "../../context/useReportView";
 import { useGrouping } from "../../hooks/reports/useGrouping";
-import TableWithThemeProvider from "../LocaleTable";
-import { TableData } from "../TableData";
 import Progress from "../../utils/Progress";
 
 const LazyTableData = lazy(() => import("../ChartData"));
@@ -13,6 +10,9 @@ export function ViewReport({columns, title}){
     console.time("chart")
     const {isChart} = useReportView()
     const {getGroupedColumnValues, getTotalColumns, getSumByGroup} = useGrouping()
+
+    if(!isChart) return <></>
+    
 
         const key = getTotalColumns(columns)[0]
         

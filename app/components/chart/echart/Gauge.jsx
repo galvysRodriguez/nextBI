@@ -30,6 +30,9 @@ const GaugeChart = ({ result = 60, optimal = 100, title = "Cumplimiento" }) => {
           progress: {
             show: true,
             width: 18,
+            itemStyle: {
+              color: COLORS.principal, // Color del progreso
+            },
           },
           axisLine: {
             lineStyle: {
@@ -43,12 +46,12 @@ const GaugeChart = ({ result = 60, optimal = 100, title = "Cumplimiento" }) => {
             length: 15,
             lineStyle: {
               width: 2,
-              color: COLORS.constrant,
+              color: COLORS.principal,
             },
           },
           axisLabel: {
             distance: 25,
-            color: COLORS.constrant,
+            color: COLORS.principal,
             fontSize: 14, // Reducimos el tamaño de los labels del eje
           },
           anchor: {
@@ -57,7 +60,12 @@ const GaugeChart = ({ result = 60, optimal = 100, title = "Cumplimiento" }) => {
             size: 25,
             itemStyle: {
               borderWidth: 10,
-              borderColor: COLORS.constrant,
+              borderColor: COLORS.principal,
+            },
+          },
+          pointer: {
+            itemStyle: {
+              color: COLORS.principal, // Color de la aguja
             },
           },
           detail: {

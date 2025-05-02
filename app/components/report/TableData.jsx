@@ -12,7 +12,7 @@ import { useSearch } from "../context/report/useSearch";
 import { usePaginationTable } from "../context/report/usePagination";
 import { useSorting } from "../context/report/useSorting";
 import { useFilters } from "../context/report/useFilters";
-import React, { useMemo, lazy, Suspense, useEffect } from "react";
+import React, { useMemo, lazy, Suspense, useEffect, memo } from "react";
 import Progress from "../utils/Progress";
 
 const LazyTable = lazy(() => import("./LazyTable"));
@@ -57,6 +57,21 @@ const LazyTable = lazy(() => import("./LazyTable"));
     const memoizedPagination = useMemo(() => pagination, [pagination]);
     const memoizedSearch = useMemo(() => search, [search]);
 
+
+    const MemoizedTableRow = memo(({ row }) => (
+      <MuiTableRowRoot>
+        {row.getVisibleCells().map((cell) => (
+          <MemoizedTableCell key={cell.id} cell={cell} />
+        ))}
+      </MuiTableRowRoot>
+    ));
+    
+    const MemoizedTableCell = memo(({ cell }) => (
+      <MuiTableCellRoot>
+        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+      </MuiTableCellRoot>
+    ));
+
     console.log({rows})
     console.timeEnd("render")
     return (
@@ -80,6 +95,11 @@ const LazyTable = lazy(() => import("./LazyTable"));
               manualSorting
               manualPagination
               manualGrouping={false}
+
+              components={{
+                TableRow: MemoizedTableRow,
+                TableCell: MemoizedTableCell,
+              }}
 
               //metodos
               onGroupingChange={handleGroupingChange}

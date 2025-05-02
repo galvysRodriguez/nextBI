@@ -1,6 +1,7 @@
 "use client"
 import dynamic from "next/dynamic";
-import { COLORS } from "../../utils/const";
+import { COLORS as color} from "../../utils/const";
+import { COLORS } from "../color";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -13,7 +14,7 @@ const TrafficChart = ({ label, cumulative, current, average, min_daily, title = 
       type: "bar",
       zoom: { enabled: true },
       toolbar: {
-        show: true,
+        show: false,
         tools: {
           download: true,
           selection: true,
@@ -24,15 +25,15 @@ const TrafficChart = ({ label, cumulative, current, average, min_daily, title = 
           reset: true,
         },
       },
-      background: COLORS.white,
+      background: color.white,
     },
-    colors: [COLORS.chartPrincipal, "#0FC2C0", "#28A745", "#023535"],
+    colors: COLORS,
     stroke: { width: [1, 4, 2, 0] },
     title: {
       text: title,
       align: "center",
       style: {
-        color: COLORS.black,
+        color: color.black,
         fontFamily: 'Arial, sans-serif',
         fontSize: '24px',
         fontWeight: '500',
@@ -56,7 +57,7 @@ const TrafficChart = ({ label, cumulative, current, average, min_daily, title = 
       row: { colors: ["transparent", "#f3f3f3"], opacity: 0.5 },
     },
     xaxis: {
-      labels: { style: { colors: COLORS.black } },
+      labels: { style: { colors: color.black } },
     },
     yaxis: {
       labels: { style: { colors: COLORS.black } },
@@ -103,7 +104,7 @@ const TrafficChart = ({ label, cumulative, current, average, min_daily, title = 
         margin: "0 auto",
         borderRadius: "8px",
         padding: "20px",
-        backgroundColor: COLORS.white,
+        backgroundColor: color.white,
       }}
     >
       <ReactApexChart options={chartOptions} series={chartSeries} type="line" height={600} />

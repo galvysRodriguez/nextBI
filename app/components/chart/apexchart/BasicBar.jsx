@@ -28,7 +28,20 @@ const BasicBarChart = ({
         mounted: (chartContext) => {
           chartInstanceRef.current = chartContext
         }
-      }
+      },
+      zoom: { enabled: true },
+      toolbar: {
+        show: false,
+        tools: {
+          download: true,
+          selection: true,
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
+          pan: true,
+          reset: true,
+        },
+      },
     },
     colors: COLORS, // Paleta de colores personalizada
     plotOptions: {

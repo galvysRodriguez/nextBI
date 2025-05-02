@@ -45,11 +45,12 @@ export const SERIE_ECHART = {
 
 export const TITLE_ECHART = {
     left: "center",
-    top: "5%",
-    textStyle: {
-      color: "#000",
-      fontSize: 20,
-      fontWeight: "bold",
-    },
+    top: "10",
+    style: {
+              color: '#000',
+              fontFamily: 'Arial, sans-serif',
+              fontSize: '24px',
+              fontWeight: '500',
+            },
 }
 
