@@ -9,7 +9,6 @@ export function TableContainer({title, children, initialColumns}) {
     <>
       <div className="pb-18">
         <TitleBase title={title}></TitleBase>
-        <HeaderReport initialColumns={initialColumns}></HeaderReport>
         {children}
       </div>
     </>

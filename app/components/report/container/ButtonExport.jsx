@@ -1,9 +1,13 @@
+import { useChartExport } from "../../context/chartExportContext";
 import { useGroupedColumns } from "../../context/report/useGroupedColumns";
 import { useRows } from "../../context/report/useRows";
 import { useReportLayout } from "../../context/reportLayout";
+import useChartStore from "../../context/useChartStore";
+import { useReportChart } from "../../context/useReportChart";
 import { useReportFormat } from "../../context/useReportFormat";
 import { useReportMenu } from "../../context/useReportMenu";
 import { useReportScope } from "../../context/useReportScope";
+import { useChartExportControls } from "../../hooks/reports/useChartExportControl";
 import { useGetReportWarehouseAll } from "../../hooks/reports/warehouse/useGetReportWarehouseAll";
 import { handleExport } from "../export";
 
@@ -15,6 +19,10 @@ export function ButtonExport({initialColumns}){
     const {format} = useReportFormat()
     const {scope} = useReportScope()
     const { refetch, isFetching } = useGetReportWarehouseAll();
+    //const { exportChart } = useChartExport();
+    const { exportChart}  = useChartExportControls()
+
+
 
     const handleClick = async() => {
         if(scope == 'all'){
@@ -26,6 +34,14 @@ export function ButtonExport({initialColumns}){
               })
             return setIsMenuOpen(false);
         }
+
+        if(format === 'png' || format === 'svg'){
+            //await exportChart(selectedChart, format)
+            //return setIsMenuOpen(false)
+            exportChart(format)
+            return setIsMenuOpen(false)
+        }
+
         handleExport({
                   rows: rows,
                   format: format,

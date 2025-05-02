@@ -5,10 +5,12 @@ import { useReportView } from "../../context/useReportView";
 import { useGrouping } from "../../hooks/reports/useGrouping";
 import TableWithThemeProvider from "../LocaleTable";
 import { TableData } from "../TableData";
+import Progress from "../../utils/Progress";
 
 const LazyTableData = lazy(() => import("../ChartData"));
 
-export function ViewReport({columns}){
+export function ViewReport({columns, title}){
+    console.time("chart")
     const {isChart} = useReportView()
     const {getGroupedColumnValues, getTotalColumns, getSumByGroup} = useGrouping()
 
@@ -24,14 +26,15 @@ export function ViewReport({columns}){
         console.log("chartData", chartData)
         console.log("groupedColumnValues", groupedColumnValues)
       
-
+        console.timeEnd("chart")
     return(
         <>
             
             {isChart && (
                 <>
-                     <Suspense fallback={<div>Loading...</div>}></Suspense>
-                     <LazyTableData series={values} categories={groupedColumnValues}></LazyTableData>
+                     <Suspense fallback={<Progress></Progress>}>
+                        <LazyTableData series={values} categories={groupedColumnValues} title={title}></LazyTableData>
+                     </Suspense>
                 </>
             )}
         </>

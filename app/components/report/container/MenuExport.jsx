@@ -18,6 +18,20 @@ export function MenuExport({initialColumns}){
                         <button onClick={() => setFormat('excel')} className={format === 'excel' ? selectedStyle : normalStyle}>Excel</button>
                         <button onClick={() => setFormat('csv')} className={format === 'csv' ? selectedStyle : normalStyle}>CSV</button>
                     </div>
+                    <div className="flex gap-2 mb-4">
+                        <button 
+                            onClick={() => setFormat('png')} 
+                            className={format === 'png' ? selectedStyle : normalStyle}
+                        >
+                            PNG
+                        </button>
+                        <button 
+                            onClick={() => setFormat('svg')} 
+                            className={format === 'svg' ? selectedStyle : normalStyle}
+                        >
+                            SVG
+                        </button>
+                    </div>
                     <SubtitleContainerMenu>Filas</SubtitleContainerMenu>
                     <div className="flex flex-col gap-2 mb-4">
                         <button onClick={() => setScope('current')} className={scope === 'current' ? selectedStyle : normalStyle}>Página actual</button>

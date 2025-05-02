@@ -21,7 +21,7 @@ export function ButtonChart({chartKey}){
                 border shadow-sm 
                 ${
                 selectedChart === chartKey
-                    ? 'bg-blue-600 text-white border-blue-700'
+                    ? 'bg-[#085494] text-white border-blue-700'
                     : 'bg-white text-gray-800 hover:bg-gray-100 border-gray-300'
                 }`}
             >

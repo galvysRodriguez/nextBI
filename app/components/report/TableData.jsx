@@ -1,5 +1,4 @@
 "use client";
-import { MaterialReactTable } from "material-react-table";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 import { mocksDataAgrouped } from "../mocks/mocksDataAgrouped";
 import { useHandleTable } from "../hooks/reports/useHandleTable";
@@ -13,10 +12,15 @@ import { useSearch } from "../context/report/useSearch";
 import { usePaginationTable } from "../context/report/usePagination";
 import { useSorting } from "../context/report/useSorting";
 import { useFilters } from "../context/report/useFilters";
-import { useMemo } from "react";
+import React, { useMemo, lazy, Suspense, useEffect } from "react";
+import Progress from "../utils/Progress";
+
+const LazyTable = lazy(() => import("./LazyTable"));
 
 
-export default function  TableData ({initialColumns, isLoading, refetch}) {
+ const TableData = React.memo(function  SubTableData ({initialColumns, isLoading, refetch}) {
+  console.time("render")
+  console.time('TableData mounted');
     const {
         handleGroupingChange,
         handleSortingChange,
@@ -26,6 +30,11 @@ export default function  TableData ({initialColumns, isLoading, refetch}) {
         handleGlobalFilterChange,
     } = useHandleTable(refetch)
 
+    
+
+    useEffect(() => {
+      console.timeEnd('TableData mounted');
+    }, []);
 
  
     const {groupedColumns} = useGroupedColumns()
@@ -49,76 +58,75 @@ export default function  TableData ({initialColumns, isLoading, refetch}) {
     const memoizedSearch = useMemo(() => search, [search]);
 
     console.log({rows})
-
+    console.timeEnd("render")
     return (
         <>
-        <div style={{ maxHeight: "800px", width: "80%", minHeight: "400px", margin: "0 auto", paddingBottom:'6rem'}}>
-          <MaterialReactTable
+        <div className="h-max[2000px] h-min[400px] w-[80%] mx-auto my-0 pb-24">
+          <Suspense fallback={<Progress></Progress>}>
+            <LazyTable
+              //columnnas, filas e idioma
+              columns={initialColumns}
+              //data={mocksDataAgrouped}
+              data={memoizedRows}
+              localization={MRT_Localization_ES}
 
-            //columnnas, filas e idioma
-            columns={initialColumns}
-            //data={mocksDataAgrouped}
-            data={memoizedRows}
-            localization={MRT_Localization_ES}
+              //opciones permitidas y manuales
+              enableGrouping
+              enableColumnResizing
+              //enableRowSelection
+              enableColumnOrdering
+              enableColumnPinning
+              manualFiltering
+              manualSorting
+              manualPagination
+              manualGrouping={false}
 
-            //opciones permitidas y manuales
-            enableGrouping
-            enableColumnResizing
-            //enableRowSelection
-            enableColumnOrdering
-            enableColumnPinning
-            manualFiltering
-            manualSorting
-            manualPagination
-            manualGrouping={false}
+              //metodos
+              onGroupingChange={handleGroupingChange}
+              onSortingChange={handleSortingChange}
+              onColumnFiltersChange={handleFilterChange}
+              onPaginationChange={handlePaginationChange}
+              //onRowSelectionChange={handleSelectRowsChange}
+              onGlobalFilterChange={handleGlobalFilterChange}
 
-            //metodos
-            onGroupingChange={handleGroupingChange}
-            onSortingChange={handleSortingChange}
-            onColumnFiltersChange={handleFilterChange}
-            onPaginationChange={handlePaginationChange}
-            //onRowSelectionChange={handleSelectRowsChange}
-            onGlobalFilterChange={handleGlobalFilterChange}
-            
-            rowCount={memoizedTotalRows}
-            pageCount={memoizedPageCount}
+              rowCount={memoizedTotalRows}
+              pageCount={memoizedPageCount}
 
-            //estados
-            initialState={{
-                grouping: ['warehouse', 'type'], 
-                expanded: true, 
+              //estados
+              state={{ 
+                  isLoading: isLoading,
+                  grouping: memoizedGroupedColumns,
+                  sorting: memoizedSorting,
+                  pagination: memoizedPagination,
+                  columnFilters: memoizedFilters,
+                  globalFilter: memoizedSearch,
+                  //rowSelection: selectedRows,
               }}
 
-            state={{ 
-                isLoading: isLoading,
-                grouping: memoizedGroupedColumns,
-                sorting: memoizedSorting,
-                pagination: memoizedPagination,
-                columnFilters: memoizedFilters,
-                globalFilter: memoizedSearch,
-                //rowSelection: selectedRows,
-            }}
-    
-            //progreso de la barra spinner
-            muiCircularProgressProps={{
-                color: 'primary',
-                thickness: 5,
-                size: 55,
-              }}
-            
-            //esqueleto de la tabla
-            muiSkeletonProps={{
-                animation: 'pulse',
-                height: 28,
-              }}
+              //progreso de la barra spinner
+              muiCircularProgressProps={{
+                  color: 'primary',
+                  thickness: 5,
+                  size: 55,
+                }}
 
-              memoMode="rows"
-            
-          />
+              //esqueleto de la tabla
+              muiSkeletonProps={{
+                  animation: 'pulse',
+                  height: 28,
+                }}
+
+                //memoMode="rows"
+
+              />
+          </Suspense>
+
           </div>
           
           
           </>
     )
    
-};
+});
+
+export default TableData;

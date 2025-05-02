@@ -1,8 +1,11 @@
 "use client"
-import React, { useEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 import { HEIGHT } from '../apexchart/config';
 import { transformSeriesToValues } from './transformSeries';
+import { OPTION_ECHART, SERIE_ECHART, TITLE_ECHART } from './optionEchart';
+import { COLORS } from '../color';
+import { useChartExport } from '../../context/chartExportContext';
 
 const DonutChart = ({ 
   series = [
@@ -12,52 +15,58 @@ const DonutChart = ({
     { value: 484, name: 'Union Ads' },
     { value: 300, name: 'Video Ads' },
   ], 
-  categories
+  categories,
+  title = "Donut Chart"
 }) => {
-  const chartRef = useRef(null);
+  const { chartRef, chartInstanceRef } = useChartExport();
 
   useEffect(() => {
-    const myChart = echarts.init(chartRef.current);
-
-    const option = {
-      tooltip: {
-        trigger: 'item',
-      },
-      legend: {
-        top: '5%',
-        left: 'center',
-      },
-      series: [
-        
-        {
-          
-          name: 'Access From',
-          type: 'pie',
-          radius: ['50%', '70%'], // Inner and outer radius to create the "donut" effect
-          center: ['50%', '50%'], // Center the chart
-          avoidLabelOverlap: false,
-          label: {
-            show: true,
-            position: 'outside',
-            formatter: '{b}: {d}%', // Show percentage and name
-          },
-          labelLine: {
-            show: true,
-          },
-          data:transformSeriesToValues(series, categories),
-          
+    if (chartRef.current) {
+      const myChart = echarts.init(chartRef.current);
+      chartInstanceRef.current = myChart;
+      
+      const option = {
+        ...OPTION_ECHART,
+        color: COLORS,
+        series: [
+          {
+            type: 'pie',
+            ...SERIE_ECHART,
+            data: transformSeriesToValues(series, categories),
+            radius: ['40%', '70%'], // Configuración específica para donut
+            label: {
+              show: true,
+              formatter: '{b}: {c} ({d}%)'
+            },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ],
+        title: {
+          text: title,
+          ...TITLE_ECHART,
         },
-      ],
-    };
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
+        }
+      };
 
-    myChart.setOption(option);
+      myChart.setOption(option);
 
-    return () => {
-      myChart.dispose();
-    };
-  }, [series]);
+      return () => {
+        myChart.dispose();
+      };
+    }}, [series, categories, title]);
+  
 
   return <div ref={chartRef} style={{ width: '100%', height: HEIGHT }} />;
 };
 
-export default DonutChart;
+
+export default DonutChart
