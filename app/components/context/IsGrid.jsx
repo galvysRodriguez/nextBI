@@ -11,6 +11,17 @@ export const useIsExpanded = create((set) => ({
   changeExpanded: () => set((state) => ({ expanded: !state.expanded })),
 }))
 
+export const useGroupedName = create((set) => ({
+  openGrouped: {},
+  setOpenGrouped: (groupedName) =>
+    set((state) => ({
+      openGrouped: {
+        ...state.openGrouped,
+        [groupedName]: !state.openGrouped[groupedName],
+      },
+    })),
+}))
+
 export const useIsMobile = create((set) => ({
   mobile: false,
   changeMobile: () => set((state) => ({ mobile: !state.mobile })),

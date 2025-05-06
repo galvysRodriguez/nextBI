@@ -18,7 +18,7 @@ export default function AppSidebar() {
   // Fusionar los datos de la API con NAV_MENU
   const mergedNavMenu = [
     ...NAV_MENU,
-    ...mapBackendPerspectivesToNav(data?.data || []),
+    mapBackendPerspectivesToNav(data?.data || []),
     ...NAV_MENU_FINAL
   ]
 

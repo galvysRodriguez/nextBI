@@ -17,13 +17,17 @@ export function SidebarItem({ icon, text, href, alert }) {
           transition-colors group
           ${
             isActive
-              ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+              ? " bg-indigo-100 text-[#085494]"
               : "hover:bg-indigo-50 text-gray-600"
           }
         `}
       >
         <Link href={href} className="flex items-center w-full">
-          {icon}
+          {icon && (
+              <span className="w-4 h-4 flex items-center justify-center text-gray-600">
+                  {icon}
+              </span>
+              )}
           <span
             className={`overflow-hidden transition-all ${
                 expanded ? "w-52 ml-3" : "w-0"
