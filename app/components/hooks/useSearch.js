@@ -45,3 +45,7 @@ export const useTargetStore = create((set, get) => ({
   getData: () => { return get().data },
 }));
 
+export const usePageTarget = create((set, get) => ({
+  page: 1,
+  setPage: (page) => set({ page }),
+}));

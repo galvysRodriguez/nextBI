@@ -4,12 +4,13 @@ import {
     DoneAll,
     TaskAlt,
     AccessTime,
+    DoDisturb,
   } from "@mui/icons-material"
 import { ProgressBar } from "./Progressbar"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import { useCardStore } from "../context/IsGrid";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { ButtonSecondary } from "./ButtonSecondary";
 
 function formatDate(date) {
@@ -40,6 +41,10 @@ function formatDecimal(num) {
     // Obtener el estado y el método handleSelect del store
   const { selectedCard, handleSelect, clearSelection } = useCardStore();
 
+  const statusValue = useCallback(() => {
+    return optimal <= indicator_value
+  }, [optimal, indicator_value])
+
   // Verificar si esta tarjeta está seleccionada
   const isSelected = selectedCard === id;
   
@@ -54,7 +59,7 @@ function formatDecimal(num) {
       <div className="flex items-center justify-between gap-3 h-20 w-full">
         <LogoCard value={perspective} />
         <TitleCard text={title} />
-        <StatusCard />
+        <StatusCard status={statusValue()} />
       </div>
 
       {/* Date */}
@@ -115,10 +120,11 @@ function formatDecimal(num) {
     )
   }
   
-  export function StatusCard({ status = "finally" }) {
+  export function StatusCard({ status }) {
+    console.log(status)
     return (
       <div className="min-w-[3rem] min-h-[3rem] bg-[#dfe6fa] rounded-full flex justify-center items-center">
-        <DoneAll />
+        {status ? <DoneAll/> : <DoDisturb></DoDisturb>}
       </div>
     )
   }

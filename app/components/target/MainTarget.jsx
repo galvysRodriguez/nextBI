@@ -3,11 +3,12 @@
 import { useCardStore, useIsGrid } from "../context/IsGrid";
 import { CardTarget } from "./CardTarget";
 import { useTargets } from "../hooks/useTargets";
-import { useTargetStore } from "../hooks/useSearch";
+import { usePageTarget, useTargetStore } from "../hooks/useSearch";
 import { mocksTarget } from "../mocks/MocksTarget";
 import { useRef, useEffect } from "react";
 import Progress from "../utils/Progress";
 import { LoadingSkeletonTarget } from "./LoadingSkeletonTarget";
+import { ITEMS_PER_PAGE } from "./pagination/SectionPagination";
 
 export function MainTarget({ content }) {
   //const { grid } = useIsGrid();
@@ -15,6 +16,7 @@ export function MainTarget({ content }) {
   const { searchResults, changeData, getData } = useTargetStore();
   const containerRef = useRef(null); 
   const { clearSelection } = useCardStore();
+  const {page} = usePageTarget()
 
   // Si hay error, usar los datos mockeados
   useEffect(() => {
@@ -40,15 +42,16 @@ export function MainTarget({ content }) {
   if (isLoading) return <Progress></Progress>
   if (isError) return <p>Error al cargar los objetivos.</p>;
 
-  
-  
-  //const goSearch = useSearch(mocksTarget.data); 
+  const paginatedItems = searchResults().slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
+  );
   
 
   return (
     <div ref={containerRef} className="w-full max-w-[1200px] px-4 md:px-6 lg:px-8 grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
       {searchResults().length > 0 ? (
-        searchResults().map((objective) => <CardTarget key={objective.id} {...objective} />)
+        paginatedItems.map((objective) => <CardTarget key={objective.id} {...objective} />)
       ) : (
         <p>No hay objetivos disponibles.</p>
       )}

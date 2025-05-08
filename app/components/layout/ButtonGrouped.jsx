@@ -31,13 +31,13 @@ export function ButtonGrouped({ group, icon, items }) {
             {icon}
           </span>
         )}
-        <span
+        {expanded && <span
           className={`transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden ${
-            expanded ? "w-52 ml-1" : "w-0"
+            expanded ? "w-52 ml-1" : "w-0 ml-0"
           }`}
         >
           {group}
-        </span>
+        </span>}
       </div>
 
       {expanded && <div className="flex-shrink-0">
