@@ -1,11 +1,14 @@
 import { BookUser } from "lucide-react"
+import { BookLock } from "lucide-react"
+import { Store } from "lucide-react"
+import { BookType } from "lucide-react"
 import { Tags } from "lucide-react"
 import { SquareSigma } from "lucide-react"
 import { Users, Home, CircleDollarSign, PackageSearch, BookCheck, ChartNoAxesColumn, Map, BookMarked } from "lucide-react"
 
 export const NAV_MENU = [
     {
-        group: {text: "Tablero", icon: <BookMarked />},
+        group: {text: "Tablero", icon: <BookCheck />},
         items: [
           {
             icon: <Home />,
@@ -20,24 +23,24 @@ export const NAV_MENU = [
 
 export const NAV_MENU_FINAL = [
     {
-        group: {text: "Reportes", icon: <BookMarked />},
+        group: {text: "Reportes", icon: <BookType/>},
         items: [
           {
-            icon: <BookMarked />,
+            icon: <Store />,
             text: "Compras",
             href: "/dashboard/reports/purchase",
             alert: "false",
             resource: "/reports/purchase"
           },
           {
-            icon: <BookMarked />,
+            icon: <CircleDollarSign />,
             text: "Ventas",
             href: "/dashboard/reports/sale",
             alert: "false",
             resource: "/reports/sale"
           },
           {
-            icon: <BookMarked />,
+            icon: <PackageSearch/>,
             text: "Almacenes",
             href: "/dashboard/reports/warehouse",
             alert: "false",
@@ -46,7 +49,7 @@ export const NAV_MENU_FINAL = [
         ]
       },
       {
-        group: {text: "Configuraciones", icon: <BookMarked />},
+        group: {text: "Configuraciones", icon: <BookLock />},
         items: [
           {
             icon: <SquareSigma />,

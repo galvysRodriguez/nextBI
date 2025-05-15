@@ -112,6 +112,31 @@ const LazyTable = lazy(() => import("./LazyTable"));
               rowCount={memoizedTotalRows}
               pageCount={memoizedPageCount}
 
+              initialState={{
+                columnVisibility: {
+                  product_id: false,
+                  product_code: false,
+                  product_type:false,
+                  brand:false,
+                  category:false,
+                  unit:false,
+                  subcategory:false,
+                  product_details: false,
+                  product_presentations: false,
+                  weekday_number: false,
+                  weekday_name: false,
+                  week_of_year: false,
+                  week_of_month: false,
+                  fortnight: false,
+                  month_name: false,
+                  quarter: false,
+                  semester: false,
+                  day:false,
+                  month:false,
+                  year:false,
+                  is_weekend: false,
+                }
+              }}
               //estados
               state={{ 
                   isLoading: isLoading,
@@ -120,6 +145,7 @@ const LazyTable = lazy(() => import("./LazyTable"));
                   pagination: memoizedPagination,
                   columnFilters: memoizedFilters,
                   globalFilter: memoizedSearch,
+
                   //rowSelection: selectedRows,
               }}
 
