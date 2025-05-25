@@ -25,12 +25,6 @@ export function MenuExport({initialColumns}){
                         >
                             PNG
                         </button>
-                        <button 
-                            onClick={() => setFormat('svg')} 
-                            className={format === 'svg' ? selectedStyle : normalStyle}
-                        >
-                            SVG
-                        </button>
                     </div>
                     <SubtitleContainerMenu>Filas</SubtitleContainerMenu>
                     <div className="flex flex-col gap-2 mb-4">
