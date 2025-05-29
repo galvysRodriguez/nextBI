@@ -35,7 +35,6 @@ export function useWarehouseParams() {
 
     const quantityRange = findRangeFilterValue('quantity');
     const dateRange = findRangeFilterValue('date');
-    const yearRange = findRangeFilterValue('year');
 
     return {
       warehouse: findFilterValue('warehouse'),
@@ -57,8 +56,7 @@ export function useWarehouseParams() {
       month_name: findFilterValue('month_name'),
       quarter: findFilterValue('quarter'),
       semester: findFilterValue('semester'),
-      year_min: yearRange.min,
-      year_max: yearRange.max,
+      year: findFilterValue('year'),
       is_weekend: findFilterValue('is_weekend'),
 
       date_min: dateRange.min,

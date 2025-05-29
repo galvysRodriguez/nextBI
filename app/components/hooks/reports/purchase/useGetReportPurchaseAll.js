@@ -16,7 +16,7 @@ export function useGetReportPurchaseAll() {
     const cleanedParams = cleanParams(overrideParams);
   
     return useApiQuery({
-      endpoint: API_ROUTES.REPORTS.purchasee,
+      endpoint: API_ROUTES.REPORTS.purchase,
       queryKey: ["purchase_all", overrideParams],  // diferente queryKey
       method: "GET",
       params: cleanedParams,

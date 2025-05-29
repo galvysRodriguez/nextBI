@@ -95,9 +95,63 @@ export const initialColumnsPurchase = [
   { accessorKey: "invoice_number", header: "N° Factura", filterSelectOptions },
   { accessorKey: "invoice_type", header: "Tipo de Factura", filterSelectOptions },
 
-  { accessorKey: "cost", header: "Costo", type: "number", filterVariant: 'range', filterFn: 'betweenInclusive' },
-  { accessorKey: "discount", header: "Descuento", type: "number", filterVariant: 'range', filterFn: 'betweenInclusive' },
-  { accessorKey: "tax_rate", header: "Tasa", filterSelectOptions },
+  { accessorKey: "cost", header: "Costo", type: "number", filterVariant: 'range', filterFn: 'betweenInclusive',
+    aggregationFn: "sum",
+    AggregatedCell: ({ cell }) => (
+      <strong>Costo: {cell.getValue()?.toLocaleString()}</strong>
+    ),
+   },
+  { accessorKey: "cost_bs", header: "Costo bs", type: "number", filterVariant: 'range', filterFn: 'betweenInclusive',
+    aggregationFn: "sum",
+    AggregatedCell: ({ cell }) => (
+      <strong>Costo bs: {cell.getValue()?.toLocaleString()}</strong>
+    ),
+   },
+  { accessorKey: "subtotal", header: "Subtotal", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+    aggregationFn: "sum",
+    AggregatedCell: ({ cell }) => (
+      <strong>Subtotal: {cell.getValue()?.toLocaleString()}</strong>
+    ),
+   },
+  { accessorKey: "subtotal_bs", header: "Subtotal bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+    aggregationFn: "sum",
+    AggregatedCell: ({ cell }) => (
+      <strong>Subtotal bs: {cell.getValue()?.toLocaleString()}</strong>
+    ),
+   },
+  { accessorKey: "total", header: "Total", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+    aggregationFn: "sum",
+    AggregatedCell: ({ cell }) => (
+      <strong>Total: {cell.getValue()?.toLocaleString()}</strong>
+    ),
+    total: true,
+   },
+  { accessorKey: "total_bs", header: "Total bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+    aggregationFn: "sum",
+    AggregatedCell: ({ cell }) => (
+      <strong>Total bs: {cell.getValue()?.toLocaleString()}</strong>
+    ),
+   },
+  { accessorKey: "discount_percentage", header: "Descuento %", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+
+   },
+  { accessorKey: "discount", header: "Descuento", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+    aggregationFn: "sum",
+    AggregatedCell: ({ cell }) => (
+      <strong>Descuento: {cell.getValue()?.toLocaleString()}</strong>
+    ),
+   },
+  { accessorKey: "discount_bs", header: "Descuento bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+    aggregationFn: "sum",
+    AggregatedCell: ({ cell }) => (
+      <strong>Descuento bs: {cell.getValue()?.toLocaleString()}</strong>
+    ),
+   },
+    {
+    accessorKey: "tax_rate",
+    header: "Tasa",
+    type: "number",
+  },
 
   { accessorKey: "supplier", header: "Proveedor", filterSelectOptions },
   { accessorKey: "supplier_type", header: "Tipo de Proveedor", filterSelectOptions },
@@ -112,20 +166,8 @@ export const initialColumnsPurchase = [
   { accessorKey: "brand", header: "Marca", filterSelectOptions, isVisible: false },
   { accessorKey: "product_details", header: "Detalles del Producto", isVisible: false },
   { accessorKey: "product_presentations", header: "Presentaciones del Producto", isVisible: false },
-
-  {
-    accessorKey: "quantity",
-    header: "Cantidad",
-    type: "number",
-    filterVariant: 'range',
-    filterFn: 'betweenInclusive',
-    defaultValue: [0, 1000],
-    aggregationFn: "sum",
-    AggregatedCell: ({ cell }) => (
-      <strong>Total: {cell.getValue()?.toLocaleString()}</strong>
-    ),
-    total: true,
-  },
+  { accessorKey: "presentation", header: "Presentacion", isVisible: false },
+  { accessorKey: "modificator", header: "Modificador", isVisible: false },
 
   { accessorKey: "date", header: "Fecha", filterVariant: "rango", filterFn: "betweenInclusive" },
   { accessorKey: "day", header: "Día", filterSelectOptions, isVisible: false },

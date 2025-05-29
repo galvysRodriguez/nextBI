@@ -25,6 +25,14 @@ export const NAV_MENU_FINAL = [
     {
         group: {text: "Reportes", icon: <BookType/>},
         items: [
+          
+           {
+            icon: <CircleDollarSign />,
+            text: "Ordenes",
+            href: "/dashboard/reports/order",
+            alert: "false",
+            resource: "/reports/sale"
+          },
           {
             icon: <Store />,
             text: "Compras",
@@ -33,18 +41,25 @@ export const NAV_MENU_FINAL = [
             resource: "/reports/purchase"
           },
           {
-            icon: <CircleDollarSign />,
-            text: "Ventas",
-            href: "/dashboard/reports/sale",
-            alert: "false",
-            resource: "/reports/sale"
-          },
-          {
             icon: <PackageSearch/>,
             text: "Almacenes",
             href: "/dashboard/reports/warehouse",
             alert: "false",
             resource: "/reports/warehouse"
+          },
+          {
+            icon: <CircleDollarSign />,
+            text: "Cotizaciones",
+            href: "/dashboard/reports/quote",
+            alert: "false",
+            resource: "/reports/sale"
+          },
+          {
+            icon: <CircleDollarSign />,
+            text: "Ventas",
+            href: "/dashboard/reports/sale",
+            alert: "false",
+            resource: "/reports/sale"
           },
         ]
       },

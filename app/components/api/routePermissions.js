@@ -36,6 +36,8 @@ export const routePermissionsMap = {
   '/dashboard/reports/sale': { resource: '/reports/sale', method:'GET' },
   '/dashboard/reports/purchase': { resource: '/reports/purchase', method:'GET'},
   '/dashboard/reports/warehouse': { resource: '/reports/warehouse', method:'GET' },
+  '/dashboard/reports/order': { resource: '/reports/order', method:'GET' },
+  '/dashboard/reports/quote': { resource: '/reports/quote', method:'GET' },
 
   '/dashboard/etl/logs': { resource: '/etl/logs', method:'POST' },
   '/dashboard/etl/extract': { resource: '/etl/extract', method:'POST' },

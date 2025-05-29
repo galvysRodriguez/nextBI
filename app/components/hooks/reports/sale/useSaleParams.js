@@ -35,7 +35,16 @@ export function useSaleParams() {
 
     const quantityRange = findRangeFilterValue('quantity');
     const dateRange = findRangeFilterValue('date');
-    const yearRange = findRangeFilterValue('year');
+    const priceRange = findRangeFilterValue('price');
+    const priceBSRange = findRangeFilterValue('price_bs');
+    const subtotalRange = findRangeFilterValue('subtotal');
+    const subtotalBSRange = findRangeFilterValue('subtotal_bs');
+    const totalRange = findRangeFilterValue('total');
+    const totalBSRange = findRangeFilterValue('total_bs');
+    const discountRange = findRangeFilterValue('discount');
+    const discountBSRange = findRangeFilterValue('discount_bs');
+    const discountPercentageRange = findRangeFilterValue('discount_percentage');
+  
 
     return {
       warehouse: findFilterValue('warehouse'),
@@ -45,7 +54,6 @@ export function useSaleParams() {
       returned: findFilterValue('returned'),
 
       price: findFilterValue('price'),
-      discount: findFilterValue('discount'),
       tax_rate: findFilterValue('tax_rate'),
       seller_name: findFilterValue('seller_name'),
       seller_percentage: findFilterValue('seller_percentage'),
@@ -74,14 +82,31 @@ export function useSaleParams() {
       month_name: findFilterValue('month_name'),
       quarter: findFilterValue('quarter'),
       semester: findFilterValue('semester'),
-      year_min: yearRange.min,
-      year_max: yearRange.max,
+      year: findFilterValue('year'),
       is_weekend: findFilterValue('is_weekend'),
 
       date_min: dateRange.min,
       date_max: dateRange.max,
       quantity_min: quantityRange.min,
       quantity_max: quantityRange.max,
+      price_min: priceRange.min,
+      price_max: priceRange.max,
+      price_bs_min: priceBSRange.min,
+      price_bs_max: priceBSRange.max,
+      subtotal_min: subtotalRange.min,
+      subtotal_max: subtotalRange.max,
+      subtotal_bs_min: subtotalBSRange.min,
+      subtotal_bs_max: subtotalBSRange.max,
+      total_min: totalRange.min,
+      total_max: totalRange.max,
+      total_bs_min: totalBSRange.min,
+      total_bs_max: totalBSRange.max,
+      discount_min: discountRange.min,
+      discount_max: discountRange.max,
+      discount_bs_min: discountBSRange.min,
+      discount_bs_max: discountBSRange.max,
+      discount_percentage_min: discountPercentageRange.min,
+      discount_percentage_max: discountPercentageRange.max,
 
       order_by: orderBy,
       order_dir: orderDir,

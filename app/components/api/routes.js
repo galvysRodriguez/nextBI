@@ -58,5 +58,7 @@ export const API_ROUTES = {
     sale: `${API_BASE_URL}/reports/sale`,
     purchase: `${API_BASE_URL}/reports/purchase`,
     warehouse: `${API_BASE_URL}/reports/warehouse`,
+    order: `${API_BASE_URL}/reports/order`,
+    quote: `${API_BASE_URL}/reports/quote`,
   },
 };
