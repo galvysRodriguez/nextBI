@@ -22,7 +22,13 @@ export default function AppSidebar() {
     ...NAV_MENU_FINAL
   ]
 
-  const filteredMenu = mergedNavMenu.filter((item) => isValid(item.resource));
+  const filteredMenu = mergedNavMenu
+  .map(group => ({
+    ...group,
+    items: group.items.filter(item => isValid(item.resource))
+  }))
+  .filter(group => group.items.length > 0); // elimina grupos vacíos
+
 
   //if (isLoading) return <div className="p-4">Cargando...</div>
   //if (error) return <div className="p-4 text-red-500">Error: {error.message}</div>
