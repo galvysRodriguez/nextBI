@@ -75,7 +75,7 @@ export function Button({
             <p className="text-sm">
               © Copyright 2025 - Somos Sistemas. Todos los derechos reservados.
             </p>
-            <p className="text-sm">Contacto: +1 (234) 567-890</p>
+            <p className="text-sm">Contacto: +58 (412) 063-5946</p>
           </div>
         </div>
       </footer>

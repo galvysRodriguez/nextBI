@@ -1,3 +1,4 @@
+import { useColumns } from "../../context/report/useColumns";
 import { useRows } from "../../context/report/useRows";
 import { useReportFormat } from "../../context/useReportFormat";
 import { useReportMenu } from "../../context/useReportMenu";
@@ -5,6 +6,7 @@ import { useReportScope } from "../../context/useReportScope";
 import { useChartExportControls } from "../../hooks/reports/useChartExportControl";
 import { useGetReportWarehouseAll } from "../../hooks/reports/warehouse/useGetReportWarehouseAll";
 import { handleExport } from "../export";
+import { useTitle } from "../../context/report/useTitle";
 
 export function ButtonExport({initialColumns}){
     const {setIsMenuOpen} =  useReportMenu()
@@ -14,16 +16,20 @@ export function ButtonExport({initialColumns}){
     const { refetch, isFetching } = useGetReportWarehouseAll();
     //const { exportChart } = useChartExport();
     const { exportChart}  = useChartExportControls()
+    const {columnVisibility} = useColumns()
+    const {title} = useTitle()
 
 
 
     const handleClick = async() => {
         if(scope == 'all'){
             const { data: apiData } = await refetch();
-            handleExport({
+            await handleExport({
                 rows: apiData.data.data,
                 format: format,
                 initialColumns,
+                columnVisibility,
+                title
               })
             return setIsMenuOpen(false);
         }
@@ -35,10 +41,12 @@ export function ButtonExport({initialColumns}){
             return setIsMenuOpen(false)
         }
 
-        handleExport({
+        await handleExport({
                   rows: rows,
                   format: format,
                   initialColumns,
+                  columnVisibility,
+                  title
                 })
         setIsMenuOpen(false); // Cerrar menu luego de exportar
     };

@@ -13,11 +13,7 @@ export function ButtonDelete() {
   const fullPath = `${basePath}/delete`;
   const {handleDelete, isLoading} = usePermissionButtonDelete()
   
-  if(isLoading){
-    return(
-      <Progress></Progress>
-    )
-  }
+  
 
   return (
     <button

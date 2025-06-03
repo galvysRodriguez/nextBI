@@ -14,6 +14,7 @@ import { useSorting } from "../context/report/useSorting";
 import { useFilters } from "../context/report/useFilters";
 import React, { useMemo, lazy, Suspense, useEffect, memo } from "react";
 import Progress from "../utils/Progress";
+import { useColumns } from "../context/report/useColumns";
 
 const LazyTable = lazy(() => import("./LazyTable"));
 
@@ -28,6 +29,7 @@ const LazyTable = lazy(() => import("./LazyTable"));
         handlePaginationChange,
         handleSelectRowsChange,
         handleGlobalFilterChange,
+        handleColumnVisibilityChange
     } = useHandleTable(refetch)
 
     
@@ -46,6 +48,8 @@ const LazyTable = lazy(() => import("./LazyTable"));
     const {sorting} = useSorting()
     const {pagination} = usePaginationTable()
     const {search} = useSearch()
+    const {columnVisibility} = useColumns();
+
 
 
     const memoizedGroupedColumns = useMemo(() => groupedColumns, [groupedColumns]);
@@ -108,6 +112,7 @@ const LazyTable = lazy(() => import("./LazyTable"));
               onPaginationChange={handlePaginationChange}
               //onRowSelectionChange={handleSelectRowsChange}
               onGlobalFilterChange={handleGlobalFilterChange}
+              onColumnVisibilityChange={handleColumnVisibilityChange}
 
               rowCount={memoizedTotalRows}
               pageCount={memoizedPageCount}
@@ -145,7 +150,7 @@ const LazyTable = lazy(() => import("./LazyTable"));
                   pagination: memoizedPagination,
                   columnFilters: memoizedFilters,
                   globalFilter: memoizedSearch,
-
+                  columnVisibility: columnVisibility,
                   //rowSelection: selectedRows,
               }}
 

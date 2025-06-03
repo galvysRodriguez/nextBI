@@ -14,10 +14,10 @@ export const initialColumnsSale = [
         <strong>Precio: {cell.getValue()?.toLocaleString()}</strong>
       ),
    },
-  { accessorKey: "price_bs", header: "Precio bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+  { accessorKey: "price_bs", header: "Precio Bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
     aggregationFn: "sum",
       AggregatedCell: ({ cell }) => (
-        <strong>Precio bs: {cell.getValue()?.toLocaleString()}</strong>
+        <strong>Precio Bs: {cell.getValue()?.toLocaleString()}</strong>
       ),
    },
   {accessorKey: "subtotal", header: "Subtotal", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
@@ -26,10 +26,10 @@ export const initialColumnsSale = [
         <strong>Subtotal: {cell.getValue()?.toLocaleString()}</strong>
       ),
      },
-    { accessorKey: "subtotal_bs", header: "Subtotal bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+    { accessorKey: "subtotal_bs", header: "Subtotal Bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
       aggregationFn: "sum",
       AggregatedCell: ({ cell }) => (
-        <strong>Subtotal bs: {cell.getValue()?.toLocaleString()}</strong>
+        <strong>Subtotal Bs: {cell.getValue()?.toLocaleString()}</strong>
       ),
      },
     { accessorKey: "total", header: "Total", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
@@ -39,10 +39,10 @@ export const initialColumnsSale = [
       ),
       total: true,
      },
-    { accessorKey: "total_bs", header: "Total bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+    { accessorKey: "total_bs", header: "Total Bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
       aggregationFn: "sum",
       AggregatedCell: ({ cell }) => (
-        <strong>Total bs: {cell.getValue()?.toLocaleString()}</strong>
+        <strong>Total Bs: {cell.getValue()?.toLocaleString()}</strong>
       ),
      },
     { accessorKey: "discount_percentage", header: "Descuento %", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
@@ -54,10 +54,10 @@ export const initialColumnsSale = [
         <strong>Descuento: {cell.getValue()?.toLocaleString()}</strong>
       ),
      },
-    { accessorKey: "discount_bs", header: "Descuento bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
+    { accessorKey: "discount_bs", header: "Descuento Bs", type: "number", filterVariant: "range", filterFn: "betweenInclusive",
       aggregationFn: "sum",
       AggregatedCell: ({ cell }) => (
-        <strong>Descuento bs: {cell.getValue()?.toLocaleString()}</strong>
+        <strong>Descuento Bs: {cell.getValue()?.toLocaleString()}</strong>
       ),
      },
     { accessorKey: "tax_rate", header: "Tasa", filterSelectOptions,
@@ -75,6 +75,18 @@ export const initialColumnsSale = [
 
   { accessorKey: "product_id", header: "ID Productos", isVisible: false },
   { accessorKey: "product_name", header: "Producto", filterSelectOptions },
+  { 
+      accessorKey: "quantity", 
+      header: "Cantidad", 
+      type: "number", 
+      filterVariant: 'range',
+      filterFn: 'betweenInclusive',
+      defaultValue: [0, 1000],
+      aggregationFn: "sum",
+      AggregatedCell: ({ cell }) => (
+        <strong>Cantidad: {cell.getValue()?.toLocaleString()}</strong>
+      ),
+    },
   { accessorKey: "product_code", header: "Código", filterSelectOptions },
   { accessorKey: "category", header: "Categoría", filterSelectOptions, isVisible: false },
   { accessorKey: "subcategory", header: "Subcategoría", filterSelectOptions, isVisible: false },
@@ -89,11 +101,11 @@ export const initialColumnsSale = [
   { accessorKey: "date", header: "Fecha", filterVariant: "rango", filterFn: "betweenInclusive" },
   { accessorKey: "day", header: "Día", filterSelectOptions, isVisible: false },
   { accessorKey: "weekday_number", header: "Día Semana", filterSelectOptions, isVisible: false },
-  { accessorKey: "weekday_name", header: "Nombre Día", filterSelectOptions, isVisible: false },
+  { accessorKey: "weekday_name", header: "Nombre de Día", filterSelectOptions, isVisible: false },
   { accessorKey: "week_of_year", header: "Semana Año", filterSelectOptions, isVisible: false },
   { accessorKey: "week_of_month", header: "Semana Mes", filterSelectOptions, isVisible: false },
   { accessorKey: "fortnight", header: "Quincena", filterSelectOptions, isVisible: false },
-  { accessorKey: "month", header: "Mes", filterSelectOptions },
+  { accessorKey: "month", header: "Número Mes", filterSelectOptions },
   { accessorKey: "month_name", header: "Nombre Mes", filterSelectOptions, isVisible: false },
   { accessorKey: "quarter", header: "Trimestre", filterSelectOptions, isVisible: false },
   { accessorKey: "semester", header: "Semestre", filterSelectOptions, isVisible: false },

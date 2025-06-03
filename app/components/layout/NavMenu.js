@@ -1,6 +1,8 @@
 import { BookUser } from "lucide-react"
 import { BookLock } from "lucide-react"
 import { Store } from "lucide-react"
+import { ShoppingBasket } from "lucide-react"
+import { ShoppingBag } from "lucide-react"
 import { BookType } from "lucide-react"
 import { Tags } from "lucide-react"
 import { SquareSigma } from "lucide-react"
@@ -27,8 +29,8 @@ export const NAV_MENU_FINAL = [
         items: [
           
            {
-            icon: <CircleDollarSign />,
-            text: "Ordenes",
+            icon: <ShoppingBag/>,
+            text: "Órdenes",
             href: "/dashboard/reports/order",
             alert: "false",
             resource: "/reports/sale"
@@ -48,7 +50,7 @@ export const NAV_MENU_FINAL = [
             resource: "/reports/warehouse"
           },
           {
-            icon: <CircleDollarSign />,
+            icon: <ShoppingBasket />,
             text: "Cotizaciones",
             href: "/dashboard/reports/quote",
             alert: "false",
@@ -68,7 +70,7 @@ export const NAV_MENU_FINAL = [
         items: [
           {
             icon: <SquareSigma />,
-            text: "Formula",
+            text: "Fórmula",
             href: "/dashboard/formula",
             alert: "false",
             resource: "/formula"

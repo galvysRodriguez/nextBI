@@ -16,6 +16,7 @@ const BasicTable = ({ rows, initialColumns }) => {
         columns={initialColumns}
         data={rows.length ? rows : []}
         enableMultiRowSelection={false}
+        enablePagination
         enableRowSelection
         enableSorting
         enableColumnOrdering

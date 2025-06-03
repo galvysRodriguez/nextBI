@@ -3,7 +3,7 @@ import { useDeleteTarget } from "./useDeleteTargets";
 import { useTargetStore } from "./useSearch";
 import { usePermissionButton } from "./usePermissionButton";
 import { useCardStore } from "../context/IsGrid";
-import { showErrorToast } from "../utils/toast";
+import { showErrorToast, showSuccessToast } from "../utils/toast";
 
 
 export function usePermissionButtonDelete(){
@@ -18,11 +18,12 @@ export function usePermissionButtonDelete(){
         if(hasPermissions(fullPath)){
             return mutate(selectedCard, {
                 onSuccess: () => {
-                    deleteById(selectedCard); 
+                    deleteById(selectedCard);
                     router.refresh(); 
+                    showSuccessToast("Ha sido eliminado exitosamente") 
                 },
                 onError: (error) => {
-                    console.error("Error al eliminar el target:", error);
+                    console.error("Error al eliminar", error);
                 },
                 });
         }
