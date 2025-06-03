@@ -51,7 +51,7 @@ const handleExportCSV = ({ rows, columns, title }) => {
   });
 
   const blob = new Blob([csvContent.join("\n")], { type: "text/csv;charset=utf-8;" });
-  saveAs(blob, `${title}-${now.toLocaleDateString()}.csv`);
+  saveAs(blob, `${title}-${now.toISOString().split('T')[0]}.csv`);
 };
 
 const handleExportExcel = ({ rows, columns, title }) => {
@@ -65,7 +65,7 @@ const handleExportExcel = ({ rows, columns, title }) => {
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
-  XLSX.writeFile(workbook, `${title}-${now.toLocaleDateString()}.xlsx`);
+  XLSX.writeFile(workbook, `${title}-${now.toISOString().split('T')[0]}.xlsx`);
 };
 
 
@@ -113,15 +113,8 @@ const handleExportPDF = async ({ rows, columns, title }) => {
     bodyStyles: {
       fontSize: 10
     },
-    didDrawPage: (data) => {
-      if (data.pageNumber > 1) {
-        
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        doc.text(title, doc.internal.pageSize.getWidth() / 2, 50, { align: "center" });
-      }
-    }
+    
   });
 
-  doc.save(`${title}-${now.toLocaleDateString()}.pdf`);
+  doc.save(`${title}-${now.toISOString().split('T')[0]}.pdf`);
 };

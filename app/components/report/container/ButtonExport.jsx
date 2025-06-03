@@ -7,13 +7,14 @@ import { useChartExportControls } from "../../hooks/reports/useChartExportContro
 import { useGetReportWarehouseAll } from "../../hooks/reports/warehouse/useGetReportWarehouseAll";
 import { handleExport } from "../export";
 import { useTitle } from "../../context/report/useTitle";
+import { useRefetchAll } from "../../context/report/useRefetchAll";
 
 export function ButtonExport({initialColumns}){
     const {setIsMenuOpen} =  useReportMenu()
     const {rows} = useRows()
     const {format} = useReportFormat()
     const {scope} = useReportScope()
-    const { refetch, isFetching } = useGetReportWarehouseAll();
+    const { refetchAll} = useRefetchAll();
     //const { exportChart } = useChartExport();
     const { exportChart}  = useChartExportControls()
     const {columnVisibility} = useColumns()
@@ -23,7 +24,7 @@ export function ButtonExport({initialColumns}){
 
     const handleClick = async() => {
         if(scope == 'all'){
-            const { data: apiData } = await refetch();
+            const { data: apiData } = await refetchAll();
             await handleExport({
                 rows: apiData.data.data,
                 format: format,
@@ -37,7 +38,7 @@ export function ButtonExport({initialColumns}){
         if(format === 'png' || format === 'svg'){
             //await exportChart(selectedChart, format)
             //return setIsMenuOpen(false)
-            exportChart(format)
+            exportChart(format, title)
             return setIsMenuOpen(false)
         }
 
@@ -48,7 +49,7 @@ export function ButtonExport({initialColumns}){
                   columnVisibility,
                   title
                 })
-        setIsMenuOpen(false); // Cerrar menu luego de exportar
+        setIsMenuOpen(false); 
     };
 
     return (

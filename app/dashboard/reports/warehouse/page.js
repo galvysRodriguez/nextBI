@@ -1,9 +1,11 @@
 
 "use client"
 import { ChartExportProvider } from "app/app/components/context/chartExportContext"
+import { useRefetchAll } from "app/app/components/context/report/useRefetchAll"
 import { useTitle } from "app/app/components/context/report/useTitle"
 import { useContextFetch } from "app/app/components/hooks/reports/useContextFetch"
 import { useGetReportWarehouse } from "app/app/components/hooks/reports/warehouse/useGetReportWarehouse"
+import { useGetReportWarehouseAll } from "app/app/components/hooks/reports/warehouse/useGetReportWarehouseAll"
 import { HeaderReport } from "app/app/components/report/container/HeaderReport"
 import { TableContainer } from "app/app/components/report/container/TableContainer"
 import { ViewReport } from "app/app/components/report/container/ViewReport"
@@ -16,12 +18,15 @@ export default function Home(){
     const {refetch, isLoading, isError, isRefetching} = useGetReportWarehouse()
     console.timeEnd("render2")
 
+    const{setRefetchAll} = useRefetchAll()
+    const{refetch: refetchAll} = useGetReportWarehouseAll()
+    
     const {setTitle} = useTitle()
-        
+            
     useEffect(() => {
         setTitle("Movimientos de inventario")
-    }, [setTitle])
-
+        setRefetchAll(refetchAll)
+    }, [setTitle, setRefetchAll, refetchAll])
     return(
         <>
             <TableContainer 

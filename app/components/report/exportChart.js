@@ -22,13 +22,15 @@ export const exportApexChart = (chartInstance, fileName, type = 'png') => {
 
 const drawImageWithHeader = (chartDataUrl, fileName, type) => {
   const canvas = document.createElement("canvas");
-  const width = 1800;
-  const height = 1500;
+  const width = 2000;
+  const height = 1200;
+  const headerHeight = 120;
   const ctx = canvas.getContext("2d");
 
   canvas.width = width;
   canvas.height = height;
 
+  // Fondo blanco
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, width, height);
 
@@ -37,9 +39,22 @@ const drawImageWithHeader = (chartDataUrl, fileName, type) => {
   chartImg.src = chartDataUrl;
 
   chartImg.onload = async () => {
-    await getHeaderContent().image(ctx); 
+    await getHeaderContent().image(ctx);
 
-    ctx.drawImage(chartImg, 0, 120, width, height - 120); 
+    const availableHeight = height - headerHeight;
+
+    const scale = Math.min(
+      width / chartImg.width,
+      availableHeight / chartImg.height
+    );
+
+    const scaledWidth = chartImg.width * scale;
+    const scaledHeight = chartImg.height * scale;
+
+    const x = (width - scaledWidth) / 2;
+    const y = headerHeight;
+
+    ctx.drawImage(chartImg, x, y, scaledWidth, scaledHeight);
 
     canvas.toBlob(blob => {
       const link = document.createElement("a");

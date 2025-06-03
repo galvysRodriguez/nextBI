@@ -1,8 +1,10 @@
 
 "use client"
 import { ChartExportProvider } from "app/app/components/context/chartExportContext"
+import { useRefetchAll } from "app/app/components/context/report/useRefetchAll"
 import { useTitle } from "app/app/components/context/report/useTitle"
 import { useGetReportOrder } from "app/app/components/hooks/reports/order/useGetReportOrder"
+import { useGetReportOrderAll } from "app/app/components/hooks/reports/order/useGetReportOrderAll"
 import { HeaderReport } from "app/app/components/report/container/HeaderReport"
 import { TableContainer } from "app/app/components/report/container/TableContainer"
 import { ViewReport } from "app/app/components/report/container/ViewReport"
@@ -15,10 +17,13 @@ export default function Home(){
     console.time("render2")
     const {refetch, isLoading, isError, isRefetching} = useGetReportOrder()
     const {setTitle} = useTitle()
+    const{setRefetchAll} = useRefetchAll()
+    const{refetch: refetchAll} = useGetReportOrderAll()
 
     useEffect(() => {
         setTitle("Órdenes de Compras")
-    }, [setTitle])
+        setRefetchAll(refetchAll)
+    }, [setTitle, setRefetchAll, refetchAll])
     console.timeEnd("render2")
     return(
         <>

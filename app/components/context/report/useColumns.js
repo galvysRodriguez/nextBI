@@ -41,6 +41,12 @@ export const useColumns = create((set) => ({
                   subtotal_bs:false,
                   discount:false,
                   discount_bs:false,
+                  invoice_type:false,
+                  invoice_number:false,
+                  control_number:false,
+                  seller_name:false,
+                  customer_name:false,
+                  returned:false,
                 },
   setColumnVisibility: (visibility) => set({ columnVisibility: visibility }),
 }));

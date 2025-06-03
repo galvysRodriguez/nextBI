@@ -10,8 +10,25 @@ export const getHeaderContent = () => {
   };
 
   const getDate = () => {
-    const now = new Date();
-    return `Fecha de emisión: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+      const now = new Date();
+      const optionsDate = {
+          timeZone: 'America/Caracas',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+      };
+
+      const optionsTime = {
+          timeZone: 'America/Caracas',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+      };
+      
+      const dateStr = now.toLocaleDateString('es-VE', optionsDate);
+      const timeStr = now.toLocaleTimeString('es-VE', optionsTime);
+      
+      return `Fecha de emisión: ${dateStr} ${timeStr}`;
   };
 
   return {

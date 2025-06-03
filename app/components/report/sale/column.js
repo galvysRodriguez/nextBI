@@ -63,7 +63,7 @@ export const initialColumnsSale = [
     { accessorKey: "tax_rate", header: "Tasa", filterSelectOptions,
     
      },
-  { accessorKey: "seller_name", header: "Nombre", filterSelectOptions },
+  { accessorKey: "seller_name", header: "Vendedor", filterSelectOptions },
   { accessorKey: "seller_percentage", header: "Porcentaje", filterSelectOptions },
   { accessorKey: "city", header: "Ciudad", filterSelectOptions },
   { accessorKey: "state", header: "Estado", filterSelectOptions },
