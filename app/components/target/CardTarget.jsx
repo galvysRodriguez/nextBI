@@ -35,7 +35,7 @@ function formatDecimal(num) {
                               end_date, 
                               value, 
                               indicator, 
-                              aggregation,
+                              tag,
                               perspective,
                               id}) {
     // Obtener el estado y el método handleSelect del store
@@ -57,7 +57,7 @@ function formatDecimal(num) {
     >
       {/* Header */}
       <div className="flex items-center justify-between gap-3 h-20 w-full">
-        <LogoCard value={perspective} />
+        <LogoCard value={tag} />
         <TitleCard text={title} />
         <StatusCard status={statusValue()} />
       </div>
@@ -134,7 +134,7 @@ function formatDecimal(num) {
       <div
         className={`bg-[#085494] text-white rounded-lg min-w-[4rem] min-h-[4rem] flex justify-center items-center`}
       >
-        <strong className="font-semibold text-2xl">{value[0]}</strong>
+        <strong className="font-semibold text-2xl" title={value}>{value[0]}</strong>
       </div>
     )
   }

@@ -3,7 +3,7 @@ import { create } from 'zustand';
 const keys = [
   "id",
   "title",
-  "perspective",
+  "tag",
   "indicator",
   "current",
   "target",
@@ -11,8 +11,6 @@ const keys = [
   "start",
   "end",
   "status",
-  "responsible",
-  "priority",
 ];
 
 

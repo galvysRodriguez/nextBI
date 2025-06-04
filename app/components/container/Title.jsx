@@ -4,7 +4,7 @@ import { usePerspectiveIconOption } from "../layout/useDynamicPerspective"
 export function Title({id, title}) {
     const {data, isLoading, error} = usePerspectiveIconOption()
     const perspectiva = data?.data.find(d => d.id == id)
-    const value = perspectiva?.perspective || 'Analitica'
+    const value = perspectiva?.perspective.toLowerCase() || 'analítica'
     return (
         <TitleBase title={title || `Perspectiva de ${value}`}></TitleBase>
     )

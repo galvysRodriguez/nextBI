@@ -190,11 +190,15 @@ export const formulaSchema = yup.object().shape({
         return createError({ path, message: "No se permiten funciones con paréntesis vacíos" });
       }
 
-      if (/\\(COUNT|SUM|AVG)\s*\\left\s*\(\s*\\(COUNT|SUM|AVG)\s*\\left\s*\(/i.test(formula)) {
+      if (/(COUNT|SUM|AVG)\s*(?:\\left)?\(\s*(COUNT|SUM|AVG)\s*(?:\\left)?\(/.test(formula)) {
         return createError({ path, message: "No se permiten funciones anidadas" });
       }
 
-      if (/\\(COUNT|SUM|AVG)\s*\\left\s*\([^()]*[\+\-\*\/][^()]*\)\s*\\right/i.test(formula)) {
+      if(/(COUNT|SUM|AVG)\s*(?:\\left)?\(\s*(?:\\right)?\)/.test(formula)){
+        return createError({ path, message: "No se permiten funciones vacías" });
+      }
+      
+      if (/(COUNT|SUM|AVG)\s*(?:\\left)?\([^)]*[\+\-\*\/\^][^)]*(?:\\right)?\)/.test(formula)) {
         return createError({ path, message: "No se permiten operaciones dentro de funciones" });
       }
 

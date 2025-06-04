@@ -59,7 +59,7 @@ export function ButtonSecondary({ text, id }) {
 
 // Sección principal de detalle de objetivo
 function SectionDetailTarget({perspective, indicator, title, optimal, tolerable, deficient, indicator_value,
-                                start_date, end_date, elapsed, restant, detail, min_daily
+                                start_date, end_date, elapsed, restant, detail, min_daily, tag
 }) {
     const label = detail.map((item) => convertDate(item.date));
     const current = detail.map((item) => item.value);
@@ -71,14 +71,14 @@ function SectionDetailTarget({perspective, indicator, title, optimal, tolerable,
         <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-6 pt-12">
             <div className="flex items-center gap-8">
                 <CustomBackButton></CustomBackButton>
-                <TitleDetailTarget perspective={perspective} description={indicator} />
+                <TitleDetailTarget perspective={perspective} description={indicator} tag={tag} />
             </div>
             <div className="flex justify-center">
                 <TitleTarget title={title} />
             </div>
             <div className="flex justify-center items-center gap-6 pt-2">
                 <div className="flex flex-col gap-4">
-                    <CardDetailTarget label="Valor optimo" amount={optimal} />
+                    <CardDetailTarget label="Valor óptimo" amount={optimal} />
                     <CardDetailTarget label="Valor tolerable" amount={tolerable} />
                     <CardDetailTarget label="Valor deficiente" amount={deficient} />
                 </div>
@@ -129,17 +129,17 @@ function DateInfoTarget({ start, end, remaining, duration }) {
     );
 }
 
-// Componente para mostrar el título de la sección
 function TitleTarget({ title }) {
     return <h1 className="text-3xl font-semibold text-gray-900">{title}</h1>;
 }
 
-// Componente para mostrar los detalles del objetivo (perspectiva, descripción)
-function TitleDetailTarget({ perspective, description }) {
+function TitleDetailTarget({ perspective, description, tag }) {
     return (
         <div className="flex items-center gap-2">
-            <LogoCard />
+            <LogoCard value={perspective}/>
             <h4 className="text-xl font-medium text-gray-700">{perspective}</h4>
+            <KeyboardDoubleArrowRight />
+            <h4 className="text-xl font-medium text-gray-700">{tag}</h4>
             <KeyboardDoubleArrowRight />
             <h4 className="text-xl font-medium text-gray-700">{description}</h4>
         </div>
