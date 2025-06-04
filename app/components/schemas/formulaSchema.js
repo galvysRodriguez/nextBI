@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 
-const allowedOptions = [
-  "nuevosClientes", "Ventas", "Compras", "Clientesfinales",
-  "SUM", "COUNT", "AVG", "MAX", "MIN", "+", "-", ".", "/", "*", "^",
+const staticAllowedOptions = [
+  //"nuevosClientes", "Ventas", "Compras", "Clientesfinales",
+  "SUM", "COUNT", "AVG", "+", "-", ".", "/", "*", "^",
   "\\cdot", "\\frac", "(", ")", "{", "}", "\\sqrt"
 ];
 
@@ -151,8 +151,10 @@ export const formulaSchema = yup.object().shape({
     .test("is-valid-formula", "Fórmula no válida", function (value) {
       const { path, createError } = this;
       const formula = (value || "").trim();
-
       if (!formula) return createError({ path, message: "La fórmula no puede estar vacía" });
+
+      const dynamicAllowedOptions = this.options.context?.validCommands || [];
+      const allowedOptions = [...staticAllowedOptions, ...dynamicAllowedOptions];
 
       const pairs = [
         { open: '(', close: ')', name: 'paréntesis' },
@@ -166,12 +168,34 @@ export const formulaSchema = yup.object().shape({
           return createError({ path, message: `Las ${name} no están balanceadas` });
         }
       }
+
       if (/(\+|-|\*|\/|\\cdot|\^)$/.test(formula)) {
         return createError({ path, message: "No puede haber operadores al final de la fórmula" });
       }
+
       const cleaned = formula.replace(/\\cdot/g, '*');
       if (/([+\-*/^]{2,})/.test(cleaned)) {
         return createError({ path, message: "No puede haber operadores consecutivos" });
+      }
+
+      if (/([*\\cdot/])\s*0(?!\d)/.test(cleaned)) {
+        return createError({ path, message: "No se permite multiplicación por cero" });
+      }
+
+      if(/\\frac\{[^}]+\}\{0+\}/.test(formula)){
+        return createError({ path, message: "No se permite división por cero" });
+      }
+
+      if (/\\(COUNT|SUM|AVG)\s*\\left\s*\(\s*\\right\s*\)/i.test(formula)) {
+        return createError({ path, message: "No se permiten funciones con paréntesis vacíos" });
+      }
+
+      if (/\\(COUNT|SUM|AVG)\s*\\left\s*\(\s*\\(COUNT|SUM|AVG)\s*\\left\s*\(/i.test(formula)) {
+        return createError({ path, message: "No se permiten funciones anidadas" });
+      }
+
+      if (/\\(COUNT|SUM|AVG)\s*\\left\s*\([^()]*[\+\-\*\/][^()]*\)\s*\\right/i.test(formula)) {
+        return createError({ path, message: "No se permiten operaciones dentro de funciones" });
       }
 
       if (formula.includes("\\frac")) {
@@ -179,21 +203,8 @@ export const formulaSchema = yup.object().shape({
         if (!validFractions || validFractions.length === 0) {
           return createError({ path, message: "Las fracciones no están correctamente formadas" });
         }
-        const divisionsByZero = formula.match(/\\frac\{[^}]+\}\{0\}/g);
-        if (divisionsByZero && divisionsByZero.length > 0) {
-          return createError({ path, message: "No se permite la división entre cero" });
-        }
       }
 
-      // 6. Raíces bien formadas
-      if (formula.includes("\\sqrt")) {
-        const validRoots = formula.match(/\\sqrt\{[^}]+\}/g);
-        if (!validRoots || validRoots.length === 0) {
-          return createError({ path, message: "Las raíces no están correctamente formadas" });
-        }
-      }
-
-      // 7. Comandos válidos
       const commandsInFormula = formula.match(/\\[a-zA-Z]+/g) || [];
       for (const command of commandsInFormula) {
         if (!validCommands.includes(command)) {
@@ -201,23 +212,16 @@ export const formulaSchema = yup.object().shape({
         }
       }
 
-      // 8. Caracteres no permitidos
       const forbiddenChars = ["#", "$", "&", "_", "~", "sin", "cos", "tan", "log", "ln"];
       for (const char of forbiddenChars) {
         if (formula.includes(char)) {
           return createError({ path, message: `Carácter no permitido: ${char}` });
         }
       }
-
-      // 9. Exponentes vacíos
-      if (formula.includes("^")) {
-        const emptyExponents = formula.match(/\^\{\}/g);
-        if (emptyExponents && emptyExponents.length > 0) {
-          return createError({ path, message: "No se permite un exponente vacío" });
-        }
+      if (/\^\{\}/.test(formula)) {
+        return createError({ path, message: "No se permite un exponente vacío" });
       }
 
-      // 10. Elementos no permitidos
       const formulaWithoutLaTeX = formula.replace(/\\left|\\right|\\ /g, "");
       const parts = formulaWithoutLaTeX
         .split(/(\\cdot|\\frac|\\sqrt|[+\-*/^%(){}])/)
@@ -228,7 +232,7 @@ export const formulaSchema = yup.object().shape({
         if (
           !allowedOptions.includes(part) &&
           isNaN(Number(part)) &&
-          !/^\\[a-zA-Z]+$/.test(part) // comandos
+          !/^\\[a-zA-Z]+$/.test(part) 
         ) {
           return createError({ path, message: `Elemento no permitido en la fórmula: ${part}` });
         }

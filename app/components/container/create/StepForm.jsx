@@ -16,7 +16,7 @@ export default function StepForm({ initialStep, children, stepList, title }) {
       <div className="flex w-[80vw] mx-auto mt-4">
         <HeaderForm title={title}/>
       </div>
-      <div className="max-w-lg mx-auto mt-2 p-6 bg-white shadow-lg rounded-2xl  overflow-y-auto">
+      <div className="max-w-lg mx-auto mt-2 p-6 mb-6 bg-white shadow-lg rounded-2xl  overflow-y-auto">
         <div className="flex items-center justify-between mb-6 relative">
           {stepList.map((s, index) => (
             <div key={index} className="relative flex items-center">

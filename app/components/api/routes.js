@@ -51,7 +51,7 @@ export const API_ROUTES = {
     login: `${API_BASE_URL}/users/login`
   },
   INDICATORS: {
-    perspectives: `${API_BASE_URL}/indicators/perspective`,
+    tags: (id) => `${API_BASE_URL}/indicators/tag/${id}`,
     getAll:`${API_BASE_URL}/indicators/`,
   },
   REPORTS: {

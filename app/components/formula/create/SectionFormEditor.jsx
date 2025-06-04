@@ -7,6 +7,15 @@ import { Button, Input, Select } from "app/app/components/utils/Input";
 import { useStep } from "../../context/StepContext";
 import { useFormFormulaTwo } from "app/app/components/hooks/validations/useFormFormulaTwo";
 import { IconError } from "../../utils/IconError";
+import { useIndicatorsValidContext } from "../../context/useIndicatorsValidContext";
+import { useIndicatorsValid } from "../../hooks/indicator/useIndicatorsValid";
+
+const COLORS = [
+  'bg-[#1E88E5]', 
+  'bg-[#1E88E5]',
+  'bg-[#1E88E5]',
+  'bg-[#1E88E5]',
+];
 
 const EditableMathField = dynamic(
   () =>
@@ -32,16 +41,28 @@ export function SectionFormEditor() {
   const { sectionOpen, toggleSection } = useSectionOpen();
   const mathFieldRef = useRef(null);
   const { prevStep } = useStep();
+  const{data} = useIndicatorsValid(values.tag_id)
+  const{setIndicatorsValid, indicatorsValid} = useIndicatorsValidContext()
+  
+    useEffect(() => {
+    if (data) {
+      setIndicatorsValid(data.data);
+    }
+  }, [data]);
 
-  const funciones = [
-    { nombre: "Suma", valor: "SUM" },
-    { nombre: "Contar", valor: "COUNT" },
-    { nombre: "Promedio", valor: "AVG" },
-    { nombre: "Máximo", valor: "MAX" },
-    { nombre: "Mínimo", valor: "MIN" },
+  const functions = [
+    { name: "Suma", value: "SUM" },
+    { name: "Contar", value: "COUNT" },
+    { name: "Promedio", value: "AVG" },
   ];
 
-  const operadores = ["+", "-", "*", "/"];
+  const operators = [
+    { name: "+", value: "+" },
+    { name: "-", value: "-" },
+    { name: "^", value: "^" },
+    { name: "/", value: "\\frac" },
+    { name: "*", value: "\\cdot" },
+  ];
 
   const handleFormulaChange = (mathField) => {
     console.log(mathField.latex());
@@ -58,10 +79,18 @@ export function SectionFormEditor() {
     }
   };
 
+  const addOperator = (ref, element) => {
+    if (ref.current) {
+      ref.current.cmd(element);
+      setFieldTouched("formula", true, true);
+      validateField("formula");
+    }
+  };
+
   return (
     <>
       <h2 className="text-xl text-center font-semibold mb-4">
-        Editor de formula
+        Editor de fórmula
       </h2>
       <div className="w-[80%] m-auto flex flex-col justify-center">
         <div className={`bg-gray-100 border rounded-md p-2 h-20 ${
@@ -80,23 +109,48 @@ export function SectionFormEditor() {
               {errors.formula}
           </div>
         )}
+
+         <div className="mt-4">
+          <h4
+            className="text-md font-semibold mb-2 cursor-pointer bg-gray-200 p-2 rounded-md"
+            onClick={() => toggleSection("Variables")}
+          >
+          Variables {sectionOpen["Variables"] ? "▲" : "▼"}
+          </h4>
+          {sectionOpen["Variables"] && (
+            <div className="flex flex-wrap gap-2 p-2">
+              {indicatorsValid.map((indicator) => (
+                <button
+                  key={indicator.id}
+                  type="button"
+                  title={indicator.description}
+                  onClick={() => addElement(mathFieldRef, `${indicator.indicator}`)}
+                  className={`px-3 py-2 ${COLORS[3]} text-white rounded-md hover:bg-gray-800`}
+                >
+                  {indicator.indicator}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="mt-4">
           <h4
             className="text-md font-semibold mb-2 cursor-pointer bg-gray-200 p-2 rounded-md"
-            onClick={() => toggleSection("Funciones")}
+            onClick={() => toggleSection("functions")}
           >
-            Funciones {sectionOpen["Funciones"] ? "▲" : "▼"}
+            Funciones {sectionOpen["functions"] ? "▲" : "▼"}
           </h4>
-          {sectionOpen["Funciones"] && (
+          {sectionOpen["functions"] && (
             <div className="flex flex-wrap gap-2 p-2">
-              {funciones.map((funcion) => (
+              {functions.map((funcion) => (
                 <button
                   key={funcion.nombre}
                   type="button"
-                  onClick={() => addElement(mathFieldRef, `${funcion.valor}(`)}
-                  className="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                  onClick={() => addElement(mathFieldRef, `${funcion.value}()`)}
+                  className={`px-3 py-2 ${COLORS[2]} text-white rounded-md hover:bg-gray-800`}
                 >
-                  {funcion.nombre}()
+                  {funcion.name}()
                 </button>
               ))}
             </div>
@@ -106,20 +160,20 @@ export function SectionFormEditor() {
         <div className="mt-4">
           <h4
             className="text-md font-semibold mb-2 cursor-pointer bg-gray-200 p-2 rounded-md"
-            onClick={() => toggleSection("Operadores")}
+            onClick={() => toggleSection("operators")}
           >
-            Operadores {sectionOpen["Operadores"] ? "▲" : "▼"}
+            Operadores {sectionOpen["operators"] ? "▲" : "▼"}
           </h4>
-          {sectionOpen["Operadores"] && (
+          {sectionOpen["operators"] && (
             <div className="flex flex-wrap gap-2 p-2">
-              {operadores.map((op) => (
+              {operators.map((op) => (
                 <button
-                  key={op}
+                  key={op.name}
                   type="button"
-                  onClick={() => addElement(mathFieldRef, ` ${op} `)}
-                  className="px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                  onClick={() => addOperator(mathFieldRef, op.value)}
+                  className={`px-3 py-2 ${COLORS[1]} text-white rounded-md hover:bg-gray-800`}
                 >
-                  {op}
+                  {op.name}
                 </button>
               ))}
             </div>
@@ -129,18 +183,18 @@ export function SectionFormEditor() {
         <div className="mt-4">
           <h4
             className="text-md font-semibold mb-2 cursor-pointer bg-gray-200 p-2 rounded-md"
-            onClick={() => toggleSection("Números")}
+            onClick={() => toggleSection("numbers")}
           >
-            Números {sectionOpen["Números"] ? "▲" : "▼"}
+            Números {sectionOpen["numbers"] ? "▲" : "▼"}
           </h4>
-          {sectionOpen["Números"] && (
+          {sectionOpen["numbers"] && (
             <div className="grid grid-cols-3 gap-2 p-2">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
                 <button
                   key={num}
                   type="button"
                   onClick={() => addElement(mathFieldRef, num.toString())}
-                  className="px-3 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                  className={`px-3 py-2 ${COLORS[0]} text-white rounded-md hover:bg-gray-800`}
                 >
                   {num}
                 </button>
