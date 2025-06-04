@@ -45,7 +45,7 @@ export default function Login() {
             <h1 className="text-xl font-bold text-[#1e377c] mt-2">AFTIM</h1>
           </div>
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mb-8">
-            <h2 className="text-xl font-semibold text-center text-black mb-6">Iniciar Sesión</h2>
+            <h2 className="text-xl font-semibold text-center text-black mb-6">Iniciar sesión</h2>
             <form onSubmit={formik.handleSubmit}>
               <div className="w-[80%] h-[300px] m-auto pt-2 flex flex-col justify-between text-gray-950">
                 <div className="flex flex-col justify-center gap-4">
