@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useLogin } from '../components/hooks/auth/useLogin';
 import { useEffect } from 'react';
 import { useAuthStore } from '../components/hooks/auth/useAuthStore';
+import { IconError } from '../components/utils/IconError';
 
 export default function Login() {
   const router = useRouter()
@@ -61,7 +62,10 @@ export default function Login() {
                       required
                     />
                     {formik.touched.username && formik.errors.username && (
-                      <p className="text-red-500 text-sm">{formik.errors.username}</p>
+                      <div className="text-red-500 text-sm flex items-start">
+                          <IconError></IconError>
+                          {formik.errors.username}
+                      </div>
                     )}
                   </div>
                   <div>
@@ -76,7 +80,10 @@ export default function Login() {
                       required
                     />
                     {formik.touched.hashed_password && formik.errors.hashed_password && (
-                      <p className="text-red-500 text-sm">{formik.errors.hashed_password}</p>
+                      <div className="text-red-500 text-sm flex items-start">
+                          <IconError></IconError>
+                          {formik.errors.hashed_password}
+                      </div>
                     )}
                   </div>
                 </div>

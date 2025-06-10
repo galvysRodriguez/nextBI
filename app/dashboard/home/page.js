@@ -98,11 +98,10 @@ const ObjectivesDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-2">
           {visiblePerspectives.map((perspective) => (
             <div key={perspective.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 transition-all hover:shadow-lg">
-              <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              <div className="p-6 flex flex-col">
+                <h3 className="text-lg text-center font-semibold text-gray-800 mb-2">
                   {perspective.name}
                 </h3>
-                <p className="text-sm text-gray-500 mb-4">{perspective.details}</p>
                 
                 <div className="space-y-4">
                   <div>
@@ -112,7 +111,7 @@ const ObjectivesDashboard = () => {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div 
-                        className="bg-blue-600 h-2.5 rounded-full" 
+                        className="bg-[#67A7EB] h-2.5 rounded-full" 
                         style={{ width: `${(perspective.active / (perspective.active + perspective.completed + perspective.failed)) * 100}%` }}
                       ></div>
                     </div>
@@ -121,11 +120,11 @@ const ObjectivesDashboard = () => {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-sm font-medium text-gray-600">Completados</span>
-                      <span className="text-sm font-semibold text-green-600">{perspective.completed}</span>
+                      <span className="text-sm font-semibold ">{perspective.completed}</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div 
-                        className="bg-green-500 h-2.5 rounded-full" 
+                        className="bg-[#94ADD1]  h-2.5 rounded-full" 
                         style={{ width: `${(perspective.completed / (perspective.active + perspective.completed + perspective.failed)) * 100}%` }}
                       ></div>
                     </div>
@@ -134,11 +133,11 @@ const ObjectivesDashboard = () => {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-sm font-medium text-gray-600">Fallados</span>
-                      <span className="text-sm font-semibold text-red-600">{perspective.failed}</span>
+                      <span className="text-sm font-semibold ">{perspective.failed}</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div 
-                        className="bg-red-500 h-2.5 rounded-full" 
+                        className="bg-[#9DC2EB] h-2.5 rounded-full" 
                         style={{ width: `${(perspective.failed / (perspective.active + perspective.completed + perspective.failed)) * 100}%` }}
                       ></div>
                     </div>
