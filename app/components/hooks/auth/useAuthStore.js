@@ -25,6 +25,7 @@ export const useAuthStore = create((set) => ({
     setAuthToken(data.access_token);
     if (typeof window !== "undefined") {
       localStorage.setItem("authUser", JSON.stringify(data.user));
+      localStorage.setItem("company", JSON.stringify(data.enterprise));
     }
     set({
       token: data.access_token,
@@ -37,6 +38,7 @@ export const useAuthStore = create((set) => ({
     removeAuthToken()
     if (typeof window !== "undefined") {
       localStorage.removeItem("authUser");
+      localStorage.removeItem("company");
     }
     set({
       token: null,

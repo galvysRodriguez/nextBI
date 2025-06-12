@@ -21,7 +21,7 @@ const generateMockData = () => {
   };
 };
 
-const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas Clave' }) => {
+const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas clave' }) => {
   const mockData = generateMockData();
 
   console.log(inventory, purchases, sales, labels)

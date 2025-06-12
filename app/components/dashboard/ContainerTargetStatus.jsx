@@ -56,7 +56,8 @@ export default function ContainerTargetStatus({children}){
       const visiblePerspectives = data.slice(currentIndex, currentIndex + cardsToShow);
     return (
         <>
-            <div className="rounded-lg">
+            <div className='w-[95%] m-auto'>
+                 <div className="rounded-lg">
                 <ShowFilters showDateFilters={showDateFilters} setShowDateFilters={setShowDateFilters}/>
                 {showDateFilters && <Filters dateRange={dateRange} setDateRange={setDateRange}/>}
             </div>
@@ -116,6 +117,7 @@ export default function ContainerTargetStatus({children}){
                 <ChevronRight></ChevronRight>
                 </button>
             )}
+            </div>
             </div>
         </>
         

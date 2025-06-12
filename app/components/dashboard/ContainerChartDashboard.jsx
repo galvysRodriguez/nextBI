@@ -26,16 +26,12 @@ export default function ContainerChartDashboard(){
     useEffect(() => {
         const fetchData = async () => {
             const { data: apiData } = await refetch();
-            console.log(apiData.data)
             setData(apiData.data)
         };
 
         if (graphFilters.start && graphFilters.end) {
             fetchData();
         }
-
-        console.log("data", data)
-        console.log(data?.value_inventory)
 
     }, [graphFilters.start, graphFilters.end]);
 

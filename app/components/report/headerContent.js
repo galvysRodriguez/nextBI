@@ -1,13 +1,11 @@
 import * as XLSX from "xlsx";
 
-
 export const getHeaderContent = () => {
-  const company = {
-    name: "Mi Empresa C.A.",
-    rif: "J-12345678-9",
-    address: "Calle Principal, Ciudad, País",
-    logo: "/images/logo.png",
-  };
+  
+  const storedCompany = localStorage.getItem("company");
+
+ const company = JSON.parse(storedCompany)
+  
 
   const getDate = () => {
       const now = new Date();
@@ -33,25 +31,51 @@ export const getHeaderContent = () => {
 
   return {
     pdf: async (doc) => {
-      const img = new Image();
-      img.src = company.logo;
+    const img = new Image();
+    img.src = company.logo;
 
-      await new Promise(resolve => {
-        img.onload = () => {
-          doc.addImage(img, "SVG", 10, 10, 30, 30);
-          doc.setFontSize(12);
-          doc.text(company.name, 45, 15);
-          doc.text(`RIF: ${company.rif}`, 45, 22);
-          doc.text(company.address, 45, 29);
-          doc.text(getDate(), 45, 36);
-          resolve(true);
-        };
-      });
+    await new Promise(resolve => {
+      img.onload = () => {
+
+        doc.addImage(img, "PNG", 10, 10, 25, 25); 
+
+        const xInfo = 45;
+        let y = 15;
+        doc.setFontSize(10);
+        doc.text(company.company_name, xInfo, y);
+        y += 6;
+        doc.text(`RIF: ${company.rif}`, xInfo, y);
+        y += 6;
+        doc.text(`Dirección: ${company.address}`, xInfo, y);
+        y += 6;
+        doc.text(`Teléfono: ${company.phone}`, xInfo, y);
+
+        const dateStr = new Date().toLocaleDateString('es-VE', {
+          timeZone: 'America/Caracas',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
+
+        const timeStr = new Date().toLocaleTimeString('es-VE', {
+          timeZone: 'America/Caracas',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        });
+
+        doc.setFontSize(10);
+        doc.text(`Fecha: ${dateStr}`, 160, 15);
+        doc.text(`Hora: ${timeStr}`, 160, 20);
+
+        resolve(true);
+      };
+  });
     },
 
     excel: (worksheet, title) => {
       XLSX.utils.sheet_add_aoa(worksheet, [
-        [company.name],
+        [company.company_name],
         [`RIF: ${company.rif}`],
         [company.address],
         [getDate()],
@@ -63,9 +87,10 @@ export const getHeaderContent = () => {
 
     csv: (title) => {
       return [
-        company.name,
+        company.company_name,
         `RIF: ${company.rif}`,
-        company.address,
+        `Dirección: ${company.address}`,
+        `Telefono: ${company.phone}`,
         getDate(),
         "", 
         title,
@@ -79,26 +104,49 @@ export const getHeaderContent = () => {
         img.src = company.logo;
 
         img.onload = () => {
-          // Dibuja el logo
-          ctx.drawImage(img, 20, 20, 60, 60);
+          ctx.drawImage(img, 20, 20, 100, 100);
 
-          // Dibuja el texto al lado del logo
-          ctx.font = "18px Arial";
+          ctx.font = "16px Arial";
           ctx.fillStyle = "#000";
-          const xText = 100;
+          const xText = 140;
           let yText = 40;
 
-          ctx.fillText(company.name, xText, yText);
+          ctx.fillText(company.company_name, xText, yText);
           yText += 25;
           ctx.fillText(`RIF: ${company.rif}`, xText, yText);
           yText += 25;
-          ctx.fillText(company.address, xText, yText);
+          ctx.fillText(`Dirección: ${company.address}`, xText, yText);
           yText += 25;
-          ctx.fillText(getDate(), xText, yText);
+          ctx.fillText(`Teléfono: ${company.phone}`, xText, yText);
+
+          const now = new Date();
+          const dateStr = now.toLocaleDateString('es-VE', {
+            timeZone: 'America/Caracas',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          });
+
+          const timeStr = now.toLocaleTimeString('es-VE', {
+            timeZone: 'America/Caracas',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          });
+
+          ctx.font = "14px Arial";
+          ctx.textAlign = "right";
+
+          const paddingRight = 20;
+          const canvasWidth = ctx.canvas.width;
+
+          ctx.fillText(`Fecha: ${dateStr}`, canvasWidth - paddingRight, 40);
+          ctx.fillText(`Hora: ${timeStr}`, canvasWidth - paddingRight, 65);
 
           resolve(true);
         };
       });
     }
+
   };
 };
