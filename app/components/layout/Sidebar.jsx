@@ -18,7 +18,7 @@ export default function Sidebar({ children }) {
         <div className="p-4 pb-2 flex justify-center items-center md:flex-col md:items-start">
           <button
             onClick={() => changeExpanded()}
-            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 md:mt-4"
+            className="p-1.5 rounded-lg bg-gray-50 text-gray-500 hover:bg-gray-100 md:mt-4"
           >
             {expanded ? <ChevronFirst /> : <Menu />}
           </button>

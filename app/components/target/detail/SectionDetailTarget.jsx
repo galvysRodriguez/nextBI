@@ -59,13 +59,8 @@ export function ButtonSecondary({ text, id }) {
 
 // Sección principal de detalle de objetivo
 function SectionDetailTarget({perspective, indicator, title, optimal, tolerable, deficient, indicator_value,
-                                start_date, end_date, elapsed, restant, detail, min_daily, tag
+                                start_date, end_date, elapsed, restant, detail, min_daily, tag, progress
 }) {
-    const label = detail.map((item) => convertDate(item.date));
-    const current = detail.map((item) => item.value);
-    const average = detail.map((item) => item.optimal);
-    const cumulative = detail.map((item) => item.cumulative)
-    
     
     return (
         <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-6 pt-12">
@@ -83,20 +78,12 @@ function SectionDetailTarget({perspective, indicator, title, optimal, tolerable,
                     <CardDetailTarget label="Valor deficiente" amount={deficient} />
                 </div>
                 <Suspense fallback={<div className="w-64 h-64 bg-gray-300 rounded-full"></div>}>
-                    <GaugeChart result={indicator_value} optimal={optimal}/>
+                    <GaugeChart result={progress}/>
                 </Suspense>
                 <DateInfoTarget start={convertDate(start_date)} 
                                 end={convertDate(end_date)} 
                                 remaining={restant} 
                                 duration={elapsed} />
-            </div>
-            <div className="w-full h-156 pb-12">
-                <Suspense fallback={<div className="w-full h-156 bg-gray-300 rounded-xl"></div>}>
-                    <TrafficChart label={label} current={current} average={average} 
-                    cumulative={cumulative} min_daily={min_daily}
-                    title={title}
-                    />
-                </Suspense>
             </div>
         </div>
     );
@@ -118,7 +105,7 @@ function CardDetailTarget({ label, amount }) {
 function DateInfoTarget({ start, end, remaining, duration }) {
     return (
         <Box className="bg-white rounded-xl shadow-md h-96 w-64 p-6">
-            <strong className="text-lg text-center text-gray-900">Periodo de tiempo</strong>
+            <strong className="text-lg text-center text-gray-900">Período de tiempo</strong>
             <div className="flex flex-col gap-8 pt-8 text-gray-700">
                 <p>Inicio: <span className="font-semibold">{start}</span></p>
                 <p>Final: <span className="font-semibold">{end}</span></p>

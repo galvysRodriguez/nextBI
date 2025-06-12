@@ -2,13 +2,9 @@
 import React, { useState } from "react";
 import { Box, LinearProgress, Tooltip, Typography } from "@mui/material";
 
-export const ProgressBar = ({ current, target }) => {
+export const ProgressBar = ({ current, optimal, lack, progress }) => {
   const [hover, setHover] = useState(false);
 
-  // Asegúrate de que target sea mayor a 0 para evitar división por 0
-  const validTarget = target > 0 ? target : 1; // Usar 1 en caso de que target sea 0 o negativo
-  const percentage = Math.min((current / validTarget) * 100, 100); // Calcula el porcentaje
-  const remaining = validTarget - current; // Calcula lo que falta
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -26,16 +22,16 @@ export const ProgressBar = ({ current, target }) => {
           title={
             <Box>
               <Typography variant="body2">
-                Progreso: {percentage?.toFixed(2)}%
+                Progreso: {progress?.toFixed(2)}%
               </Typography>
               <Typography variant="body2">
-                Resultado obtenido: {current?.toLocaleString()}
+                Resultado obtenido: {current?.toFixed(2)}
               </Typography>
               <Typography variant="body2">
-                Resultado esperado: {validTarget?.toLocaleString()}
+                Resultado esperado: {optimal?.toFixed(2)}
               </Typography>
               <Typography variant="body2">
-                Falta: {remaining > 0 ? remaining?.toLocaleString() : 0}
+                Falta: {lack?.toFixed(2)}
               </Typography>
             </Box>
           }
@@ -44,15 +40,15 @@ export const ProgressBar = ({ current, target }) => {
         >
           <LinearProgress
             variant="determinate"
-            value={percentage}
+            value={progress >= 100 ? 100 : progress}
             sx={{
               height: 20,
               borderRadius: 5,
               width: "100%",
               cursor: "pointer",
-              bgcolor: "grey.300", // Cambia el fondo (área no completada)
+              bgcolor: "grey.300",
               "& .MuiLinearProgress-bar": {
-                backgroundColor: "#A5C1CF", // Cambia el color de la barra de progreso
+                backgroundColor: "#A5C1CF", 
               },
             }}
           />

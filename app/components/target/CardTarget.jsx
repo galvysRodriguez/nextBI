@@ -12,6 +12,9 @@ import { useRouter } from 'next/navigation';
 import { useCardStore } from "../context/IsGrid";
 import { useCallback, useEffect } from "react";
 import { ButtonSecondary } from "./ButtonSecondary";
+import { CheckCircle } from "lucide-react";
+import { PauseCircle } from "lucide-react";
+import { XCircle } from "lucide-react";
 
 function formatDate(date) {
   const newDate = new Date(date);
@@ -25,7 +28,7 @@ function formatDate(date) {
 }
 
 function formatDecimal(num) {
-  return num?.toFixed(2); // Retorna un string con dos decimales
+  return num?.toFixed(2); 
 }
 
   export function CardTarget({ optimal = 40, 
@@ -37,15 +40,17 @@ function formatDecimal(num) {
                               indicator, 
                               tag,
                               perspective,
+                              lack, 
+                              status,
+                              progress,
                               id}) {
-    // Obtener el estado y el método handleSelect del store
+
   const { selectedCard, handleSelect, clearSelection } = useCardStore();
 
   const statusValue = useCallback(() => {
     return optimal <= indicator_value
   }, [optimal, indicator_value])
 
-  // Verificar si esta tarjeta está seleccionada
   const isSelected = selectedCard === id;
   
   return (
@@ -53,19 +58,16 @@ function formatDecimal(num) {
       className={`max-w-[500px] rounded-2xl p-6 cursor-pointer ${
         isSelected ? 'bg-blue-50 border-2 border-blue-500' : 'bg-white border border-gray-200'
       }`}
-      onClick={() => handleSelect(id)} // Manejar la selección al hacer clic
+      onClick={() => handleSelect(id)} 
     >
-      {/* Header */}
       <div className="flex items-center justify-between gap-3 h-20 w-full">
         <LogoCard value={tag} />
         <TitleCard text={title} />
-        <StatusCard status={statusValue()} />
+        <StatusCard status={status} />
       </div>
 
-      {/* Date */}
       <DateCard start_date={formatDate(start_date)} end_date={formatDate(end_date)} />
 
-      {/* Total Sales */}
       <div className="pt-8 text-center">
         <strong className="font-medium text-lg">{indicator}</strong>
         <div className="flex flex-col gap-4 py-6">
@@ -82,12 +84,10 @@ function formatDecimal(num) {
         </div>
       </div>
 
-      {/* Progress Bar */}
       <div>
-        <ProgressBar current={indicator_value} target={optimal} />
+        <ProgressBar current={indicator_value} optimal={optimal} lack={lack} progress={progress}/>
       </div>
 
-      {/* Button */}
       <ContainerButton id={id} />
     </div>
   );
@@ -122,9 +122,20 @@ function formatDecimal(num) {
   
   export function StatusCard({ status }) {
     console.log(status)
+    const statusConfig = {
+    completed: {
+      icon: <CheckCircle  />
+    },
+    active: {
+      icon: <PauseCircle  />
+    },
+    failed: {
+      icon: <XCircle  />
+    },
+  };
     return (
       <div className="min-w-[3rem] min-h-[3rem] bg-[#dfe6fa] rounded-full flex justify-center items-center">
-        {status ? <DoneAll/> : <DoDisturb></DoDisturb>}
+        {statusConfig[status].icon}
       </div>
     )
   }

@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import TargetDetailPage, { LoadingSkeletonDetail } from "app/app/components/target/detail/SectionDetailTarget";
-import Progress from "app/app/components/utils/Progress";
+
 import { apiRequest } from "app/app/components/api/apiRequest";
 import { API_ROUTES } from "app/app/components/api/routes";
+import { ChartDetailTarget } from "app/app/components/target/detail/ChartDetailTarget";
 
 const ProductReviews = async ({ params }) => {
   const id = (await params).id;
@@ -17,8 +18,22 @@ const ProductReviews = async ({ params }) => {
 export default ProductReviews;
 
 const TargetDataFetcher = async ({ id }) => {
-  const targetData = await fetchDataFromServer(id);
-  return <TargetDetailPage targetData={targetData.data} />
+  const detailResponse  = await fetchDataFromServer(id)
+
+  const {title, optimal, tolerable, deficient} = detailResponse.data;
+
+  return (
+    <>
+      <TargetDetailPage targetData={detailResponse.data} /> 
+      <ChartDetailTarget
+        id={id}
+        title={title}
+        optimal={optimal}
+        tolerable={tolerable}
+        deficient={deficient}
+      ></ChartDetailTarget>
+    </>
+     )
 };
 
 export async function fetchDataFromServer(id) {
@@ -27,6 +42,8 @@ export async function fetchDataFromServer(id) {
       method: "GET",
     });
 }
+
+
 
 
 

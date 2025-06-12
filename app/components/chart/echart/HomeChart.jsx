@@ -24,6 +24,8 @@ const generateMockData = () => {
 const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas Clave' }) => {
   const mockData = generateMockData();
 
+  console.log(inventory, purchases, sales, labels)
+
   const chartOptions = {
     chart: {
       height: "100%",
@@ -59,7 +61,7 @@ const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas Cla
       },
     },
     dataLabels: { enabled: false },
-    labels: mockData.labels,
+    labels: labels,
     fill: { opacity: 1 },
     tooltip: {
       shared: true,
@@ -100,17 +102,17 @@ const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas Cla
   const chartSeries = [
     {
       name: "Valor de inventario",
-      data: mockData.inventory,
+      data: inventory,
       type: "line",
     },
     {
       name: "Volumen de compras",
-      data: mockData.purchases,
+      data: purchases,
       type: "line",
     },
     {
       name: "Volumen de ventas",
-      data: mockData.sales,
+      data: sales,
       type: "line",
     },
   ];
@@ -118,13 +120,12 @@ const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas Cla
   return (
     <div
       style={{
-        width: "90%",
+        width: "100%",
         height: "100%",
         margin: "0 auto",
         borderRadius: "8px",
         padding: "20px",
         backgroundColor: color.white,
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
       }}
     >
       <ReactApexChart 

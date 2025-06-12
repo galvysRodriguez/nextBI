@@ -10,7 +10,7 @@ export function SectionTarget({content, id}) {
         <>
             <PrincipalContainer>
                 <Title   id={id}  />
-                <HeaderTarget></HeaderTarget>
+                <HeaderTarget search={true}></HeaderTarget>
                 <MainTarget content={content}></MainTarget>
                 <SectionPagination></SectionPagination>
             </PrincipalContainer>

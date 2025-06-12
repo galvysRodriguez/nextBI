@@ -5,9 +5,9 @@ import * as echarts from "echarts";
 import { useTheme } from "@mui/material/styles";
 import { COLORS } from "../../utils/const";
 
-const GaugeChart = ({ result = 60, optimal = 100, title = "Cumplimiento" }) => {
+const GaugeChart = ({ result = 60, title = "Cumplimiento" }) => {
   const chartRef = useRef(null);
-  const value = (result / optimal) * 100; // Nivel de la aguja
+  const value = result > 100 ? 100 : result
 
   useEffect(() => {
     const myChart = echarts.init(chartRef.current);
@@ -73,7 +73,7 @@ const GaugeChart = ({ result = 60, optimal = 100, title = "Cumplimiento" }) => {
             fontSize: 40, // Tamaño más pequeño del texto principal
             offsetCenter: [0, "90%"],
             color: COLORS.title,
-            formatter: `{small|${result}}`, // Muestra el % y el result
+            formatter: `{small|${value.toFixed(2)}}`, // Muestra el % y el result
             rich: {
               small: {
                 fontSize: 40, // Hace más pequeño el texto de `result`

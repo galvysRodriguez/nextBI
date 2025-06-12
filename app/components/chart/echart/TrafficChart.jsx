@@ -5,8 +5,10 @@ import { COLORS } from "../color";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const TrafficChart = ({ label, cumulative, current, average, min_daily, title = 'Total de ventas' }) => {
-  const minDailyArray = Array(label.length).fill(min_daily);
+const TrafficChart = ({ label, optimal, current, deficient, tolerable, title = 'Total de ventas' }) => {
+  const optimalArray = Array(label.length).fill(optimal);
+  const tolerableArray = Array(label.length).fill(tolerable);
+  const deficientArray = Array(label.length).fill(deficient);
   
   const chartOptions = {
     chart: {
@@ -57,7 +59,12 @@ const TrafficChart = ({ label, cumulative, current, average, min_daily, title = 
       row: { colors: ["transparent", "#f3f3f3"], opacity: 0.5 },
     },
     xaxis: {
-      labels: { style: { colors: color.black } },
+      labels: { 
+          style: { colors: color.black },
+          formatter: function(value) {
+            return new Date(value).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
+            }
+        },
     },
     yaxis: {
       labels: { style: { colors: COLORS.black } },
@@ -75,31 +82,31 @@ const TrafficChart = ({ label, cumulative, current, average, min_daily, title = 
 
   const chartSeries =[
     {
-      name: "Acumulado",
-      type: "bar",
-      data: cumulative,
-    },
-    {
-      name: "Valor del día",
+      name: "Obtenido",
       type: "line",
       data: current,
     },
     {
-      name: "Objetivo",
+      name: "Óptimo",
       type: "line",
-      data: average,
+      data: optimalArray,
     },
     {
-      name: "Mínimo Diario",
+      name: "Deficiente",
       type: "area",
-      data: minDailyArray,
+      data: deficientArray,
+    },
+    {
+      name: "Tolerable",
+      type: "bar",
+      data: tolerableArray,
     },
   ]
 
   return (
     <div
       style={{
-        width: "80%",
+        width: "100%",
         height: "100%",
         margin: "0 auto",
         borderRadius: "8px",

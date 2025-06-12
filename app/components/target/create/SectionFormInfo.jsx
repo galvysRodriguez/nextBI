@@ -6,6 +6,7 @@ import { IconError } from "../../utils/IconError";
 import { useTagOption } from "../../hooks/options/useTagOption";
 import { convertOption } from "../../utils/convertOption";
 import { useFormulaByTagOption } from "../../hooks/options/useFormulaByTagOption";
+import { useTagByPerspective } from "../../hooks/options/useTagByPerspective";
 
 export const mocksOptions = [
   { value: 1, label: 'Chocolate' },
@@ -13,7 +14,7 @@ export const mocksOptions = [
   { value: 3, label: 'Vanilla' }
 ]
 
-export function SectionFormInfo({isCreate, targetId}) {
+export function SectionFormInfo({isCreate, targetId, perspectiveId}) {
   const {
     values,
     errors,
@@ -26,7 +27,7 @@ export function SectionFormInfo({isCreate, targetId}) {
     setFieldTouched,
   } = useFormTargetOne({isCreate, targetId});
 
-  const { data: dataTag, isLoading: isLoadingTag, error: errorTag } = useTagOption();
+  const { data: dataTag, isLoading: isLoadingTag, error: errorTag } = useTagByPerspective(perspectiveId);
 
   const { data: dataFormula, isLoading: isLoadingFormula, error: errorFormula } = useFormulaByTagOption(values.tag_id);
 

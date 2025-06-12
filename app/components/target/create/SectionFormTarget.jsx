@@ -22,7 +22,7 @@ const initialValues = {
   tag_id: "",
 };
 
-export function SectionFormTarget({ isCreate, initialData=initialValues, targetId }) {
+export function SectionFormTarget({ isCreate, initialData=initialValues, targetId, perspectiveId }) {
   const { mutate: create } = useSaveForm();
   const { mutate: update } = useUpdateForm();
   const{activeStep}= useStep()
@@ -61,7 +61,7 @@ export function SectionFormTarget({ isCreate, initialData=initialValues, targetI
       enableReinitialize={true}
     >
       <Form>
-        {activeStep === 0 && <SectionFormInfo isCreate={isCreate} targetId={targetId}/>}
+        {activeStep === 0 && <SectionFormInfo isCreate={isCreate} targetId={targetId} perspectiveId={perspectiveId} />}
         {activeStep === 1 && <SectionFormDateTarget isCreate={isCreate} />}
         {activeStep === 2 && <SectionFormOptimal />}
       </Form>

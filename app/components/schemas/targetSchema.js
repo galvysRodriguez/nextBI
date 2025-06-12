@@ -7,20 +7,36 @@ export const targetSchema = yup.object().shape({
     .max(100, 'El título no puede exceder 100 caracteres'),
   deficient: yup
     .number()
-    .typeError('Debe ser un número válido')
-    .required('El valor deficiente es requerido')
-    .lessThan(yup.ref('tolerable'), 'Debe ser menor que el valor tolerable'),
+    .typeError("Debe ser un número válido")
+    .required("El valor deficiente es requerido"),
+    
   tolerable: yup
     .number()
-    .typeError('Debe ser un número válido')
-    .required('El valor tolerable es requerido')
-    .lessThan(yup.ref('optimal'), 'Debe ser menor que el valor óptimo')
-    .moreThan(yup.ref('deficient'), 'Debe ser mayor que el valor deficiente'),
+    .typeError("Debe ser un número válido")
+    .required("El valor tolerable es requerido"),
+    
   optimal: yup
     .number()
-    .typeError('Debe ser un número válido')
-    .required('El valor óptimo es requerido')
-    .moreThan(yup.ref('tolerable'), 'Debe ser mayor que el valor tolerable'),
+    .typeError("Debe ser un número válido")
+    .required("El valor óptimo es requerido")
+    .test(
+      "validate-relationship",
+      "Los valores no cumplen con las relaciones requeridas",
+      function (optimal) {
+        const { tolerable, deficient } = this.parent;
+        
+
+        if (optimal > tolerable) {
+          return deficient < tolerable && tolerable < optimal;
+        }
+
+        if (optimal < tolerable) {
+          return optimal < tolerable && tolerable < deficient;
+        }
+
+        return false;
+      }
+    ),
   start_date: yup
     .date()
     .required('La fecha inicial es obligatoria')
