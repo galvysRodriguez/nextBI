@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { HEIGHT } from './config';
 import { COLORS } from '../color';
 import { TITLE_ECHART } from '../echart/optionEchart';
-import { TITLE_APEX } from './optionApex';
+import { STYLE_AXIS, SUBTITLE_APEX, TITLE_APEX } from './optionApex';
 import { useChartExport } from '../../context/chartExportContext';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
@@ -18,6 +18,9 @@ const BasicBarChart = ({
   series = [{
     data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
   }],
+  subtitle,
+  xtitle,
+  ytitle,
 }) => {
   const { chartInstanceRef } = useChartExport();
   const options = {
@@ -60,10 +63,25 @@ const BasicBarChart = ({
     },
     xaxis: {
       categories: categories,
+       title: {
+        text: xtitle,
+        ...STYLE_AXIS,
+      },
+    },
+
+    yaxis: {
+       title: {
+        text: ytitle,
+        ...STYLE_AXIS,
+      },
     },
     title: {
       text: title,
       ...TITLE_APEX,
+    },
+     subtitle: {
+      text: subtitle,
+      ...SUBTITLE_APEX,
     },
     tooltip: {
       y: {

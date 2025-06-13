@@ -26,7 +26,7 @@ export const useChartExportControls = () => {
     const  exportChart = useCallback((format, title)=>{
       const today = new Date();
         const formattedDate = today.toISOString().split('T')[0];  
-      if (!chartInstanceRef.current) {
+      if (!chartInstanceRef.current && !selectedChart) {
         showErrorToast("Error, ingrese a la sección de gráfica")
         return;
       }
@@ -38,7 +38,7 @@ export const useChartExportControls = () => {
         return exportEChart(chartInstanceRef.current, `${title}-${formattedDate}`, format);
       }
       return null
-    }, [chartInstanceRef, type]);
+    }, [chartInstanceRef, type, selectedChart]);
     
     return {
         exportChart

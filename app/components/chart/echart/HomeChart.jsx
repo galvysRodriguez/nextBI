@@ -24,8 +24,6 @@ const generateMockData = () => {
 const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas clave' }) => {
   const mockData = generateMockData();
 
-  console.log(inventory, purchases, sales, labels)
-
   const chartOptions = {
     chart: {
       height: "100%",

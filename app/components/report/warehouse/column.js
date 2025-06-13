@@ -15,8 +15,9 @@ export const initialColumnsWarehouse = [
       defaultValue: [0, 1000],
       aggregationFn: "sum",
       AggregatedCell: ({ cell }) => (
-        <strong>Cantidad: {cell.getValue()?.toLocaleString()}</strong>
+        <strong>Total: {cell.getValue()?.toLocaleString()}</strong>
       ),
+      total: true,
     },
     { accessorKey: "product_code", header: "Código del Producto", filterSelectOptions },
     { accessorKey: "category", header: "Categoría", filterSelectOptions, isVisible: false },
@@ -26,19 +27,6 @@ export const initialColumnsWarehouse = [
     { accessorKey: "brand", header: "Marca", filterSelectOptions, isVisible: false},
     { accessorKey: "product_details", header: "Detalles del Producto", isVisible: false},
     { accessorKey: "product_presentations", header: "Presentaciones del Producto", isVisible: false },
-    { 
-      accessorKey: "quantity", 
-      header: "Cantidad", 
-      type: "number", 
-      filterVariant: 'range',
-      filterFn: 'betweenInclusive',
-      defaultValue: [0, 1000],
-      aggregationFn: "sum",
-      AggregatedCell: ({ cell }) => (
-        <strong>Total: {cell.getValue()?.toLocaleString()}</strong>
-      ),
-      total: true,
-    },
     { accessorKey: "date", header: "Fecha", filterVariant: "rango", filterFn: "betweenInclusive" },
     { accessorKey: "day", header: "Día", filterSelectOptions, isVisible: false },
     { accessorKey: "weekday_number", header: "Día Semana", filterSelectOptions, isVisible: false },

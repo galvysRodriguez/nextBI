@@ -15,12 +15,9 @@ export function ButtonExport({initialColumns}){
     const {format} = useReportFormat()
     const {scope} = useReportScope()
     const { refetchAll} = useRefetchAll();
-    //const { exportChart } = useChartExport();
     const { exportChart}  = useChartExportControls()
     const {columnVisibility} = useColumns()
     const {title} = useTitle()
-
-
 
     const handleClick = async() => {
         if(scope == 'all'){
@@ -36,8 +33,6 @@ export function ButtonExport({initialColumns}){
         }
 
         if(format === 'png' || format === 'svg'){
-            //await exportChart(selectedChart, format)
-            //return setIsMenuOpen(false)
             exportChart(format, title)
             return setIsMenuOpen(false)
         }

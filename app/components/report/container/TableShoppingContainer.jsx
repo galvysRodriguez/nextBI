@@ -11,19 +11,29 @@ import Table from "../Table";
 
 export default function TableContainer() {
   // Obtén las filas y columnas desde donde sea necesario
-  const rows = useMemo(()=> MocksDataShopping, [MocksDataShopping])
-  const columns = useMemo(()=> initialColumnsShopping, [initialColumnsShopping])
-  
-  const {  sorting, filters, groupedColumns } = useTableContext();
-  const { getGroupedColumnValues, groupRowsWithAmount, getFilteredRows } = useTableUtils({filters, groupedColumns});
+  const rows = useMemo(() => MocksDataShopping, [MocksDataShopping]);
+  const columns = useMemo(
+    () => initialColumnsShopping,
+    [initialColumnsShopping]
+  );
+
+  const { sorting, filters, groupedColumns } = useTableContext();
+  const { getGroupedColumnValues, groupRowsWithAmount, getFilteredRows } =
+    useTableUtils({ filters, groupedColumns });
 
   // Memoiza las filas filtradas
-  console.log("filtros", filters)
-  const rowsFiltered = useMemo(() => getFilteredRows(rows), [rows, getFilteredRows]);
-  console.log("rowsfiltered", rowsFiltered)
+  console.log("filtros", filters);
+  const rowsFiltered = useMemo(
+    () => getFilteredRows(rows),
+    [rows, getFilteredRows]
+  );
+  console.log("rowsfiltered", rowsFiltered);
 
   // Memoiza las filas agrupadas
-  const finalRow = useMemo(() => Object.values(groupRowsWithAmount(rowsFiltered)), [rowsFiltered, groupRowsWithAmount]);
+  const finalRow = useMemo(
+    () => Object.values(groupRowsWithAmount(rowsFiltered)),
+    [rowsFiltered, groupRowsWithAmount]
+  );
 
   // Memoiza la función para obtener las 10 filas con mayor monto
   const top10Rows = useCallback(() => {
@@ -48,29 +58,36 @@ export default function TableContainer() {
     }));
   }, [finalRow, sorting]);
 
-  // Memoiza los datos para el top 10
   const top10Data = useMemo(() => top10Rows(), [top10Rows]);
 
-  // Memoiza los datos para el gráfico
-  const chartData = useMemo(() => top10Data.map((row) => row.totalAmount), [top10Data]);
-  const chartCategories = useMemo(() => getGroupedColumnValues(top10Data), [top10Data, getGroupedColumnValues]);
+  const chartData = useMemo(
+    () => top10Data.map((row) => row.totalAmount),
+    [top10Data]
+  );
+  const chartCategories = useMemo(
+    () => getGroupedColumnValues(top10Data),
+    [top10Data, getGroupedColumnValues]
+  );
 
-  // Memoiza los valores para el gráfico
-  const values = useMemo(() => [{
-    name: "valor",
-    data: chartData,
-  }], [chartData]);
+  const values = useMemo(
+    () => [
+      {
+        name: "valor",
+        data: chartData,
+      },
+    ],
+    [chartData]
+  );
 
   console.log("top10Data:", top10Data);
-console.log("chartData:", chartData);
-console.log("chartCategories:", chartCategories);
-
+  console.log("chartData:", chartData);
+  console.log("chartCategories:", chartCategories);
 
   return (
     <>
       <div className="max-h-[70vh]">
         <TableWithThemeProvider>
-          <Table rows={rows} initialColumns={columns}/>
+          <Table rows={rows} initialColumns={columns} />
         </TableWithThemeProvider>
       </div>
       <div className="pt-64">
