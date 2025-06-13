@@ -3,6 +3,7 @@ import { useTableDataContext } from "../../context/TableContext";
 import { useRows } from "../../context/report/useRows";
 import { useGroupedColumns } from "../../context/report/useGroupedColumns";
 import { useSelectedRows } from "../../context/report/useSelectedRows";
+import { columnTranslations } from "./columnsMap";
 
 
 export function useGrouping(){

@@ -4,6 +4,7 @@ import useChartStore from "../../context/useChartStore";
 import { useReportChart } from "../../context/useReportChart";
 import { useChartExport } from "../../context/chartExportContext";
 import { showErrorToast } from "../../utils/toast";
+import { useReportView } from "../../context/useReportView";
 
 const chartLibraryTypes = {
   line: 'apexchart',
@@ -21,16 +22,16 @@ export const useChartExportControls = () => {
     const {chartInstanceRef, chartRef} = useChartExport()
     const {selectedChart} = useReportChart()
     const type = chartLibraryTypes[selectedChart];
+    const {isChart} = useReportView()
   
 
     const  exportChart = useCallback((format, title)=>{
       const today = new Date();
         const formattedDate = today.toISOString().split('T')[0];  
-      if (!chartInstanceRef.current && !selectedChart) {
+      if (!isChart) {
         showErrorToast("Error, ingrese a la sección de gráfica")
         return;
       }
-         
       
       if (type === 'apexchart') {
         return exportApexChart(chartInstanceRef.current, `${title}-${formattedDate}`, format);
@@ -38,7 +39,7 @@ export const useChartExportControls = () => {
         return exportEChart(chartInstanceRef.current, `${title}-${formattedDate}`, format);
       }
       return null
-    }, [chartInstanceRef, type, selectedChart]);
+    }, [chartInstanceRef, type, isChart]);
     
     return {
         exportChart
