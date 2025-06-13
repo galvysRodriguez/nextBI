@@ -22,7 +22,7 @@ export function ViewReport({ columns, title }) {
   const groupedColumnValues = getGroupedColumnValues();
   const chartData = getSumByGroup(key);
   const keyValue = columnTranslations[key]
-  const subtitle = `${column} por ${keyValue}`
+  const subtitle = `${column} por ${keyValue.toLowerCase()}`
   const values = [
     {
       name: "valor",

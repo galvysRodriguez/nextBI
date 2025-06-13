@@ -1,27 +1,47 @@
-"use client"
+"use client";
 import dynamic from "next/dynamic";
 import { COLORS as color } from "../../utils/const";
 import { COLORS } from "../color";
+import { STYLE_AXIS, SUBTITLE_APEX, TITLE_APEX } from "../apexchart/optionApex";
 
-const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 
 const generateMockData = () => {
   const dates = [
-    '2023-01-15', '2023-02-10', '2023-03-05', 
-    '2023-04-20', '2023-05-15', '2023-06-08',
-    '2023-07-12', '2023-08-18', '2023-09-22',
-    '2023-10-30', '2023-11-14', '2023-12-05'
+    "2023-01-15",
+    "2023-02-10",
+    "2023-03-05",
+    "2023-04-20",
+    "2023-05-15",
+    "2023-06-08",
+    "2023-07-12",
+    "2023-08-18",
+    "2023-09-22",
+    "2023-10-30",
+    "2023-11-14",
+    "2023-12-05",
   ];
-  
+
   return {
     labels: dates,
     inventory: dates.map(() => Math.floor(Math.random() * 5000) + 3000),
     purchases: dates.map(() => Math.floor(Math.random() * 8000) + 5000),
-    sales: dates.map(() => Math.floor(Math.random() * 7000) + 4000)
+    sales: dates.map(() => Math.floor(Math.random() * 7000) + 4000),
   };
 };
 
-const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas clave' }) => {
+const HomeChart = ({
+  inventory,
+  purchases,
+  sales,
+  labels,
+  title = "Métricas clave",
+  xtitle = "Fecha",
+  ytitle = "Total",
+  subtitle = "Total por fecha"
+}) => {
   const mockData = generateMockData();
 
   const chartOptions = {
@@ -46,17 +66,15 @@ const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas cla
     colors: COLORS,
     stroke: {
       curve: "smooth",
-      width: [3, 3, 3,0]
+      width: [3, 3, 3, 0],
     },
     title: {
       text: title,
-      align: "center",
-      style: {
-        color: color.black,
-        fontFamily: 'Arial, sans-serif',
-        fontSize: '24px',
-        fontWeight: '500',
-      },
+      ...TITLE_APEX,
+    },
+    subtitle: {
+      text: subtitle,
+      ...SUBTITLE_APEX,
     },
     dataLabels: { enabled: false },
     labels: labels,
@@ -76,15 +94,26 @@ const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas cla
       row: { colors: ["transparent", "#f3f3f3"], opacity: 0.5 },
     },
     xaxis: {
-      labels: { 
+      labels: {
         style: { colors: color.black },
-        formatter: function(value) {
-          return new Date(value).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
-        }
+        formatter: function (value) {
+          return new Date(value).toLocaleDateString("es-ES", {
+            day: "2-digit",
+            month: "2-digit",
+          });
+        },
+      },
+      title: {
+        text: xtitle,
+        ...STYLE_AXIS,
       },
     },
+
     yaxis: {
-      labels: { style: { colors: COLORS.black } },
+      title: {
+        text: ytitle,
+        ...STYLE_AXIS,
+      },
     },
     legend: { position: "bottom" },
     plotOptions: {
@@ -95,7 +124,7 @@ const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas cla
         barGap: "-50%",
       },
     },
-  }
+  };
 
   const chartSeries = [
     {
@@ -126,11 +155,11 @@ const HomeChart = ({ inventory, purchases, sales, labels, title = 'Métricas cla
         backgroundColor: color.white,
       }}
     >
-      <ReactApexChart 
-        options={chartOptions} 
-        series={chartSeries} 
-        type="line" 
-        height={500} 
+      <ReactApexChart
+        options={chartOptions}
+        series={chartSeries}
+        type="line"
+        height={500}
       />
     </div>
   );

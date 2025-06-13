@@ -1,15 +1,28 @@
-"use client"
+"use client";
 import dynamic from "next/dynamic";
-import { COLORS as color} from "../../utils/const";
+import { COLORS as color } from "../../utils/const";
 import { COLORS } from "../color";
+import { STYLE_AXIS, SUBTITLE_APEX, TITLE_APEX } from "../apexchart/optionApex";
 
-const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 
-const TrafficChart = ({ label, optimal, current, deficient, tolerable, title = 'Total de ventas' }) => {
+const TrafficChart = ({
+  label,
+  optimal,
+  current,
+  deficient,
+  tolerable,
+  title = "Total de ventas",
+  xtitle = "Fecha",
+  ytitle = "Obtenido",
+  subtitle = "Obtenido por fecha",
+}) => {
   const optimalArray = Array(label.length).fill(optimal);
   const tolerableArray = Array(label.length).fill(tolerable);
   const deficientArray = Array(label.length).fill(deficient);
-  
+
   const chartOptions = {
     chart: {
       height: "100%",
@@ -33,13 +46,11 @@ const TrafficChart = ({ label, optimal, current, deficient, tolerable, title = '
     stroke: { width: [1, 4, 2, 0] },
     title: {
       text: title,
-      align: "center",
-      style: {
-        color: color.black,
-        fontFamily: 'Arial, sans-serif',
-        fontSize: '24px',
-        fontWeight: '500',
-      },
+      ...TITLE_APEX,
+    },
+    subtitle: {
+      text: subtitle,
+      ...SUBTITLE_APEX,
     },
     dataLabels: { enabled: false },
     labels: label,
@@ -59,15 +70,26 @@ const TrafficChart = ({ label, optimal, current, deficient, tolerable, title = '
       row: { colors: ["transparent", "#f3f3f3"], opacity: 0.5 },
     },
     xaxis: {
-      labels: { 
-          style: { colors: color.black },
-          formatter: function(value) {
-            return new Date(value).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
-            }
+      labels: {
+        style: { colors: color.black },
+        formatter: function (value) {
+          return new Date(value).toLocaleDateString("es-ES", {
+            day: "2-digit",
+            month: "2-digit",
+          });
         },
+      },
+      title: {
+        text: xtitle,
+        ...STYLE_AXIS,
+      },
     },
+
     yaxis: {
-      labels: { style: { colors: COLORS.black } },
+      title: {
+        text: ytitle,
+        ...STYLE_AXIS,
+      },
     },
     legend: { position: "bottom" },
     plotOptions: {
@@ -78,9 +100,9 @@ const TrafficChart = ({ label, optimal, current, deficient, tolerable, title = '
         barGap: "-50%",
       },
     },
-  }
+  };
 
-  const chartSeries =[
+  const chartSeries = [
     {
       name: "Obtenido",
       type: "line",
@@ -101,7 +123,7 @@ const TrafficChart = ({ label, optimal, current, deficient, tolerable, title = '
       type: "bar",
       data: tolerableArray,
     },
-  ]
+  ];
 
   return (
     <div
@@ -114,7 +136,12 @@ const TrafficChart = ({ label, optimal, current, deficient, tolerable, title = '
         backgroundColor: color.white,
       }}
     >
-      <ReactApexChart options={chartOptions} series={chartSeries} type="line" height={600} />
+      <ReactApexChart
+        options={chartOptions}
+        series={chartSeries}
+        type="line"
+        height={600}
+      />
     </div>
   );
 };
