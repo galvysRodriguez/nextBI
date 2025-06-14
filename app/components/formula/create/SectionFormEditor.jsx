@@ -145,7 +145,7 @@ export function SectionFormEditor() {
             <div className="flex flex-wrap gap-2 p-2">
               {functions.map((funcion) => (
                 <button
-                  key={funcion.nombre}
+                  key={funcion.name}
                   type="button"
                   onClick={() => addElement(mathFieldRef, `${funcion.value}()`)}
                   className={`px-3 py-2 ${COLORS[2]} text-white rounded-md hover:bg-gray-800`}

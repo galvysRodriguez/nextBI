@@ -197,7 +197,19 @@ export const formulaSchema = yup.object().shape({
       if(/(COUNT|SUM|AVG)\s*(?:\\left)?\(\s*(?:\\right)?\)/.test(formula)){
         return createError({ path, message: "No se permiten funciones vacías" });
       }
-      
+
+      if (/(COUNT|SUM|AVG)\s*(?:\\left)?\(\s*[0-9.-]+\s*(?:\\right)?\)/.test(formula)) {
+        return createError({ path, message: "Las funciones no pueden tener números en sus argumentos" });
+      }
+
+      if (/\\?[a-zA-Z]+\([^)]*\)\d+/.test(formula)) {
+        return createError({ path, message: "Las funciones no pueden estar seguidas directamente por números" });
+      }
+
+      if (/^(\\?[a-zA-Z]+\\(?:left\s*)?\([^)]*\))\s*\d+/.test(formula)) {
+        return createError({path,message: "Las funciones no puede estar seguida directamente por un número sin operador"});
+      }
+
       if (/(COUNT|SUM|AVG)\s*(?:\\left)?\([^)]*[\+\-\*\/\^][^)]*(?:\\right)?\)/.test(formula)) {
         return createError({ path, message: "No se permiten operaciones dentro de funciones" });
       }
