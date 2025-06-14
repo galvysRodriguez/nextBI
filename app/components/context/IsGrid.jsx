@@ -81,6 +81,7 @@ export const useCardStore = create((set, get) => ({
 
   clearSelection: () => {
     set({ selectedCard: null });
+    set({rowSelection:{}})
   },
 
   isSelected: (cardId) => {

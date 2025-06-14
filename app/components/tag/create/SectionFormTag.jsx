@@ -8,6 +8,7 @@ import { tagSchema } from '../../schemas/tagSchema';
 import { useSaveFormTag, useUpdateFormTag } from '../../hooks/create/useSaveTag';
 import { useParentRedirect } from '../../hooks/useParentRedirect';
 import { showSuccessToast } from '../../utils/toast';
+import { useCardStore } from '../../context/IsGrid';
 
 const initialValues = {
   title: '',
@@ -21,6 +22,7 @@ export function SectionFormTag({ isCreate, initialData=initialValues, tagId }) {
   const { mutate: create} = useSaveFormTag()
   const {mutate : update} = useUpdateFormTag()
   const { redirectToParent} = useParentRedirect()
+   const {clearSelection} = useCardStore()
 
   const handleSubmit = (values, { setSubmitting }) => {
     const mutation = isCreate ? create : update;
@@ -35,6 +37,7 @@ export function SectionFormTag({ isCreate, initialData=initialValues, tagId }) {
     mutation(formattedValues, {
       onSuccess: () => {
         setSubmitting(false);
+        clearSelection()
         showSuccessToast(`${message} exitosamente`);
         redirectToParent()
       },

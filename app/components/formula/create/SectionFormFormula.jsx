@@ -10,6 +10,7 @@ import { showSuccessToast } from "../../utils/toast";
 import { useEffect } from "react";
 import { useIndicatorsValid } from "../../hooks/indicator/useIndicatorsValid";
 import { useIndicatorsValidContext } from "../../context/useIndicatorsValidContext";
+import { useCardStore } from "../../context/IsGrid";
 
 const initialValues = {
   title: '',
@@ -23,6 +24,7 @@ export function SectionFormFormula({ isCreate, initialData=initialValues, formul
    const { mutate: update} = useUpdateFormFormula()
    const {redirectToParent} = useParentRedirect()
    const{indicatorsValid} = useIndicatorsValidContext()
+   const {clearSelection} = useCardStore()
 
    const handleSubmit = (values, { setSubmitting }) => {
     const mutation = isCreate ? create : update;
@@ -33,6 +35,7 @@ export function SectionFormFormula({ isCreate, initialData=initialValues, formul
     mutation(values, {
       onSuccess: () => {
         setSubmitting(false);
+        clearSelection()
         showSuccessToast(`${message} exitosamente`);
         redirectToParent()
       },

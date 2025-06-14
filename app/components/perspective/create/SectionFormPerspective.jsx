@@ -7,6 +7,7 @@ import { perspectiveSchema } from '../../schemas/perspectiveSchema';
 import { useSaveFormPerspective, useUpdateFormPerspective } from '../../hooks/create/useSavePerspective';
 import { showSuccessToast } from '../../utils/toast';
 import { useParentRedirect } from '../../hooks/useParentRedirect';
+import { useCardStore } from '../../context/IsGrid';
 
 const initialValues = {
   title: '',
@@ -19,6 +20,7 @@ export function SectionFormPerspective({ isCreate, initialData=initialValues, pe
   const { mutate: create} = useSaveFormPerspective()
   const { mutate: update} = useUpdateFormPerspective()
   const { redirectToParent } = useParentRedirect();
+   const {clearSelection} = useCardStore()
   
     const handleSubmit = (values, { setSubmitting }) => {
       const mutation = isCreate ? create : update;
@@ -32,6 +34,7 @@ export function SectionFormPerspective({ isCreate, initialData=initialValues, pe
       mutation(formattedValues, {
         onSuccess: () => {
           setSubmitting(false)
+          clearSelection()
           showSuccessToast(`${message} exitosamente`);
           redirectToParent()
         },

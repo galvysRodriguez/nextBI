@@ -8,6 +8,7 @@ import { useStep } from "../../context/StepContext";
 import { targetSchema } from "../../schemas/targetSchema";
 import { showSuccessToast } from '../../utils/toast';
 import { useParentRedirect } from '../../hooks/useParentRedirect';
+import { useCardStore } from '../../context/IsGrid';
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -27,6 +28,7 @@ export function SectionFormTarget({ isCreate, initialData=initialValues, targetI
   const { mutate: update } = useUpdateForm();
   const{activeStep}= useStep()
   const { redirectToParent } = useParentRedirect();
+   const {clearSelection} = useCardStore()
 
   const handleSubmit = (values, { setSubmitting }) => {
     const mutation = isCreate ? create : update;
@@ -41,6 +43,7 @@ export function SectionFormTarget({ isCreate, initialData=initialValues, targetI
     mutation(formattedValues, {
       onSuccess: () => {
         setSubmitting(false);
+        clearSelection()
         showSuccessToast(`${message} exitosamente`);
         redirectToParent()
       },
