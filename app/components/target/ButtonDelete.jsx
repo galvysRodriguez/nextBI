@@ -7,14 +7,12 @@ import { usePermissionButtonDelete } from "../hooks/usePermissionButtonDelete";
 import { useMemo } from "react";
 
 export function ButtonDelete() {
-  const { isNullSelected} = useCardStore();
-  const pathname = usePathname();
-  const basePath = useMemo(() => pathname.replace(/\/delete$/, ''), [pathname]);
-  const fullPath = `${basePath}/delete`;
+  const { getSelected, isNullSelected} = useCardStore()
+  const pathname = usePathname()
+  const basePath = useMemo(() => pathname.replace(/\/delete$/, ''), [pathname])
+  const fullPath = `${basePath}/delete/${getSelected()}`
   const {handleDelete, isLoading} = usePermissionButtonDelete()
   
-  
-
   return (
     <button
       onClick={() => handleDelete(fullPath)}

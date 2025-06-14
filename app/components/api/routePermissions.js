@@ -6,13 +6,13 @@ export const routePermissionsMap = {
   '/dashboard/target/perspective/:id/update/:id': { resource: '/targets', method:'PUT' },
   '/dashboard/target/:id': { resource: '/targets/:id', method:'DELETE' },
   '/dashboard/target/:id': { resource: '/targets/detail', method:'GET' },
+  '/dashboard/target/perspective/:id': { resource: '/targets/perspective/:id', method:'GET' },
 
   '/dashboard/formula': { resource: '/formula', method:'GET' },
   '/dashboard/formula/create': { resource: '/formula', method:'POST' },
   '/dashboard/formula/update/:id': { resource: '/formula', method:'PUT' },
   '/dashboard/formula/:id': { resource: '/formula/:id', method:'DELETE' },
 
-  '/dashboard/perspective/:id': { resource: '/targets/perspectives/:id', method:'GET' },
   '/dashboard/perspective/info/create': { resource: '/perspectives', method:'POST' },
   '/dashboard/perspective/info/update/:id': { resource: '/perspectives/:id', method:'PUT' },
   '/dashboard/perspective/info': { resource: '/perspectives', method:'GET' },

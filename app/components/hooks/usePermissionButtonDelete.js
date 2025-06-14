@@ -15,7 +15,6 @@ export function usePermissionButtonDelete() {
   const { selectedCard, clearSelection } = useCardStore();
   const { detectResourceType } = useApiClient();
   const { resourceType } = detectResourceType();
-  console.log("tipo:",resourceType)
   const queryClient = useQueryClient()
 
   const handleDelete = (fullPath) => {

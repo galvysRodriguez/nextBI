@@ -97,11 +97,12 @@ const HomeChart = ({
       labels: {
         style: { colors: color.black },
         formatter: function (value) {
-          return new Date(value).toLocaleDateString("es-ES", {
-            day: "2-digit",
-            month: "2-digit",
-          });
-        },
+          return new Date(value + "T00:00:00Z") 
+            .toLocaleDateString("es-ES", {
+              day: "2-digit",
+              month: "2-digit",
+            });
+        }
       },
       title: {
         text: xtitle,

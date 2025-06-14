@@ -41,7 +41,7 @@ export const NAV_MENU_FINAL = [
         text: "Órdenes",
         href: "/dashboard/reports/order",
         alert: "false",
-        resource: "/reports/sale",
+        resource: "/reports/order",
       },
       {
         icon: <Store />,
@@ -62,7 +62,7 @@ export const NAV_MENU_FINAL = [
         text: "Cotizaciones",
         href: "/dashboard/reports/quote",
         alert: "false",
-        resource: "/reports/sale",
+        resource: "/reports/quote",
       },
       {
         icon: <CircleDollarSign />,
