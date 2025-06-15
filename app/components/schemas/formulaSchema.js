@@ -198,6 +198,10 @@ export const formulaSchema = yup.object().shape({
         return createError({ path, message: "No se permiten funciones vacías" });
       }
 
+      if (/(COUNT|SUM|AVG)(?:\s+|$)(?!\()/i.test(formula)) {
+        return createError({ path, message: "Las funciones deben incluir paréntesis" });
+      }
+
       if (/(COUNT|SUM|AVG)\s*(?:\\left)?\(\s*[0-9.-]+\s*(?:\\right)?\)/.test(formula)) {
         return createError({ path, message: "Las funciones no pueden tener números en sus argumentos" });
       }
@@ -213,6 +217,7 @@ export const formulaSchema = yup.object().shape({
       if (/(COUNT|SUM|AVG)\s*(?:\\left)?\([^)]*[\+\-\*\/\^][^)]*(?:\\right)?\)/.test(formula)) {
         return createError({ path, message: "No se permiten operaciones dentro de funciones" });
       }
+      
 
       if (formula.includes("\\frac")) {
         const validFractions = formula.match(/\\frac\{[^}]+\}\{[^}]+\}/g);
@@ -252,6 +257,16 @@ export const formulaSchema = yup.object().shape({
         ) {
           return createError({ path, message: `Elemento no permitido en la fórmula: ${part}` });
         }
+      }
+
+      const lettersOutsideFunctions = formula.replace(
+        /(COUNT|SUM|AVG)\s*(?:\\left\s*)?\(\s*[A-Za-z_][A-Za-z0-9_]*\s*(?:\\right\s*)?\)|\\cdot/gi, 
+        ''
+      );
+    
+      if (/[A-Za-z]/.test(lettersOutsideFunctions)) {
+        return createError({
+          path, message: "No se permiten variables fuera de funciones"});
       }
 
       return true;
