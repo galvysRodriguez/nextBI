@@ -8,6 +8,7 @@ import { useGetReportWarehouseAll } from "../../hooks/reports/warehouse/useGetRe
 import { handleExport } from "../export";
 import { useTitle } from "../../context/report/useTitle";
 import { useRefetchAll } from "../../context/report/useRefetchAll";
+import { useHandleRowsNormalize } from "../../hooks/reports/useHandleRowsNormalize";
 
 export function ButtonExport({initialColumns}){
     const {setIsMenuOpen} =  useReportMenu()
@@ -18,12 +19,13 @@ export function ButtonExport({initialColumns}){
     const { exportChart}  = useChartExportControls()
     const {columnVisibility} = useColumns()
     const {title} = useTitle()
+    const{normalizeDecimal} = useHandleRowsNormalize()
 
     const handleClick = async() => {
         if(scope == 'all'){
             const { data: apiData } = await refetchAll();
             await handleExport({
-                rows: apiData.data.data,
+                rows: normalizeDecimal(apiData.data.data),
                 format: format,
                 initialColumns,
                 columnVisibility,

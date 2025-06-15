@@ -17,13 +17,11 @@ export const routePermissionsMap = {
   '/dashboard/perspective/info/update/:id': { resource: '/perspectives/:id', method:'PUT' },
   '/dashboard/perspective/info': { resource: '/perspectives', method:'GET' },
   '/dashboard/perspective/info/:id': { resource: '/perspectives/:id', method:'DELETE' },
-  '/dashboard/perspective/info/:id': { resource: '/perspectives/:id', method:'GET' },
 
   '/dashboard/tag': { resource: '/tags', method:'GET' },
   '/dashboard/tag/create': { resource: '/tags', method:'POST' },
   '/dashboard/tag/update/:id': { resource: '/tags', method:'PUT' },
   '/dashboard/tag/:id': { resource: '/tags/:id', method:'DELETE' },
-  '/dashboard/tag/:id': { resource: '/tags/:id', method:'GET' },
 
 
   '/dashboard/icon': { resource: '/icons', method:'GET' },

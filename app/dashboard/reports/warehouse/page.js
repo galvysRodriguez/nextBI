@@ -10,6 +10,7 @@ import { HeaderReport } from "app/app/components/report/container/HeaderReport"
 import { TableContainer } from "app/app/components/report/container/TableContainer"
 import { ViewReport } from "app/app/components/report/container/ViewReport"
 import { ViewReportTable } from "app/app/components/report/container/ViewReportTable"
+import { ResetTableSatate } from "app/app/components/report/ResetTableState"
 import { initialColumnsWarehouse } from "app/app/components/report/warehouse/column"
 import { useEffect } from "react"
 
@@ -33,6 +34,7 @@ export default function Home(){
                 title={"Movimientos de inventario"}
                 initialColumns={initialColumnsWarehouse}
                 >
+                    <ResetTableSatate></ResetTableSatate>
                     <ChartExportProvider>
                         <HeaderReport initialColumns={initialColumnsWarehouse}></HeaderReport>
                         <ViewReport

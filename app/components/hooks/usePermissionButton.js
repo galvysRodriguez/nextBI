@@ -10,6 +10,7 @@ export function usePermissionButton(){
 
     const hasPermissions = (fullPath) =>{
         const permission = matchRoutePattern(fullPath, routePermissionsMap)
+        console.log("p", permission)
         return permission && isValid(permission.resource, permission.method)
     }
 

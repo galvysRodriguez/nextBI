@@ -9,8 +9,14 @@ import { useMemo } from "react";
 export function ButtonDelete() {
   const { getSelected, isNullSelected} = useCardStore()
   const pathname = usePathname()
-  const basePath = useMemo(() => pathname.replace(/\/delete$/, ''), [pathname])
-  const fullPath = `${basePath}/delete/${getSelected()}`
+  const fullPath = useMemo(() => {
+  const cleanPath = pathname.replace(/\/delete$/, "");
+    if (cleanPath.startsWith("/dashboard/target/perspective/")) {
+      return `/dashboard/target/${getSelected()}`
+    }
+    return `${cleanPath}/${getSelected()}`;
+  }, [pathname, getSelected]);
+
   const {handleDelete, isLoading} = usePermissionButtonDelete()
   
   return (

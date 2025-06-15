@@ -15,6 +15,7 @@ import { useFilters } from "../context/report/useFilters";
 import React, { useMemo, lazy, Suspense, useEffect, memo } from "react";
 import Progress from "../utils/Progress";
 import { useColumns } from "../context/report/useColumns";
+import { useHandleRowsNormalize } from "../hooks/reports/useHandleRowsNormalize";
 
 const LazyTable = lazy(() => import("./LazyTable"));
 
@@ -50,8 +51,6 @@ const LazyTable = lazy(() => import("./LazyTable"));
     const {search} = useSearch()
     const {columnVisibility} = useColumns();
 
-
-
     const memoizedGroupedColumns = useMemo(() => groupedColumns, [groupedColumns]);
     const memoizedRows = useMemo(() => rows, [rows]);
     const memoizedPageCount = useMemo(() => pageCount, [pageCount]);
@@ -60,6 +59,7 @@ const LazyTable = lazy(() => import("./LazyTable"));
     const memoizedSorting = useMemo(() => sorting, [sorting]);
     const memoizedPagination = useMemo(() => pagination, [pagination]);
     const memoizedSearch = useMemo(() => search, [search]);
+    
 
 
     const MemoizedTableRow = memo(({ row }) => (

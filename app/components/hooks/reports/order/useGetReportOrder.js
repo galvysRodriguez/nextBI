@@ -5,6 +5,7 @@ import { usePageCount } from "app/app/components/context/report/usePageCount";
 import { useTotalRows } from "app/app/components/context/report/useTotalRows";
 import { cleanParams } from "app/app/components/report/cleanParams";
 import { useOrderParams } from "./useOrderParams";
+import { useHandleRowsNormalize } from "../useHandleRowsNormalize";
 
 export function useGetReportOrder() {
   const params = useOrderParams();
@@ -12,6 +13,7 @@ export function useGetReportOrder() {
   const {setPageCount} = usePageCount()
   const {setTotalRows} = useTotalRows()
   const cleanedParams = cleanParams(params);
+  const {normalizeDecimal} = useHandleRowsNormalize()
   
 
     return useApiQuery({
@@ -23,7 +25,7 @@ export function useGetReportOrder() {
       keepPreviousData: true,
       onSuccess: (response) => {
         if (response) {
-          setRows(response.data.data || []);
+          setRows(normalizeDecimal(response.data.data) || []);
           setTotalRows(response.data.total || 0);
           setPageCount(Math.ceil(response.data.total / (params.limit || 10)) || 0);
         }

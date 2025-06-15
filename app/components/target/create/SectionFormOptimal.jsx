@@ -27,7 +27,7 @@ export function SectionFormOptimal() {
         <div className="flex flex-col justify-center gap-4">
           <div>
             <Input
-              label="Optimo"
+              label="Óptimo"
               name="optimal"
               value={values.optimal}
               onChange={handleChange}

@@ -10,6 +10,7 @@ import { TableContainer } from "app/app/components/report/container/TableContain
 import { ViewReport } from "app/app/components/report/container/ViewReport"
 import { ViewReportTable } from "app/app/components/report/container/ViewReportTable"
 import { initialColumnsPurchase } from "app/app/components/report/purchase/column"
+import { ResetTableSatate } from "app/app/components/report/ResetTableState"
 import { useEffect } from "react"
 
 
@@ -32,6 +33,7 @@ export default function Home(){
                 title={"Compras"}
                 initialColumns={initialColumnsPurchase}
                 >
+                    <ResetTableSatate></ResetTableSatate>
                     <ChartExportProvider>
                         <HeaderReport initialColumns={initialColumnsPurchase}></HeaderReport>
                         <ViewReport

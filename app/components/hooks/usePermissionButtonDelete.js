@@ -18,6 +18,7 @@ export function usePermissionButtonDelete() {
   const queryClient = useQueryClient()
 
   const handleDelete = (fullPath) => {
+    console.log(fullPath)
     if (hasPermissions(fullPath)) {
       return mutate(selectedCard, {
         onSuccess: (_, variables) => {

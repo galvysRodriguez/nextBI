@@ -10,6 +10,7 @@ import { TableContainer } from "app/app/components/report/container/TableContain
 import { ViewReport } from "app/app/components/report/container/ViewReport"
 import { ViewReportTable } from "app/app/components/report/container/ViewReportTable"
 import { initialColumnsQuote } from "app/app/components/report/quote/column"
+import { ResetTableSatate } from "app/app/components/report/ResetTableState"
 import { useEffect } from "react"
 
 export default function Home(){
@@ -31,6 +32,7 @@ export default function Home(){
                 title={"Cotizaciones"}
                 initialColumns={initialColumnsQuote}
                 >
+                    <ResetTableSatate></ResetTableSatate>
                     <ChartExportProvider>
                         <HeaderReport initialColumns={initialColumnsQuote}></HeaderReport>
                         <ViewReport
