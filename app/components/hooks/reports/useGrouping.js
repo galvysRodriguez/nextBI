@@ -66,7 +66,7 @@ export function useGrouping(){
       rows.forEach((row) => {
         const groupKey = groupedColumns.map(col => row[col]).join(' - ');
         const value = Number(row[sumColumn]) || 0;
-        sumsMap[groupKey] = ((sumsMap[groupKey] || 0) + value).toFixed(2);
+        sumsMap[groupKey] = (Number(sumsMap[groupKey] || 0) + value).toFixed(2);
       });
       
       return Object.values(sumsMap)

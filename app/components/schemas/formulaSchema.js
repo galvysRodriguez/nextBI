@@ -259,12 +259,13 @@ export const formulaSchema = yup.object().shape({
         }
       }
 
-      const lettersOutsideFunctions = formula.replace(
-        /(COUNT|SUM|AVG)\s*(?:\\left\s*)?\(\s*[A-Za-z_][A-Za-z0-9_]*\s*(?:\\right\s*)?\)|\\cdot/gi, 
-        ''
-      );
+      const cleanedFormula = formula
+    .replace(/(COUNT|SUM|AVG|MIN|MAX)\s*\\left\s*\([^)]*\\right\)/gi, '')
+    .replace(/\\frac\{[^}]+\}\{[^}]+\}/g, '') 
+    .replace(/\\[a-zA-Z]+\{[^}]+\}/g, '')     
+    .replace(/[0-9+\-*/^(){}/\\cdot/,]/g, '');
     
-      if (/[A-Za-z]/.test(lettersOutsideFunctions)) {
+      if (/[A-Za-z]/.test(cleanedFormula)) {
         return createError({
           path, message: "No se permiten variables fuera de funciones"});
       }

@@ -143,14 +143,14 @@ export function SectionFormEditor() {
           </h4>
           {sectionOpen["functions"] && (
             <div className="flex flex-wrap gap-2 p-2">
-              {functions.map((funcion) => (
+              {functions.map((functionAgg) => (
                 <button
-                  key={funcion.name}
+                  key={functionAgg.name}
                   type="button"
-                  onClick={() => addElement(mathFieldRef, `${funcion.value}()`)}
+                  onClick={() => addElement(mathFieldRef, functionAgg.value)}
                   className={`px-3 py-2 ${COLORS[2]} text-white rounded-md hover:bg-gray-800`}
                 >
-                  {funcion.name}()
+                  {functionAgg.name}()
                 </button>
               ))}
             </div>
@@ -208,7 +208,7 @@ export function SectionFormEditor() {
             variant="primary"
             onClick={handleNext}
           >
-            Enviar
+            Guardar
           </Button>
           <Button
             type="button"
