@@ -260,7 +260,7 @@ export const formulaSchema = yup.object().shape({
       }
 
       const cleanedFormula = formula
-    .replace(/(COUNT|SUM|AVG|MIN|MAX)\s*\\left\s*\([^)]*\\right\)/gi, '')
+    .replace(/(COUNT|SUM|AVG)\s*\\left\s*\([^)]*\\right\)/gi, '')
     .replace(/\\frac\{[^}]+\}\{[^}]+\}/g, '') 
     .replace(/\\[a-zA-Z]+\{[^}]+\}/g, '')     
     .replace(/[0-9+\-*/^(){}/\\cdot/,]/g, '');
