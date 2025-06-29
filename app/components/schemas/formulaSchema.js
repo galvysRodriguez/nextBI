@@ -178,6 +178,14 @@ export const formulaSchema = yup.object().shape({
         return createError({ path, message: "No puede haber operadores consecutivos" });
       }
 
+      const cleanedFormulaCharacter = formula
+        .replace(/\\[a-z]+(\{[^}]+\})*/gi, '')  
+        .replace(/[0-9+\-*/^(){}.,=]/g, '');    
+
+      if (!/[A-Za-z]/.test(cleanedFormulaCharacter)) {
+        return createError({path, message: "La fórmula debe incluir al menos una variable"});
+      }
+
       if (/([*\\cdot/])\s*0(?!\d)/.test(cleaned)) {
         return createError({ path, message: "No se permite multiplicación por cero" });
       }

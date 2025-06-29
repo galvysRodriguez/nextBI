@@ -6,6 +6,7 @@ import AppSidebar from "../components/layout/AppSidebar";
 import MainContainer from "../components/layout/Main";
 import { useEffect } from "react";
 import { useAuthStore } from "../components/hooks/auth/useAuthStore";
+import FloattingHelpButton from "../components/container/FloatingHelpButton";
 
 export default function RootLayout({ children }) {
   const [queryClient] = useState(() => new QueryClient()); // Evita re-creaciones
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
       <div className="flex flex-col md:flex-row">
         <AppSidebar />
         <MainContainer>{children}</MainContainer>
+        <FloattingHelpButton/>
       </div>
     </QueryClientProvider>
   );
