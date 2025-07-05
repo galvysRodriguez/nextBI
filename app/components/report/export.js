@@ -80,9 +80,9 @@ const handleExportPDF = async ({ rows, columns, title }) => {
   formattedData.forEach(item => {
     if (item.type === "group") {
       pdfData.push([
-        { 
-          content: item.content, 
-          colSpan: item.colSpan, 
+        {
+          content: item.content,
+          colSpan: item.colSpan,
           styles: { halign: "left", fontStyle: "bold" }
         }
       ]);
@@ -97,15 +97,14 @@ const handleExportPDF = async ({ rows, columns, title }) => {
   doc.setFont("helvetica", "bold");
   doc.text(title, doc.internal.pageSize.getWidth() / 2, 50, { align: "center" });
 
-  // Dibujar la tabla
   autoTable(doc, {
     head: [headers],
     body: pdfData,
     theme: "grid",
     startY: 60,
     headStyles: {
-      fillColor: [0, 112, 192],  
-      textColor: 255,            
+      fillColor: [0, 112, 192],
+      textColor: 255,
       halign: "center",
       valign: "middle",
       fontStyle: "bold"
@@ -113,7 +112,20 @@ const handleExportPDF = async ({ rows, columns, title }) => {
     bodyStyles: {
       fontSize: 10
     },
-    
+    didDrawPage: function (data) {
+      const pageCount = doc.internal.getNumberOfPages();
+      const pageSize = doc.internal.pageSize;
+      const pageHeight = pageSize.height || pageSize.getHeight();
+
+      doc.setFontSize(10);
+      doc.setTextColor(150);
+      doc.text(
+        `Página ${doc.internal.getCurrentPageInfo().pageNumber} de ${pageCount}`,
+        pageSize.width / 2,
+        pageHeight - 10,
+        { align: "center" }
+      );
+    }
   });
 
   doc.save(`${title}-${now.toISOString().split('T')[0]}.pdf`);
