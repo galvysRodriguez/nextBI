@@ -7,7 +7,7 @@ import { ButtonEdit } from "./ButtonEdit"
 export function HeaderTarget({search=false}){
     return(
         <>
-            <div className="w-full max-w-[1200px] h-30 px-4 md:px-6 lg:px-8 flex justify-end gap-4 p-6">
+            <div className="w-[70%] m-auto h-30 flex justify-end items-end gap-4 py-6">
                 {search && <SearchTarget ></SearchTarget>}
                 <ButtonCreate></ButtonCreate>
                 <ButtonEdit></ButtonEdit>
