@@ -15,7 +15,7 @@ export function ButtonGrouped({ group, icon, items }) {
   return (
     <button
       onClick={() => setOpenGrouped(group)}
-      className={`w-full flex items-center justify-between py-2 px-3 my-1
+      className={`w-full flex items-center py-2 px-3 my-1
         rounded-md cursor-pointer
         transition-colors duration-300
         text-gray-600
