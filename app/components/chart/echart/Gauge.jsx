@@ -73,7 +73,7 @@ const GaugeChart = ({ result = 60, title = "Cumplimiento" }) => {
             fontSize: 40, // Tamaño más pequeño del texto principal
             offsetCenter: [0, "90%"],
             color: COLORS.title,
-            formatter: `{small|${value.toFixed(2)}}`, // Muestra el % y el result
+            formatter: `{small|${value.toFixed(2)}%}`, // Muestra el % y el result
             rich: {
               small: {
                 fontSize: 40, // Hace más pequeño el texto de `result`
