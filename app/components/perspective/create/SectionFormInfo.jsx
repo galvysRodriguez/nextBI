@@ -79,7 +79,7 @@ export function SectionFormInfo({isCreate, perspectiveId}) {
           {IconComponent && (
             <div className="mt-4 flex items-center gap-2">
               <span className="text-sm text-gray-500">Previsualización:</span>
-              <IconComponent size={32} strokeWidth={1.5} className="text-blue-600" />
+              <IconComponent size={32} strokeWidth={1.5} className="text-gray-500" />
             </div>
           )}
         </div>

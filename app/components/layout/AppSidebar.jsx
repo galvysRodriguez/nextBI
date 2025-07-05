@@ -35,14 +35,14 @@ export default function AppSidebar() {
 
   return (
     <>
-      <div className="md:hidden w-full bg-white shadow-md p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
+      <div className="md:hidden w-full bg-white shadow-md px-4 py-2 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
         <button
           onClick={() => changeMenuMobile()}
           className="pb-2 bg-gray-200 rounded"
         >
           {menuMobile ? <X size={24} /> : <Menu size={24} />}
         </button>
-        <div className="flex place-items-center gap-2 pt-4">
+        <div className="mt-4 flex place-items-center gap-2">
           <Logo></Logo>
           <strong className="text-xl font-semibold text-[#253664]">AFTIM</strong>
         </div>

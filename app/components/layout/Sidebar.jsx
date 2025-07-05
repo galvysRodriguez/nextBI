@@ -22,15 +22,20 @@ export default function Sidebar({ children }) {
           >
             {expanded ? <ChevronFirst /> : <Menu />}
           </button>
-          <div className="flex place-items-center gap-2">
+          <div className={`mt-2 rounded-lg flex place-items-center ${
+                !expanded ? "" : "gap-2"
+              }`}>
             <Logo></Logo>
-            <strong
+            {expanded && (
+              <strong
               className={`text-xl font-semibold text-[#253664] transition-opacity duration-300 ${
                 !expanded ? "hidden opacity-0 invisible" : "opacity-100 visible"
               }`}
             >
               AFTIM
             </strong>
+            )}
+            
           </div>
         </div>
 
