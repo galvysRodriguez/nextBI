@@ -39,7 +39,11 @@ export function SectionFormOptimal() {
              {touched.optimal && errors.optimal && (
                 <div className="text-red-500 text-sm flex items-start">
                   <IconError></IconError>
-                  {errors.optimal}
+                   <div>
+                    {String(errors.optimal).split('\n').map((line, index) => (
+                      <p key={index}>{line}</p>
+                    ))}
+                  </div>
                 </div>
              )}
           </div>

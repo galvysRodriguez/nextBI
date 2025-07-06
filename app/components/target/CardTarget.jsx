@@ -15,6 +15,8 @@ import { ButtonSecondary } from "./ButtonSecondary";
 import { CheckCircle } from "lucide-react";
 import { PauseCircle } from "lucide-react";
 import { XCircle } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
+import { ActionsButton } from "./ActionsButton";
 
 function formatDate(date) {
   const newDate = new Date(date);
@@ -44,21 +46,11 @@ function formatDecimal(num) {
                               status,
                               progress,
                               id}) {
-
-  const { selectedCard, handleSelect, clearSelection } = useCardStore();
-
-  const statusValue = useCallback(() => {
-    return optimal <= indicator_value
-  }, [optimal, indicator_value])
-
-  const isSelected = selectedCard === id;
   
   return (
     <div
-      className={`max-w-[500px] rounded-2xl p-6 cursor-pointer ${
-        isSelected ? 'bg-blue-50 border-2 border-blue-500' : 'bg-white border border-gray-200'
-      }`}
-      onClick={() => handleSelect(id)} 
+      className="max-w-[500px] rounded-2xl p-6 cursor-pointer 
+        bg-white border border-gray-200"
     >
       <div className="flex items-center justify-between gap-3 h-20 w-full">
         <LogoCard value={tag} />
@@ -95,7 +87,8 @@ function formatDecimal(num) {
   
   export function ContainerButton({id}) {
     return (
-      <div className="h-16 w-full flex justify-center pt-4">
+      <div className="h-16 w-full flex justify-center gap-2 pt-4">
+        <ActionsButton id={id} />
         <ButtonSecondary text={"Ver detalles"} id={id}/>
       </div>
     )
@@ -127,7 +120,7 @@ function formatDecimal(num) {
       icon: <CheckCircle  />
     },
     active: {
-      icon: <PauseCircle  />
+      icon: <LoaderCircle  />
     },
     failed: {
       icon: <XCircle  />

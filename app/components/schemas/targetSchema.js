@@ -21,7 +21,7 @@ export const targetSchema = yup.object().shape({
     .required("El valor óptimo es requerido")
     .test(
       "validate-relationship",
-      "Los valores no cumplen con las relaciones requeridas",
+      "Deben estar en orden creciente o decreciente:\n- Si óptimo > tolerable: deficiente < tolerable < óptimo\n- Si óptimo < tolerable: óptimo < tolerable < deficiente",
       function (optimal) {
         const { tolerable, deficient } = this.parent;
         
