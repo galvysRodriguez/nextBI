@@ -20,9 +20,6 @@ export function SectionFormOptimal() {
   const {prevStep } = useStep()
   return (
     <div>
-      <h2 className="text-xl text-center font-semibold mb-4">
-        Asignación de valores
-      </h2>
       <div className="w-[80%] h-[420px] m-auto pt-2 flex flex-col justify-between" >
         <div className="flex flex-col justify-center gap-4">
           <div>

@@ -26,9 +26,6 @@ export function SectionFormDateTarget({ isCreate }) {
 
   return (
     <div>
-      <h2 className="text-xl text-center font-semibold mb-4">
-        Seleccionar fechas
-      </h2>
       <div className="w-[80%] h-[420px] m-auto pt-2 flex flex-col justify-between">
         <div className="w-full flex flex-col justify-center gap-4">
           <div>

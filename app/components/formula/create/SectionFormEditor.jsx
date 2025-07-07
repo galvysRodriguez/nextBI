@@ -89,9 +89,6 @@ export function SectionFormEditor() {
 
   return (
     <>
-      <h2 className="text-xl text-center font-semibold mb-4">
-        Editor de fórmula
-      </h2>
       <div className="w-[80%] m-auto flex flex-col justify-center">
         <div className={`bg-gray-100 border rounded-md p-2 h-20 ${
           touched.formula && errors.formula ? 'border-red-500' : 'border-gray-300'

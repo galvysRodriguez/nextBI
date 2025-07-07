@@ -29,9 +29,6 @@ export function SectionFormInfo({isCreate, perspectiveId}) {
 
   return (
     <div>
-      <h2 className="text-xl text-center font-semibold mb-4">
-        Información general
-      </h2>
       <div className="w-[80%] h-[370px] m-auto pt-2 flex flex-col justify-between">
         <div className="flex flex-col justify-center gap-4">
           <div>
