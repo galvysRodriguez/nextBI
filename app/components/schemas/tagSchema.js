@@ -8,8 +8,8 @@ export const tagSchema = yup.object().shape({
       .max(100, 'El título no puede exceder 100 caracteres'),
     indicators: yup
       .array()
-      .min(1, 'Debe seleccionar al menos un indicador')
-      .required('Los indicadores son obligatorios'),
+      .min(1, 'Debe seleccionar al menos una variable')
+      .required('Las variables son obligatorios'),
     perspectives: yup
       .array()
       .min(1, 'Debe seleccionar al menos una perspectiva')
