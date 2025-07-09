@@ -17,12 +17,13 @@ export function usePermissionButtonDelete() {
   const { resourceType } = detectResourceType();
   const queryClient = useQueryClient()
 
-  const handleDelete = (fullPath) => {
+  const handleDelete = (fullPath, id) => {
     console.log(fullPath)
     if (hasPermissions(fullPath)) {
-      return mutate(selectedCard, {
+      return mutate(id ||selectedCard, {
         onSuccess: (_, variables) => {
-          deleteById(selectedCard);
+          console.log("aqui", id)
+          deleteById(id || selectedCard);
           clearSelection();
           router.refresh();
           if (resourceType == "TAGS") {

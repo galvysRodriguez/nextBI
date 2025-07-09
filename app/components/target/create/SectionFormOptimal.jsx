@@ -85,6 +85,7 @@ export function SectionFormOptimal() {
              <Button
               type="submit"
               variant="primary"
+              isDisabled={isSubmitting}
             >
               Guardar
             </Button>

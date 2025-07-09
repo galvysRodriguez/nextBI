@@ -143,7 +143,9 @@ export const formulaSchema = yup.object().shape({
 
   tag_id: yup
     .number()
-    .required('La etiqueta es obligatoria'),
+    .transform((value, originalValue) => originalValue === "" ? undefined : value)
+    .typeError("Debes seleccionar una etiqueta")
+    .required("La etiqueta es obligatoria"),
 
   formula: yup
     .string()
@@ -203,7 +205,7 @@ export const formulaSchema = yup.object().shape({
       }
 
       if(/(COUNT|SUM|AVG)\s*(?:\\left)?\(\s*(?:\\right)?\)/.test(formula)){
-        return createError({ path, message: "No se permiten funciones vacías" });
+        return createError({ path, message: "No se permiten funciones sin variables" });
       }
 
       if (/(COUNT|SUM|AVG)(?:\s+|$)(?!\()/i.test(formula)) {

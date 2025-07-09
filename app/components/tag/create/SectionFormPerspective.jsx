@@ -62,6 +62,7 @@ export function SectionFormPerspective() {
                     type="submit"
                     variant="primary"
                     onClick={handleNext}
+                    isDisabled={isSubmitting}
                 >
                     Guardar
                 </Button>

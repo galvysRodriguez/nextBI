@@ -13,6 +13,8 @@ export function ActionsButton({ id }) {
   const fullPathDelete = useMemo(() => {
     const cleanPath = pathname.replace(/\/delete$/, "");
     if (cleanPath.startsWith("/dashboard/target/perspective/")) {
+      console.log(id)
+      console.log(`/dashboard/target/${id}`)
       return `/dashboard/target/${id}`;
     }
     return `${cleanPath}/${id}`;
@@ -31,8 +33,8 @@ export function ActionsButton({ id }) {
     <>
       {isEdit && (
         <button
-          className="p-2 border-gray-800 border-2 rounded-md hover:bg-gray-500 transition text-gray-700"
-          onClick={() => handleEdit(id)}
+          className="p-2 bg-[#ffffff] border-[#085494] text-[#085494] border-2 rounded-md hover:bg-[#e4e6e8] transition"
+          onClick={() => handleClick(fullPathUpdate)}
           title="Editar"
         >
           <Pencil size={24} />
@@ -40,8 +42,8 @@ export function ActionsButton({ id }) {
       )}
       {isDelete && (
         <button
-          className="p-2 border-gray-800 border-2 rounded-md hover:bg-gray-500 transition text-gray-700"
-          onClick={() => handleDelete(id)}
+          className="p-2 bg-[#ffffff] border-[#085494] text-[#085494] border-2 rounded-md hover:bg-[#e4e6e8] transition"
+          onClick={() => handleDelete(fullPathDelete, id)}
           title="Eliminar"
         >
           <Trash2 size={24} />

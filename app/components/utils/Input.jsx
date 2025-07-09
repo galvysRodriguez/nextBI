@@ -43,21 +43,43 @@ export function Button({
     children,
     onClick,
     variant = 'primary', 
-    type = 'button', 
+    type = 'button',
+    isDisabled = false 
   }) {
   
     const baseStyles = 'w-full h-10 px-4 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300';
   
     const variantStyles = {
-      primary: 'bg-[#085494] text-white hover:bg-[#06457a]', // Azul con letras blancas
-      secondary: 'bg-white text-[#085494] border-[#085494] hover:bg-[#eee]', // Blanco con letras azules
-    };
+        primary: `
+          bg-[#085494] 
+          text-white 
+          hover:bg-[#06457a] 
+          disabled:bg-[#b3c7dc] 
+          disabled:text-white 
+          disabled:cursor-not-allowed 
+          disabled:opacity-70
+        `,
+        secondary: `
+          bg-white 
+          text-[#085494] 
+          border 
+          border-[#085494] 
+          hover:bg-[#eee] 
+          disabled:bg-[#f3f6f9] 
+          disabled:text-[#a0aab4] 
+          disabled:border-[#c2cfdc] 
+          disabled:cursor-not-allowed 
+          disabled:opacity-70
+        `,
+      };
+
   
     return (
       <button
         type={type}
         onClick={onClick}
         className={`${baseStyles} ${variantStyles[variant]}`}
+        disabled={isDisabled}
       >
         {children}
       </button>

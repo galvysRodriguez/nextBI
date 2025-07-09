@@ -60,6 +60,7 @@ export function SectionFormTag() {
             type="submit"
             variant="primary"
             onClick={handleNext}
+            isDisabled={isSubmitting}
           >
             Guardar
           </Button>

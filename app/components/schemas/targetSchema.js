@@ -47,7 +47,9 @@ export const targetSchema = yup.object().shape({
     .min(yup.ref('start_date'), 'La fecha final no puede ser anterior a la inicial'),
   formula_id: yup
     .number()
-    .required('La formula es obligatoria'),
+    .transform((value, originalValue) => originalValue === "" ? undefined : value)
+    .typeError("Debes seleccionar una fórmula")
+    .required("La fórmula es obligatoria"),
   tag_id: yup
     .number()
     .required('La etiqueta es obligatoria'),

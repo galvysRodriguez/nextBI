@@ -49,7 +49,7 @@ function formatDecimal(num) {
   
   return (
     <div
-      className="max-w-[500px] rounded-2xl p-6 cursor-pointer 
+      className="max-w-[500px] rounded-2xl p-6  
         bg-white border border-gray-200"
     >
       <div className="flex items-center justify-between gap-3 h-20 w-full">
