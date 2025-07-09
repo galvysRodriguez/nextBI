@@ -72,7 +72,7 @@ export function SectionFormEditor() {
   const mathFieldRef = useRef(null);
   const { data } = useIndicatorsValid(values.tag_id);
   const { setIndicatorsValid, indicatorsValid } = useIndicatorsValidContext();
-  const [activeTab, setActiveTab] = useState("Funciones");
+  const [activeTab, setActiveTab] = useState("funciones");
 
   const { setIsOpen, setSteps } = useTour();
 
@@ -132,7 +132,7 @@ export function SectionFormEditor() {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "Funciones":
+      case "funciones":
         return functions.map((fn) => (
           <button
             key={fn.name}
@@ -143,7 +143,7 @@ export function SectionFormEditor() {
             {fn.name}
           </button>
         ));
-      case "Variables":
+      case "variables":
         return indicatorsValid.map((ind) => (
           <button
             key={ind.id}
@@ -154,7 +154,7 @@ export function SectionFormEditor() {
             {ind.indicator}
           </button>
         ));
-      case "Operadores":
+      case "operadores":
         return operators.map((op) => (
           <button
             key={op.name}
@@ -165,7 +165,7 @@ export function SectionFormEditor() {
             {op.name}
           </button>
         ));
-      case "Números":
+      case "numeros":
         return numbers.map((num) => (
           <button
             key={num}
@@ -193,7 +193,7 @@ export function SectionFormEditor() {
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-blue-600"
             }`}
-            onClick={() => setActiveTab(tab.name)}
+            onClick={() => handleChangeTab(tab.name)}
           >
             {tab.text}
           </button>

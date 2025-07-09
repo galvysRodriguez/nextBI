@@ -12,7 +12,7 @@ export const createOnboardingSteps = (setActiveTab, insertElement, indicatorsVal
     {
       selector: ".ribbon-tab-funciones",
       content: "Haz clic aquí para ver las funciones disponibles.",
-      action: () => setActiveTab("Funciones"),
+      action: () => setActiveTab("funciones"),
     },
     {
       selector: ".insert-button",
@@ -29,7 +29,7 @@ export const createOnboardingSteps = (setActiveTab, insertElement, indicatorsVal
     {
       selector: ".ribbon-tab-variables",
       content: "Cambiamos a la pestaña Variables.",
-      action: () => setActiveTab("Variables"),
+      action: () => setActiveTab("variables"),
     },
     {
       selector: ".insert-button",
@@ -44,12 +44,12 @@ export const createOnboardingSteps = (setActiveTab, insertElement, indicatorsVal
     {
       selector: ".ribbon-tab-operadores",
       content: "Ahora puedes agregar operadores como +, -, /, *, ^ para armar fórmulas más complejas.",
-      action: () => setActiveTab("Operadores"),
+      action: () => setActiveTab("operadores"),
     },
     {
       selector: ".ribbon-tab-numeros",
       content: "También puedes insertar números directamente desde aquí si lo necesitas.",
-      action: () => setActiveTab("Números"),
+      action: () => setActiveTab("numeros"),
     },
     {
       selector: ".math-field",

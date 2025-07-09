@@ -2,9 +2,47 @@
 
 import { useState } from 'react'
 import { HelpCircle, X } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+
+const manualMap = {
+  '/dashboard/home': {
+    href: '/manual/manual_inicio.pdf',
+    name: 'manual de inicio',
+  },
+  '/dashboard/target': {
+    href: '/manual/manual_objetivos.pdf',
+    name: 'manual de objetivos',
+  },
+  '/dashboard/reports': {
+    href: '/manual/manual_reportes.pdf',
+    name: 'manual de reportes',
+  },
+  '/dashboard/tag': {
+    href: '/manual/manual_etiquetas.pdf',
+    name: 'manual de etiquetas',
+  },
+  '/dashboard/perspective': {
+    href: '/manual/manual_perspectivas.pdf',
+    name: 'manual de perspectivas',
+  },
+  '/dashboard/formula': {
+    href: '/manual/manual_formulas.pdf',
+    name: 'manual de fórmulas',
+  },
+}
+
 
 export default function FloatingHelpButton() {
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+   const matchingEntry = Object.entries(manualMap).find(([key]) =>
+    pathname.startsWith(key)
+  )
+
+  const manual = matchingEntry?.[1]
+
+  if (!manual) return null
+
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -33,13 +71,13 @@ export default function FloatingHelpButton() {
           <ul className="space-y-2">
             <li>
               <a
-                href="/manual/manual.pdf"
+                href={manual.href}
                 download
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline text-sm"
               >
-                Descargar Manual de Usuario
+                Descargar {manual.name}
               </a>
             </li>
           </ul>

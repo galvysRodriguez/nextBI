@@ -3,7 +3,7 @@ import { API_ROUTES } from "app/app/components/api/routes";
 import StepForm from "app/app/components/container/create/StepForm";
 import { SectionFormTag } from "app/app/components/tag/create/SectionFormTag";
 
-export const steps = ["Información general", "Agregar variables", "Agregar perspectivas"]
+export const steps = ["Información general", "Variables", "Perspectivas"]
 
 export default async function Home({params}) {
   const id = (await params).id;
