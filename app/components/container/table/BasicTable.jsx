@@ -22,6 +22,7 @@ const BasicTable = ({ rows, initialColumns }) => {
         enableColumnOrdering
         getRowId={(row) => String(row.id)} 
         localization={MRT_Localization_ES}
+        positionToolbarAlertBanner={'bottom'}
         muiTableContainerProps={{
           sx: { maxHeight: "500px" }, 
         }}
