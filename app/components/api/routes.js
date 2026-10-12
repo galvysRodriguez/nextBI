@@ -1,8 +1,24 @@
 const DEFAULT_API_BASE_URL = "https://python-bi-9695-m65p566dh-galvys-rodriguezs-projects.vercel.app";
 
-export const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL?.trim() || DEFAULT_API_BASE_URL
-).replace(/\/+$/, "");
+function normalizeApiBaseUrl(value) {
+  const configuredUrl = value?.trim();
+  if (!configuredUrl) return DEFAULT_API_BASE_URL;
+
+  const absoluteUrl = /^(https?:)?\/\//i.test(configuredUrl)
+    ? configuredUrl.startsWith("//")
+      ? `https:${configuredUrl}`
+      : configuredUrl
+    : `https://${configuredUrl.replace(/^\/+/, "")}`;
+
+  try {
+    const parsedUrl = new URL(absoluteUrl);
+    return parsedUrl.pathname === "/" ? parsedUrl.origin : DEFAULT_API_BASE_URL;
+  } catch {
+    return DEFAULT_API_BASE_URL;
+  }
+}
+
+export const API_BASE_URL = normalizeApiBaseUrl(process.env.NEXT_PUBLIC_API_URL);
 
 export const API_ROUTES = {
   TARGETS: {
