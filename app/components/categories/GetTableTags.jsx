@@ -4,9 +4,6 @@ import BasicTable from "../container/table/BasicTable";
 import { mocksTags } from "../mocks/mocksCategories";
 import { initialColumnsTag } from "../utils/columns";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/tags`
-
-
 export async function GetTableTags(){
     const initialData = await fetchDataFromServer();
     return(

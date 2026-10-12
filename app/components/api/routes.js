@@ -1,4 +1,8 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const DEFAULT_API_BASE_URL = "https://python-bi-9695-m65p566dh-galvys-rodriguezs-projects.vercel.app";
+
+export const API_BASE_URL = (
+  process.env.NEXT_PUBLIC_API_URL?.trim() || DEFAULT_API_BASE_URL
+).replace(/\/+$/, "");
 
 export const API_ROUTES = {
   TARGETS: {

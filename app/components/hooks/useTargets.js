@@ -1,7 +1,5 @@
-import { API_ROUTES } from "../api/routes";
+import { API_BASE_URL } from "../api/routes";
 import { useApiQuery } from "../api/useApiQuery";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 export function useTargets(content) {
   return useApiQuery({

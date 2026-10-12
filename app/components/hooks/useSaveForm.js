@@ -1,10 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { useCardStore } from "../context/IsGrid";
-
-const url = `${process.env.NEXT_PUBLIC_API_URL || ""}/targets/`
+import { API_ROUTES } from "../api/routes";
 
 const saveFormData = async (formData) => {
-  const response = await fetch(url, {
+  const response = await fetch(API_ROUTES.TARGETS.create, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +24,7 @@ export const useSaveForm = () => {
 
 
 const updateFormData = async (formData) => {
-  const response = await fetch(`${url}${formData.id}`, {
+  const response = await fetch(API_ROUTES.TARGETS.update(formData.id), {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
