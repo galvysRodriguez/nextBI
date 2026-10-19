@@ -6,8 +6,8 @@ import { SectionFormPerspective } from "app/app/components/perspective/create/Se
 export const steps = ["Informacion general", "Etiquetas"]
 
 export default async function Home({params}) {
-    const id = (await params).id;
-    const initialData = await fetchDataFromServer(id);
+    const id = (await params).id
+    const initialData = await fetchDataFromServer(id)
     return (
         <>
         <StepForm initialStep={1} stepList={steps} title={"Formulario de perspectivas"}>

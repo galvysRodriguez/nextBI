@@ -1,4 +1,6 @@
 "use client";
+import React from "react"
+import * as LucideIcons from 'lucide-react';
 import { Button, Input } from "app/app/components/utils/Input";
 import { SelectSimple } from "../../utils/SelectMultiple";
 import { mocksOptions } from "./SectionFormTag";
@@ -21,12 +23,12 @@ export function SectionFormInfo({isCreate, perspectiveId}) {
 
   const { data: dataIcon, isLoading: isLoadingIcon, error: errorIcon } = useIconOption();
   const iconsOptions = convertOption(dataIcon, "id", "icon");
+  const selectedIcon = iconsOptions.find(opt => opt.value === values.icon_id);
+  const iconName = selectedIcon?.label || null;
+  const IconComponent = iconName ? LucideIcons[iconName] : null;
 
   return (
     <div>
-      <h2 className="text-xl text-center font-semibold mb-4">
-        Información General
-      </h2>
       <div className="w-[80%] h-[370px] m-auto pt-2 flex flex-col justify-between">
         <div className="flex flex-col justify-center gap-4">
           <div>
@@ -70,6 +72,13 @@ export function SectionFormInfo({isCreate, perspectiveId}) {
               </div>
             )}
           </div>
+        
+          {IconComponent && (
+            <div className="mt-4 flex items-center gap-2">
+              <span className="text-sm text-gray-500">Previsualización:</span>
+              <IconComponent size={32} strokeWidth={1.5} className="text-gray-500" />
+            </div>
+          )}
         </div>
         <div className="mt-8">
           <Button

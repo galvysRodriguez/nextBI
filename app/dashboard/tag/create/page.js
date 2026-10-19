@@ -1,7 +1,7 @@
 import StepForm from "app/app/components/container/create/StepForm";
 import { SectionFormTag } from "app/app/components/tag/create/SectionFormTag";
 
-export const steps = ["Informacion general", "Etiquetas", "Persepctivas"]
+export const steps = ["Información general", "Variables", "Perspectivas"]
 
 export default function Home() {
   return (

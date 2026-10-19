@@ -10,47 +10,51 @@ const spanishMessages = {
 };
 
 export const customSelectStyles = ({ error = false, focusColor = '#3B82F6' } = {}) => ({
-    control: (base, { isFocused }) => ({
-      ...base,
-      width: '100%',
-      minHeight: '40px',
-      paddingTop: '0',
-      paddingBottom: '0',
-      border: `1px solid ${error ? '#f87171' : '#e2e8f0'}`, 
-      borderRadius: '0.5rem',
-      marginBottom: '2px',
-      backgroundColor: error ? '#fef2f2' : 'white', 
-      boxShadow: isFocused
-        ? `0 0 0 2px ${error ? '#fecaca' : focusColor}` 
-        : 'none',
-      outline: 'none',
-      '&:hover': {
-        borderColor: error ? '#f87171' : '#cbd5e0', 
-      },
-    }),
-    menu: (base) => ({
-      ...base,
-      width: '100%',
-      maxHeight: '150px',
-      borderRadius: '0.5rem',
-      border: '1px solid #e2e8f0',
-      marginTop: '4px',
-      zIndex: 10,
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      padding: 0,
-      maxHeight: '120px',
-    }),
-    option: (base, { isFocused }) => ({
-      ...base,
-      backgroundColor: isFocused ? '#ebf4ff' : 'transparent',
-      color: '#1a202c',
-      '&:active': {
-        backgroundColor: '#bee3f8',
-      },
-    }),
-  });
+  control: (base, { isFocused }) => ({
+    ...base,
+    width: '100%',
+    minHeight: '40px',
+    paddingTop: '0',
+    paddingBottom: '0',
+    border: `1px solid ${error ? '#f87171' : '#e2e8f0'}`, 
+    borderRadius: '0.5rem',
+    marginBottom: '2px',
+    backgroundColor: error ? '#fef2f2' : 'white', 
+    boxShadow: isFocused ? `0 0 0 2px ${error ? '#fecaca' : focusColor}` : 'none',
+    outline: 'none',
+    '&:hover': {
+      borderColor: error ? '#f87171' : '#cbd5e0', 
+    },
+  }),
+  valueContainer: (base) => ({
+    ...base,
+    maxHeight: '100px',
+    overflowY: 'auto',
+  }),
+  menu: (base) => ({
+    ...base,
+    width: '100%',
+    maxHeight: '200px',
+    borderRadius: '0.5rem',
+    border: '1px solid #e2e8f0',
+    marginTop: '4px',
+    zIndex: 10,
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+    maxHeight: '120px',
+    overflowY: 'auto',
+  }),
+  option: (base, { isFocused }) => ({
+    ...base,
+    backgroundColor: isFocused ? '#ebf4ff' : 'transparent',
+    color: '#1a202c',
+    '&:active': {
+      backgroundColor: '#bee3f8',
+    },
+  }),
+});
 
   export default function SelectMultiple({ options, value, onChange, name, label, placeholder, children, error, isDisabled }) {
     return (

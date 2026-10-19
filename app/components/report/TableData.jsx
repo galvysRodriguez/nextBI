@@ -14,6 +14,8 @@ import { useSorting } from "../context/report/useSorting";
 import { useFilters } from "../context/report/useFilters";
 import React, { useMemo, lazy, Suspense, useEffect, memo } from "react";
 import Progress from "../utils/Progress";
+import { useColumns } from "../context/report/useColumns";
+import { useHandleRowsNormalize } from "../hooks/reports/useHandleRowsNormalize";
 
 const LazyTable = lazy(() => import("./LazyTable"));
 
@@ -28,6 +30,7 @@ const LazyTable = lazy(() => import("./LazyTable"));
         handlePaginationChange,
         handleSelectRowsChange,
         handleGlobalFilterChange,
+        handleColumnVisibilityChange
     } = useHandleTable(refetch)
 
     
@@ -46,7 +49,7 @@ const LazyTable = lazy(() => import("./LazyTable"));
     const {sorting} = useSorting()
     const {pagination} = usePaginationTable()
     const {search} = useSearch()
-
+    const {columnVisibility} = useColumns();
 
     const memoizedGroupedColumns = useMemo(() => groupedColumns, [groupedColumns]);
     const memoizedRows = useMemo(() => rows, [rows]);
@@ -56,6 +59,7 @@ const LazyTable = lazy(() => import("./LazyTable"));
     const memoizedSorting = useMemo(() => sorting, [sorting]);
     const memoizedPagination = useMemo(() => pagination, [pagination]);
     const memoizedSearch = useMemo(() => search, [search]);
+    
 
 
     const MemoizedTableRow = memo(({ row }) => (
@@ -108,10 +112,36 @@ const LazyTable = lazy(() => import("./LazyTable"));
               onPaginationChange={handlePaginationChange}
               //onRowSelectionChange={handleSelectRowsChange}
               onGlobalFilterChange={handleGlobalFilterChange}
+              onColumnVisibilityChange={handleColumnVisibilityChange}
 
               rowCount={memoizedTotalRows}
               pageCount={memoizedPageCount}
 
+              initialState={{
+                columnVisibility: {
+                  product_id: false,
+                  product_code: false,
+                  product_type:false,
+                  brand:false,
+                  category:false,
+                  unit:false,
+                  subcategory:false,
+                  product_details: false,
+                  product_presentations: false,
+                  weekday_number: false,
+                  weekday_name: false,
+                  week_of_year: false,
+                  week_of_month: false,
+                  fortnight: false,
+                  month_name: false,
+                  quarter: false,
+                  semester: false,
+                  day:false,
+                  month:false,
+                  year:false,
+                  is_weekend: false,
+                }
+              }}
               //estados
               state={{ 
                   isLoading: isLoading,
@@ -120,6 +150,7 @@ const LazyTable = lazy(() => import("./LazyTable"));
                   pagination: memoizedPagination,
                   columnFilters: memoizedFilters,
                   globalFilter: memoizedSearch,
+                  columnVisibility: columnVisibility,
                   //rowSelection: selectedRows,
               }}
 

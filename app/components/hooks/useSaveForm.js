@@ -1,44 +1,37 @@
-import { useMutation } from "@tanstack/react-query";
-import { useCardStore } from "../context/IsGrid";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "../api/apiRequest";
 import { API_ROUTES } from "../api/routes";
 
-const saveFormData = async (formData) => {
-  const response = await fetch(API_ROUTES.TARGETS.create, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al guardar los datos");
-  }
-
-  return response.json();
-};
-
 export const useSaveForm = () => {
-  return useMutation(saveFormData);
-};
+  const queryClient = useQueryClient();
 
-
-const updateFormData = async (formData) => {
-  const response = await fetch(API_ROUTES.TARGETS.update(formData.id), {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al guardar los datos");
-  }
-
-  return response.json();
+  return useMutation(async (formDataTarget) =>
+    await apiRequest({
+      method: "POST",
+      endpoint: API_ROUTES.TARGETS.create,
+      body: formDataTarget,
+    }),
+    {
+      onSuccess: (_, variables) => {
+        queryClient.invalidateQueries({ queryKey: ["targets"] })
+      },
+    }
+  );
 };
 
 export const useUpdateForm = () => {
-  return useMutation(updateFormData);
+  const queryClient = useQueryClient();
+
+  return useMutation(async(formDataTarget) =>
+    await apiRequest({
+      method: "PUT",
+      endpoint: API_ROUTES.TARGETS.update(formDataTarget.id),
+      body: formDataTarget,
+    }),
+    {
+      onSuccess: (_, variables) => {
+        queryClient.invalidateQueries({ queryKey: ["targets"] })
+      },
+    }
+  );
 };

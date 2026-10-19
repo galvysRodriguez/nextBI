@@ -8,6 +8,7 @@ import { useStep } from "../../context/StepContext";
 import { targetSchema } from "../../schemas/targetSchema";
 import { showSuccessToast } from '../../utils/toast';
 import { useParentRedirect } from '../../hooks/useParentRedirect';
+import { useCardStore } from '../../context/IsGrid';
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -22,11 +23,12 @@ const initialValues = {
   tag_id: "",
 };
 
-export function SectionFormTarget({ isCreate, initialData=initialValues, targetId }) {
+export function SectionFormTarget({ isCreate, initialData=initialValues, targetId, perspectiveId }) {
   const { mutate: create } = useSaveForm();
   const { mutate: update } = useUpdateForm();
   const{activeStep}= useStep()
   const { redirectToParent } = useParentRedirect();
+   const {clearSelection} = useCardStore()
 
   const handleSubmit = (values, { setSubmitting }) => {
     const mutation = isCreate ? create : update;
@@ -41,6 +43,7 @@ export function SectionFormTarget({ isCreate, initialData=initialValues, targetI
     mutation(formattedValues, {
       onSuccess: () => {
         setSubmitting(false);
+        clearSelection()
         showSuccessToast(`${message} exitosamente`);
         redirectToParent()
       },
@@ -61,7 +64,7 @@ export function SectionFormTarget({ isCreate, initialData=initialValues, targetI
       enableReinitialize={true}
     >
       <Form>
-        {activeStep === 0 && <SectionFormInfo isCreate={isCreate} targetId={targetId}/>}
+        {activeStep === 0 && <SectionFormInfo isCreate={isCreate} targetId={targetId} perspectiveId={perspectiveId} />}
         {activeStep === 1 && <SectionFormDateTarget isCreate={isCreate} />}
         {activeStep === 2 && <SectionFormOptimal />}
       </Form>

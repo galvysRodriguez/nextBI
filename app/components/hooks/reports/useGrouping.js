@@ -3,6 +3,7 @@ import { useTableDataContext } from "../../context/TableContext";
 import { useRows } from "../../context/report/useRows";
 import { useGroupedColumns } from "../../context/report/useGroupedColumns";
 import { useSelectedRows } from "../../context/report/useSelectedRows";
+import { columnTranslations } from "./columnsMap";
 
 
 export function useGrouping(){
@@ -42,6 +43,20 @@ export function useGrouping(){
         return Array.from(uniqueValues)
     }, [rows, groupedColumns]);
 
+    const getTranslateColumn = useCallback(()=>{
+      if (Array.isArray(groupedColumns)) {
+        return groupedColumns.map(k => columnTranslations[k] || k);
+      }
+      return columnTranslations[groupedColumns] || groupedColumns;
+    },
+    [groupedColumns])
+
+    const getColumnName = useCallback((groupedColumns)=>{
+       if (!groupedColumns?.length) return  "ID"
+
+       return groupedColumns.join(' - ')
+    }, [])
+
 
     const getSumByGroup = useCallback((sumColumn) => {
       if (!groupedColumns?.length || !rows?.length || !sumColumn) return rows.map((row) => row[sumColumn]);
@@ -51,7 +66,7 @@ export function useGrouping(){
       rows.forEach((row) => {
         const groupKey = groupedColumns.map(col => row[col]).join(' - ');
         const value = Number(row[sumColumn]) || 0;
-        sumsMap[groupKey] = (sumsMap[groupKey] || 0) + value;
+        sumsMap[groupKey] = (Number(sumsMap[groupKey] || 0) + value).toFixed(2);
       });
       
       return Object.values(sumsMap)
@@ -79,6 +94,8 @@ export function useGrouping(){
     return {
         filteredGroupedRows,
         selectedGroupedRows,
+        getColumnName,
+        getTranslateColumn,
         getGroupedColumnValues,
         convertRowsToChartData,
         getTotalColumns,

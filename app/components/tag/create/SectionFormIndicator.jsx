@@ -29,13 +29,10 @@ export function SectionFormIndicator() {
     const indicatorsOptions = convertOption(dataIndicator, "id", "indicator");
   return (
     <div>
-      <h2 className="text-xl text-center font-semibold mb-4">
-        Agregar indicadores
-      </h2>
       <div className="w-[80%] h-[370px] m-auto pt-2 flex flex-col justify-between">
           <div className="flex flex-col justify-center">
             <SelectMultiple
-              label="Indicadores"
+              label="Variables"
               name="indicators"
               value={indicatorsOptions.filter(opt =>
                 values.indicators.some(p => p.id === opt.value)

@@ -10,4 +10,21 @@ export const TITLE_APEX = {
           fontWeight: '500',
         },
 }
+
+export const SUBTITLE_APEX = {
+  align: 'center',
+  margin: 20,
+    style: {
+      fontSize: '14px', 
+      fontWeight: 'normal',
+      color: '#666'
+    }
+}
+
+export const STYLE_AXIS = {
+  style: {
+        fontSize: '14px',
+        fontWeight: 'bold'
+      }
+}
   

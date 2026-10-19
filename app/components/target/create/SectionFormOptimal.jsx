@@ -20,14 +20,11 @@ export function SectionFormOptimal() {
   const {prevStep } = useStep()
   return (
     <div>
-      <h2 className="text-xl text-center font-semibold mb-4">
-        Asignación de Valores
-      </h2>
       <div className="w-[80%] h-[420px] m-auto pt-2 flex flex-col justify-between" >
         <div className="flex flex-col justify-center gap-4">
           <div>
             <Input
-              label="Optimo"
+              label="Óptimo"
               name="optimal"
               value={values.optimal}
               onChange={handleChange}
@@ -39,7 +36,11 @@ export function SectionFormOptimal() {
              {touched.optimal && errors.optimal && (
                 <div className="text-red-500 text-sm flex items-start">
                   <IconError></IconError>
-                  {errors.optimal}
+                   <div>
+                    {String(errors.optimal).split('\n').map((line, index) => (
+                      <p key={index}>{line}</p>
+                    ))}
+                  </div>
                 </div>
              )}
           </div>
@@ -84,8 +85,9 @@ export function SectionFormOptimal() {
              <Button
               type="submit"
               variant="primary"
+              isDisabled={isSubmitting}
             >
-              Siguiente
+              Guardar
             </Button>
             <Button
               type="button"

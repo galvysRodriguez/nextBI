@@ -7,6 +7,7 @@ import { useSorting } from "../../context/report/useSorting";
 import { useSearch } from "../../context/report/useSearch";
 import { useSelectedRows } from "../../context/report/useSelectedRows";
 import { usePaginationTable } from "../../context/report/usePagination";
+import { useColumns } from "../../context/report/useColumns";
 
 export function useHandleTable(refetch) {
   const {pagination, setPagination} = usePaginationTable()
@@ -15,6 +16,7 @@ export function useHandleTable(refetch) {
   const {sorting, setSorting} = useSorting()
   const {search, setSearch} = useSearch()
   const {selectedRows, setSelectedRows} = useSelectedRows()
+  const {columnVisibility, setColumnVisibility} = useColumns();
 
 
   const handleGroupingChange = useCallback(
@@ -25,6 +27,16 @@ export function useHandleTable(refetch) {
     },
     [groupedColumns, setGroupedColumns]
   );
+
+  const handleColumnVisibilityChange = useCallback(
+    (updater) => {
+      const newGroupedColumns =
+        typeof updater === "function" ? updater(columnVisibility) : updater;
+      setColumnVisibility(newGroupedColumns);
+    },
+    [columnVisibility, setColumnVisibility]
+  );
+
 
   const handleSortingChange = useCallback(
     (updater) => {
@@ -91,5 +103,6 @@ export function useHandleTable(refetch) {
     handlePaginationChange,
     handleSelectRowsChange,
     handleGlobalFilterChange,
+    handleColumnVisibilityChange
   };
 }

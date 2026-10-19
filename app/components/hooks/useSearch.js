@@ -3,7 +3,7 @@ import { create } from 'zustand';
 const keys = [
   "id",
   "title",
-  "perspective",
+  "tag",
   "indicator",
   "current",
   "target",
@@ -11,8 +11,6 @@ const keys = [
   "start",
   "end",
   "status",
-  "responsible",
-  "priority",
 ];
 
 
@@ -45,3 +43,7 @@ export const useTargetStore = create((set, get) => ({
   getData: () => { return get().data },
 }));
 
+export const usePageTarget = create((set, get) => ({
+  page: 1,
+  setPage: (page) => set({ page }),
+}));

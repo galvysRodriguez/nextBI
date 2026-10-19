@@ -1,5 +1,21 @@
 import * as yup from 'yup';
 
+const staticAllowedOptions = [
+  //"nuevosClientes", "Ventas", "Compras", "Clientesfinales",
+  "SUM", "COUNT", "AVG", "+", "-", ".", "/", "*", "^",
+  "\\cdot", "\\frac", "(", ")", "{", "}", "\\sqrt"
+];
+
+const validCommands = [
+  "\\sin", "\\cos", "\\tan", "\\log", "\\ln", "\\sqrt", "\\frac",
+  "\\sum", "\\prod", "\\int", "\\oint", "\\lim", "\\infty", "\\pm", 
+  "\\mp", "\\times", "\\div", "\\cdot", "\\leq", "\\geq", "\\neq", 
+  "\\approx", "\\equiv", "\\left", "\\right", "\\{", "\\}", "\\(", 
+  "\\)", "\\[", "\\]", 
+];
+
+const forbiddenChars = ["#", "$", "&", "_", "~", "sin", "cos", "tan", "log", "ln", "%"];
+
 const validateFormula = (formula) => {
   try {
     const trimmedFormula = formula.trim();
@@ -78,7 +94,7 @@ const validateFormula = (formula) => {
     }
 
     // 10. Caracteres no permitidos
-    const forbiddenChars = ["#", "$", "%", "&", "_", "~", "^", "sin", "cos", "tan", "log", "ln"];
+    const forbiddenChars = ["#", "$", "&", "_", "~", "sin", "cos", "tan", "log", "ln"];
     for (const char of forbiddenChars) {
       if (trimmedFormula.includes(char)) {
         return `Carácter no permitido: ${char}`;
@@ -96,7 +112,7 @@ const validateFormula = (formula) => {
     // 12. Variables y operadores permitidos
     const allowedOptions = [
       "nuevosClientes", "Ventas", "Compras", "Clientesfinales",
-      "SUM", "COUNT", "AVG", "MAX", "MIN", "+", "-", ".", "/", "*", 
+      "SUM", "COUNT", "AVG", "MAX", "MIN", "+", "-", ".", "/", "*", "%", "^",
       "\\cdot", "\\frac", "(", ")", "{", "}", "\\sqrt"
     ];
     
@@ -115,122 +131,155 @@ const validateFormula = (formula) => {
   }
 };
 
+
+// Comandos LaTeX válidos permitido
+
 export const formulaSchema = yup.object().shape({
   title: yup
     .string()
     .required('El título es obligatorio')
     .min(5, 'El título debe tener al menos 5 caracteres')
     .max(100, 'El título no puede exceder 100 caracteres'),
+
   tag_id: yup
     .number()
-    .required('La etiqueta es obligatoria'),
-      formula: yup
-        .string()
-        .required("La fórmula es obligatoria")
-        .test("is-valid-formula", "Fórmula no válida", function (value) {
-          const { path, createError } = this;
-          const formula = (value || "").trim();
+    .transform((value, originalValue) => originalValue === "" ? undefined : value)
+    .typeError("Debes seleccionar una etiqueta")
+    .required("La etiqueta es obligatoria"),
+
+  formula: yup
+    .string()
+    .required("La fórmula es obligatoria")
+    .test("is-valid-formula", "Fórmula no válida", function (value) {
+      const { path, createError } = this;
+      const formula = (value || "").trim();
+      if (!formula) return createError({ path, message: "La fórmula no puede estar vacía" });
+
+      const dynamicAllowedOptions = this.options.context?.validCommands || [];
+      const allowedOptions = [...staticAllowedOptions, ...dynamicAllowedOptions];
+
+      const pairs = [
+        { open: '(', close: ')', name: 'paréntesis' },
+        { open: '{', close: '}', name: 'llaves' },
+        { open: '[', close: ']', name: 'corchetes' }
+      ];
+      for (const { open, close, name } of pairs) {
+        const openCount = (formula.match(new RegExp(`\\${open}`, "g")) || []).length;
+        const closeCount = (formula.match(new RegExp(`\\${close}`, "g")) || []).length;
+        if (openCount !== closeCount) {
+          return createError({ path, message: `Las ${name} no están balanceadas` });
+        }
+      }
+
+      if (/(\+|-|\*|\/|\\cdot|\^)$/.test(formula)) {
+        return createError({ path, message: "No puede haber operadores al final de la fórmula" });
+      }
+
+      const cleaned = formula.replace(/\\cdot/g, '*');
+      if (/([+\-*/^]{2,})/.test(cleaned)) {
+        return createError({ path, message: "No puede haber operadores consecutivos" });
+      }
+
+      const cleanedFormulaCharacter = formula
+        .replace(/\\[a-z]+(\{[^}]+\})*/gi, '')  
+        .replace(/[0-9+\-*/^(){}.,=]/g, '');    
+
+      if (!/[A-Za-z]/.test(cleanedFormulaCharacter)) {
+        return createError({path, message: "La fórmula debe incluir al menos una variable"});
+      }
+
+      if (/([*\\cdot/])\s*0(?!\d)/.test(cleaned)) {
+        return createError({ path, message: "No se permite multiplicación por cero" });
+      }
+
+      if(/\\frac\{[^}]+\}\{0+\}/.test(formula)){
+        return createError({ path, message: "No se permite división por cero" });
+      }
+
+      if (/\\(COUNT|SUM|AVG)\s*\\left\s*\(\s*\\right\s*\)/i.test(formula)) {
+        return createError({ path, message: "No se permiten funciones con paréntesis vacíos" });
+      }
+
+      if (/(COUNT|SUM|AVG)\s*(?:\\left)?\(\s*(COUNT|SUM|AVG)\s*(?:\\left)?\(/.test(formula)) {
+        return createError({ path, message: "No se permiten funciones anidadas" });
+      }
+
+      if(/(COUNT|SUM|AVG)\s*(?:\\left)?\(\s*(?:\\right)?\)/.test(formula)){
+        return createError({ path, message: "No se permiten funciones sin variables" });
+      }
+
+      if (/(COUNT|SUM|AVG)(?:\s+|$)(?!\()/i.test(formula)) {
+        return createError({ path, message: "Las funciones deben incluir paréntesis" });
+      }
+
+      if (/(COUNT|SUM|AVG)\s*(?:\\left)?\(\s*[0-9.-]+\s*(?:\\right)?\)/.test(formula)) {
+        return createError({ path, message: "Las funciones no pueden tener números en sus argumentos" });
+      }
+
+      if (/\\?[a-zA-Z]+\([^)]*\)\d+/.test(formula)) {
+        return createError({ path, message: "Las funciones no pueden estar seguidas directamente por números" });
+      }
+
+      if (/^(\\?[a-zA-Z]+\\(?:left\s*)?\([^)]*\))\s*\d+/.test(formula)) {
+        return createError({path,message: "Las funciones no puede estar seguida directamente por un número sin operador"});
+      }
+
+      if (/(COUNT|SUM|AVG)\s*(?:\\left)?\([^)]*[\+\-\*\/\^][^)]*(?:\\right)?\)/.test(formula)) {
+        return createError({ path, message: "No se permiten operaciones dentro de funciones" });
+      }
+      
+
+      if (formula.includes("\\frac")) {
+        const validFractions = formula.match(/\\frac\{[^}]+\}\{[^}]+\}/g);
+        if (!validFractions || validFractions.length === 0) {
+          return createError({ path, message: "Las fracciones no están correctamente formadas" });
+        }
+      }
+
+      const commandsInFormula = formula.match(/\\[a-zA-Z]+/g) || [];
+      for (const command of commandsInFormula) {
+        if (!validCommands.includes(command)) {
+          return createError({ path, message: `Comando LaTeX no válido: ${command}` });
+        }
+      }
+
+      const forbiddenChars = ["#", "$", "&", "_", "~", "sin", "cos", "tan", "log", "ln"];
+      for (const char of forbiddenChars) {
+        if (formula.includes(char)) {
+          return createError({ path, message: `Carácter no permitido: ${char}` });
+        }
+      }
+      if (/\^\{\}/.test(formula)) {
+        return createError({ path, message: "No se permite un exponente vacío" });
+      }
+
+      const formulaWithoutLaTeX = formula.replace(/\\left|\\right|\\ /g, "");
+      const parts = formulaWithoutLaTeX
+        .split(/(\\cdot|\\frac|\\sqrt|[+\-*/^%(){}])/)
+        .filter(Boolean)
+        .map(p => p.trim());
+
+      for (const part of parts) {
+        if (
+          !allowedOptions.includes(part) &&
+          isNaN(Number(part)) &&
+          !/^\\[a-zA-Z]+$/.test(part) 
+        ) {
+          return createError({ path, message: `Elemento no permitido en la fórmula: ${part}` });
+        }
+      }
+
+      const cleanedFormula = formula
+    .replace(/(COUNT|SUM|AVG)\s*\\left\s*\([^)]*\\right\)/gi, '')
+    .replace(/\\frac\{[^}]+\}\{[^}]+\}/g, '') 
+    .replace(/\\[a-zA-Z]+\{[^}]+\}/g, '')     
+    .replace(/[0-9+\-*/^(){}/\\cdot/,]/g, '');
     
-          // 1. Vacía
-          if (!formula) return createError({ path, message: "La fórmula no puede estar vacía" });
-    
-          // 2. Paréntesis balanceados
-          const openParentheses = (formula.match(/\(/g) || []).length;
-          const closeParentheses = (formula.match(/\)/g) || []).length;
-          if (openParentheses !== closeParentheses) {
-            return createError({ path, message: "Los paréntesis no están balanceados" });
-          }
-    
-          // 3. Llaves balanceadas
-          const openBraces = (formula.match(/\{/g) || []).length;
-          const closeBraces = (formula.match(/\}/g) || []).length;
-          if (openBraces !== closeBraces) {
-            return createError({ path, message: "Las llaves no están balanceadas" });
-          }
-    
-          // 4. Corchetes balanceados
-          const openBrackets = (formula.match(/\[/g) || []).length;
-          const closeBrackets = (formula.match(/\]/g) || []).length;
-          if (openBrackets !== closeBrackets) {
-            return createError({ path, message: "Los corchetes no están balanceados" });
-          }
-    
-          // 5. Operadores al final
-          if (/(\+|-|\*|\/|\\cdot)$/.test(formula)) {
-            return createError({ path, message: "No puede haber operadores al final de la fórmula" });
-          }
-    
-          // 6. Operadores consecutivos
-          if (/(\+|-|\*|\/|\\cdot){2,}/.test(formula.replace(/\\cdot/g, '*'))) {
-            return createError({ path, message: "No puede haber operadores consecutivos" });
-          }
-    
-          // 7. Fracciones
-          if (formula.includes("\\frac")) {
-            const validFractions = formula.match(/\\frac\{[^}]+\}\{[^}]+\}/g);
-            if (!validFractions || validFractions.length === 0) {
-              return createError({ path, message: "Las fracciones no están correctamente formadas" });
-            }
-            const divisionsByZero = formula.match(/\\frac\{[^}]+\}\{0\}/g);
-            if (divisionsByZero && divisionsByZero.length > 0) {
-              return createError({ path, message: "No se permite la división entre cero" });
-            }
-          }
-    
-          // 8. Raíces
-          if (formula.includes("\\sqrt")) {
-            const validRoots = formula.match(/\\sqrt\{[^}]+\}/g);
-            if (!validRoots || validRoots.length === 0) {
-              return createError({ path, message: "Las raíces no están correctamente formadas" });
-            }
-          }
-    
-          // 9. Comandos LaTeX válidos
-          const validCommands = [
-            "\\sin", "\\cos", "\\tan", "\\log", "\\ln", "\\sqrt", "\\frac",
-            "\\sum", "\\prod", "\\int", "\\oint", "\\lim", "\\infty", "\\pm", 
-            "\\mp", "\\times", "\\div", "\\cdot", "\\leq", "\\geq", "\\neq", 
-            "\\approx", "\\equiv", "\\left", "\\right", "\\{", "\\}", "\\(", 
-            "\\)", "\\[", "\\]"
-          ];
-          const commandsInFormula = formula.match(/\\[a-zA-Z]+/g) || [];
-          for (const command of commandsInFormula) {
-            if (!validCommands.includes(command)) {
-              return createError({ path, message: `Comando LaTeX no válido: ${command}` });
-            }
-          }
-    
-          // 10. Caracteres no permitidos
-          const forbiddenChars = ["#", "$", "%", "&", "_", "~", "^", "sin", "cos", "tan", "log", "ln"];
-          for (const char of forbiddenChars) {
-            if (formula.includes(char)) {
-              return createError({ path, message: `Carácter no permitido: ${char}` });
-            }
-          }
-    
-          // 11. Exponentes vacíos
-          if (formula.includes("^")) {
-            const emptyExponents = formula.match(/\^\{\}/g);
-            if (emptyExponents && emptyExponents.length > 0) {
-              return createError({ path, message: "No se permite un exponente vacío" });
-            }
-          }
-    
-          // 12. Validación de tokens permitidos
-          const allowedOptions = [
-            "nuevosClientes", "Ventas", "Compras", "Clientesfinales",
-            "SUM", "COUNT", "AVG", "MAX", "MIN", "+", "-", ".", "/", "*", 
-            "\\cdot", "\\frac", "(", ")", "{", "}", "\\sqrt"
-          ];
-          const formulaWithoutLeftRight = formula.replace(/\\left|\\right|\\ /g, "");
-          const formulaParts = formulaWithoutLeftRight.split(/(\\cdot|\\frac|[+\-*/(){}])/).filter(Boolean);
-          for (const part of formulaParts) {
-            if (!allowedOptions.includes(part) && isNaN(part)) {
-              return createError({ path, message: `Elemento no permitido en la fórmula: ${part}` });
-            }
-          }
-    
-          return true;
-        })
-    
+      if (/[A-Za-z]/.test(cleanedFormula)) {
+        return createError({
+          path, message: "No se permiten variables fuera de funciones"});
+      }
+
+      return true;
+    }),
 });

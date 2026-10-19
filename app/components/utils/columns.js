@@ -93,15 +93,6 @@ export const initialColumnsShopping = [
   },
 ];
 
-export const initialColumnsFormula = [
-  { accessorKey: "title", 
-    header: "Titulo",
-  },
-  { accessorKey: "tag", 
-    header: "Etiqueta",
-  },
-]
-
 export const initialColumnsPerspective = [
   { accessorKey: "title", 
     header: "Titulo",

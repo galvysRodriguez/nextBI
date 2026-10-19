@@ -1,3 +1,4 @@
+import { useColumns } from "../../context/report/useColumns";
 import { useRows } from "../../context/report/useRows";
 import { useReportFormat } from "../../context/useReportFormat";
 import { useReportMenu } from "../../context/useReportMenu";
@@ -5,42 +6,47 @@ import { useReportScope } from "../../context/useReportScope";
 import { useChartExportControls } from "../../hooks/reports/useChartExportControl";
 import { useGetReportWarehouseAll } from "../../hooks/reports/warehouse/useGetReportWarehouseAll";
 import { handleExport } from "../export";
+import { useTitle } from "../../context/report/useTitle";
+import { useRefetchAll } from "../../context/report/useRefetchAll";
+import { useHandleRowsNormalize } from "../../hooks/reports/useHandleRowsNormalize";
 
 export function ButtonExport({initialColumns}){
     const {setIsMenuOpen} =  useReportMenu()
     const {rows} = useRows()
     const {format} = useReportFormat()
     const {scope} = useReportScope()
-    const { refetch, isFetching } = useGetReportWarehouseAll();
-    //const { exportChart } = useChartExport();
+    const { refetchAll} = useRefetchAll();
     const { exportChart}  = useChartExportControls()
-
-
+    const {columnVisibility} = useColumns()
+    const {title} = useTitle()
+    const{normalizeDecimal} = useHandleRowsNormalize()
 
     const handleClick = async() => {
         if(scope == 'all'){
-            const { data: apiData } = await refetch();
-            handleExport({
-                rows: apiData.data.data,
+            const { data: apiData } = await refetchAll();
+            await handleExport({
+                rows: normalizeDecimal(apiData.data.data),
                 format: format,
                 initialColumns,
+                columnVisibility,
+                title
               })
             return setIsMenuOpen(false);
         }
 
         if(format === 'png' || format === 'svg'){
-            //await exportChart(selectedChart, format)
-            //return setIsMenuOpen(false)
-            exportChart(format)
+            exportChart(format, title)
             return setIsMenuOpen(false)
         }
 
-        handleExport({
+        await handleExport({
                   rows: rows,
                   format: format,
                   initialColumns,
+                  columnVisibility,
+                  title
                 })
-        setIsMenuOpen(false); // Cerrar menu luego de exportar
+        setIsMenuOpen(false); 
     };
 
     return (

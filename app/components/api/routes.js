@@ -24,6 +24,7 @@ export const API_ROUTES = {
   TARGETS: {
     get: (id) => `${API_BASE_URL}/targets/${id}`,
     detail: (id) => `${API_BASE_URL}/targets/detail/${id}`,
+    detailChart: (id) => `${API_BASE_URL}/targets/detail/chart/${id}`,
     getAll: `${API_BASE_URL}/targets`,
     create: `${API_BASE_URL}/targets`,
     update: (id) => `${API_BASE_URL}/targets/${id}`,
@@ -56,6 +57,7 @@ export const API_ROUTES = {
     update: (id) => `${API_BASE_URL}/tags/${id}`,
     delete: (id) => `${API_BASE_URL}/tags/${id}`,
     exist: `${API_BASE_URL}/tags/exist/`,
+    perspective: (id) => `${API_BASE_URL}/tags/perspective/${id}`,
   },
   ICONS: {
     get: (id) => `${API_BASE_URL}/icons/${id}`,
@@ -71,12 +73,18 @@ export const API_ROUTES = {
     login: `${API_BASE_URL}/users/login`
   },
   INDICATORS: {
-    perspectives: `${API_BASE_URL}/indicators/perspective`,
+    tags: (id) => `${API_BASE_URL}/indicators/tag/${id}`,
     getAll:`${API_BASE_URL}/indicators/`,
   },
   REPORTS: {
     sale: `${API_BASE_URL}/reports/sale`,
     purchase: `${API_BASE_URL}/reports/purchase`,
     warehouse: `${API_BASE_URL}/reports/warehouse`,
+    order: `${API_BASE_URL}/reports/order`,
+    quote: `${API_BASE_URL}/reports/quote`,
+  },
+  DASHBOARD: {
+    target: `${API_BASE_URL}/dashboard/target`,
+    metrics: `${API_BASE_URL}/dashboard/metrics`,
   },
 };

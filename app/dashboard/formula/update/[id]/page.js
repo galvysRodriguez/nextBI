@@ -3,7 +3,7 @@ import { API_ROUTES } from "app/app/components/api/routes";
 import StepForm from "app/app/components/container/create/StepForm";
 import { SectionFormFormula } from "app/app/components/formula/create/SectionFormFormula";
 
-export const steps = ["Informacion general", "Editor de formula"]
+export const steps = ["Información general", "Editor de fórmula"]
 
 export default async function Home({params}) {
   const id = (await params).id;

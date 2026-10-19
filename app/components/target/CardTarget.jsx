@@ -4,13 +4,19 @@ import {
     DoneAll,
     TaskAlt,
     AccessTime,
+    DoDisturb,
   } from "@mui/icons-material"
 import { ProgressBar } from "./Progressbar"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import { useCardStore } from "../context/IsGrid";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { ButtonSecondary } from "./ButtonSecondary";
+import { CheckCircle } from "lucide-react";
+import { PauseCircle } from "lucide-react";
+import { XCircle } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
+import { ActionsButton } from "./ActionsButton";
 
 function formatDate(date) {
   const newDate = new Date(date);
@@ -24,7 +30,7 @@ function formatDate(date) {
 }
 
 function formatDecimal(num) {
-  return num?.toFixed(2); // Retorna un string con dos decimales
+  return num?.toFixed(2); 
 }
 
   export function CardTarget({ optimal = 40, 
@@ -34,33 +40,26 @@ function formatDecimal(num) {
                               end_date, 
                               value, 
                               indicator, 
-                              aggregation,
+                              tag,
                               perspective,
+                              lack, 
+                              status,
+                              progress,
                               id}) {
-    // Obtener el estado y el método handleSelect del store
-  const { selectedCard, handleSelect, clearSelection } = useCardStore();
-
-  // Verificar si esta tarjeta está seleccionada
-  const isSelected = selectedCard === id;
   
   return (
     <div
-      className={`max-w-[500px] rounded-2xl p-6 cursor-pointer ${
-        isSelected ? 'bg-blue-50 border-2 border-blue-500' : 'bg-white border border-gray-200'
-      }`}
-      onClick={() => handleSelect(id)} // Manejar la selección al hacer clic
+      className="max-w-[500px] rounded-2xl p-6  
+        bg-white border border-gray-200"
     >
-      {/* Header */}
       <div className="flex items-center justify-between gap-3 h-20 w-full">
-        <LogoCard value={perspective} />
+        <LogoCard value={tag} />
         <TitleCard text={title} />
-        <StatusCard />
+        <StatusCard status={status} />
       </div>
 
-      {/* Date */}
       <DateCard start_date={formatDate(start_date)} end_date={formatDate(end_date)} />
 
-      {/* Total Sales */}
       <div className="pt-8 text-center">
         <strong className="font-medium text-lg">{indicator}</strong>
         <div className="flex flex-col gap-4 py-6">
@@ -77,12 +76,10 @@ function formatDecimal(num) {
         </div>
       </div>
 
-      {/* Progress Bar */}
       <div>
-        <ProgressBar current={indicator_value} target={optimal} />
+        <ProgressBar current={indicator_value} optimal={optimal} lack={lack} progress={progress}/>
       </div>
 
-      {/* Button */}
       <ContainerButton id={id} />
     </div>
   );
@@ -90,7 +87,8 @@ function formatDecimal(num) {
   
   export function ContainerButton({id}) {
     return (
-      <div className="h-16 w-full flex justify-center pt-4">
+      <div className="h-16 w-full flex justify-center gap-2 pt-4">
+        <ActionsButton id={id} />
         <ButtonSecondary text={"Ver detalles"} id={id}/>
       </div>
     )
@@ -115,10 +113,22 @@ function formatDecimal(num) {
     )
   }
   
-  export function StatusCard({ status = "finally" }) {
+  export function StatusCard({ status }) {
+    console.log(status)
+    const statusConfig = {
+    completed: {
+      icon: <CheckCircle  />
+    },
+    active: {
+      icon: <LoaderCircle  />
+    },
+    failed: {
+      icon: <XCircle  />
+    },
+  };
     return (
       <div className="min-w-[3rem] min-h-[3rem] bg-[#dfe6fa] rounded-full flex justify-center items-center">
-        <DoneAll />
+        {statusConfig[status].icon}
       </div>
     )
   }
@@ -128,7 +138,7 @@ function formatDecimal(num) {
       <div
         className={`bg-[#085494] text-white rounded-lg min-w-[4rem] min-h-[4rem] flex justify-center items-center`}
       >
-        <strong className="font-semibold text-2xl">{value[0]}</strong>
+        <strong className="font-semibold text-2xl" title={value}>{value[0]}</strong>
       </div>
     )
   }

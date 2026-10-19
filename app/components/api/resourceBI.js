@@ -84,7 +84,7 @@ const resourceBI = [
       custom: 1,
       description: 'Acceso completo a todos los reportes'
     },
-    ...['sale', 'purchase', 'warehouse'].map(type => ({
+    ...['sale', 'purchase', 'warehouse', 'order', 'quote'].map(type => ({
       module: 'BI',
       controlator: 'reports',
       action: 'get',

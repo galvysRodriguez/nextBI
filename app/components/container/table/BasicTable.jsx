@@ -16,11 +16,13 @@ const BasicTable = ({ rows, initialColumns }) => {
         columns={initialColumns}
         data={rows.length ? rows : []}
         enableMultiRowSelection={false}
+        enablePagination
         enableRowSelection
         enableSorting
         enableColumnOrdering
         getRowId={(row) => String(row.id)} 
         localization={MRT_Localization_ES}
+        positionToolbarAlertBanner={'bottom'}
         muiTableContainerProps={{
           sx: { maxHeight: "500px" }, 
         }}

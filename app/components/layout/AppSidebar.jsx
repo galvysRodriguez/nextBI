@@ -22,21 +22,27 @@ export default function AppSidebar() {
     ...NAV_MENU_FINAL
   ]
 
-  const filteredMenu = mergedNavMenu.filter((item) => isValid(item.resource));
+  const filteredMenu = mergedNavMenu
+  .map(group => ({
+    ...group,
+    items: group.items.filter(item => isValid(item.resource))
+  }))
+  .filter(group => group.items.length > 0); // elimina grupos vacíos
+
 
   //if (isLoading) return <div className="p-4">Cargando...</div>
   //if (error) return <div className="p-4 text-red-500">Error: {error.message}</div>
 
   return (
     <>
-      <div className="md:hidden w-full bg-white shadow-md p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
+      <div className="md:hidden w-full bg-white shadow-md px-4 py-2 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
         <button
           onClick={() => changeMenuMobile()}
-          className="p-2 bg-gray-200 rounded"
+          className="pb-2 bg-gray-200 rounded"
         >
           {menuMobile ? <X size={24} /> : <Menu size={24} />}
         </button>
-        <div className="flex place-items-center gap-2">
+        <div className="mt-4 flex place-items-center gap-2">
           <Logo></Logo>
           <strong className="text-xl font-semibold text-[#253664]">AFTIM</strong>
         </div>

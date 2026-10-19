@@ -18,19 +18,24 @@ export default function Sidebar({ children }) {
         <div className="p-4 pb-2 flex justify-center items-center md:flex-col md:items-start">
           <button
             onClick={() => changeExpanded()}
-            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 md:mt-4"
+            className="p-1.5 rounded-lg bg-gray-50 text-gray-500 hover:bg-gray-100 md:mt-4"
           >
             {expanded ? <ChevronFirst /> : <Menu />}
           </button>
-          <div className="flex place-items-center gap-2">
+          <div className={`mt-2 rounded-lg flex place-items-center ${
+                !expanded ? "" : "gap-2"
+              }`}>
             <Logo></Logo>
-            <strong
+            {expanded && (
+              <strong
               className={`text-xl font-semibold text-[#253664] transition-opacity duration-300 ${
                 !expanded ? "hidden opacity-0 invisible" : "opacity-100 visible"
               }`}
             >
               AFTIM
             </strong>
+            )}
+            
           </div>
         </div>
 

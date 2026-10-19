@@ -28,7 +28,7 @@ const chartComponents = {
 };
 
 
-export default function ChartData({series, categories, title}) {
+export default function ChartData({series, categories, title, subtitle, ytitle, xtitle}) {
     console.time("chart-data")
     const{selectedChart} = useReportChart()
     const ChartComponent = chartComponents[selectedChart];
@@ -50,6 +50,9 @@ export default function ChartData({series, categories, title}) {
               categories={categories} 
               title={title}
               chartId={selectedChart}
+              subtitle={subtitle}
+              ytitle={ytitle}
+              xtitle={xtitle}
               />
             )}
         </Suspense>
