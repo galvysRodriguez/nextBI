@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = "https://python-bi-9695-m65p566dh-galvys-rodriguezs-projects.vercel.app";
+const DEFAULT_API_BASE_URL = "https://python-bi-9695.vercel.app";
 
 function normalizeApiBaseUrl(value) {
   const configuredUrl = value?.trim();
